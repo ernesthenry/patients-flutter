@@ -18,9 +18,6 @@ abstract class Base<T extends StatefulWidget> extends State<T> {
   SharedPreferences preferences;
   User user;
   GlobalKey<ScaffoldMessengerState> scaffoldKey = new GlobalKey<ScaffoldMessengerState>();
-  // final _globalKey = GlobalKey<ScaffoldMessengerState>();
-    // var _scaffoldKey = new GlobalKey<ScaffoldState>();
-
 
 
   /*

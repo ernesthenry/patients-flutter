@@ -55,7 +55,7 @@ dependencies:
   dropdown_search: ^0.6.3
   getwidget: ^2.0.3
   expandable: ^5.0.1
-
+  validators: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:

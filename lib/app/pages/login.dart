@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/user.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_api.dart';
-import 'package:spouts_inventory_odoo/app/pages/partners.dart';
-import 'package:spouts_inventory_odoo/app/pages/settings.dart';
-import 'package:spouts_inventory_odoo/base.dart';
+import 'package:patients/app/data/pojo/user.dart';
+import 'package:patients/app/data/services/odoo_api.dart';
+import 'package:patients/app/pages/partners.dart';
+import 'package:patients/app/pages/settings.dart';
+import "package:patients/base.dart";
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
 
 import 'home.dart';
 
@@ -33,7 +33,7 @@ class _LoginState extends Base<Login> {
   TextEditingController _urlCtrler = new TextEditingController();
   TextEditingController _emailCtrler = new TextEditingController();
   TextEditingController _passCtrler = new TextEditingController();
-  VideoPlayerController _controller;
+  // VideoPlayerController _controller;
   FocusNode emailFocusNode = new FocusNode();
   FocusNode passwordFocusNode = new FocusNode();
   FocusNode urlFocusNode = new FocusNode();
@@ -282,11 +282,11 @@ class _LoginState extends Base<Login> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Color(0xff00a3d2), width: 1.2),
+          borderSide: const BorderSide(color: Color.fromARGB(255, 72, 175, 204), width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Color(0xff00a3d2), width: 1.8),
+          borderSide: const BorderSide(color: Color.fromARGB(255, 72, 175, 204), width: 1.2),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -298,7 +298,7 @@ class _LoginState extends Base<Login> {
     final email = TextField(
       keyboardType: TextInputType.emailAddress,
       controller: _emailCtrler,
-      cursorColor: Color(0xff223e47),
+      cursorColor: Color.fromARGB(255, 35, 69, 80),
       focusNode: emailFocusNode,
       decoration: InputDecoration(
         labelText: "E-mail",
