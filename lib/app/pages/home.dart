@@ -734,7 +734,7 @@ class _HomeState extends Base<Home> {
   //   });
   // }
 
-  //GET PARTNERS/CUSTOMERS
+  //GET PATIENTS/CLIENTS
   _getPatients() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     isConnected().then((isInternet) {
@@ -1557,10 +1557,10 @@ class _HomeState extends Base<Home> {
     });
     // _getCustomerLocation();
     _getPatientData(_userId);
-    _getSalesOfficers();
-    _getEmployees();
+    // _getSalesOfficers();
+    // _getEmployees();
     // _getRequisitionLines();
-    _getAllEmployeeStock();
+    // _getAllEmployeeStock();
     _getContacts();
     _getPatients();
     // _getDraftInvoices();

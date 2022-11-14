@@ -1,78 +1,77 @@
 import 'dart:convert';
+import 'dart:ffi';
 
-Partner welcomeFromJson(String str) => Partner.fromJson(json.decode(str));
+Patient welcomeFromJson(String str) => Patient.fromJson(json.decode(str));
 
-String loginModelToJson(Partner data) => json.encode(data.toJson());
+String loginModelToJson(Patient data) => json.encode(data.toJson());
 
-class Partner {
+class Patient {
   int id;
-  String name;
-  String imageUrl;
-  String email;
-  String phone;
-  String address;
-  String account_name;
-  int qb_cust;
+  String patient_name;
+  String patient_location;
+  Bool insured;
+  int patient_id;
+  int age;
   int user_id;
   List parent_id;
-  String subCounty;
-  String district;
-  String parish;
-  String region;
+  String patient_history;
+  String date_of_birth;
+  String dependants;
+  String insurance_company;
+  String qr_code;
 
-  Partner(
+  Patient(
       {this.id,
-      this.name,
-      this.imageUrl,
-      this.email,
-      this.phone,
-      this.address,
-      this.account_name,
-      this.district,
-      this.parish,
-      this.region,
-      this.subCounty,
-      this.qb_cust,
+      this.patient_name,
+      this.patient_location,
+      this.insured,
+      this.patient_id,
+      this.age,
+      this.user_id,
       this.parent_id,
-      this.user_id});
+      this.patient_history,
+      this.date_of_birth,
+      this.parent_id,
+      this.dependants,
+      this.insurance_company,
+      this.qr_code});
 
-  static List encodeToJson(List<Partner> list) {
+  static List encodeToJson(List<Patient> list) {
     List jsonList = List();
     list.map((item) => jsonList.add(item.toJson())).toList();
     return jsonList;
   }
 
-  factory Partner.fromJson(Map<String, dynamic> json) => Partner(
+  factory Patient.fromJson(Map<String, dynamic> json) => Patient(
         id: json["id"],
-        name: json["name"],
-        imageUrl: json["imageUrl"],
-        email: json["email"],
-        phone: json["phone"],
-        address: json["address"],
-        account_name: json["account_name"],
-        district: json["district"],
-        parish: json["parish"],
-        region: json["region"],
-        subCounty: json["subCounty"],
-        // ninexpirydate: DateTime.parse(json["ninexpirydate"]),
-        qb_cust: json["qb_cust"],
+        patient_name: json["patient_name"],
+        patient_location: json["patient_location"],
+        insured: json["insured"],
+        patient_history: json["patient_history"],
+        patient_id: json["patient_id"],
+        age: json["age"],
         user_id: json["user_id"],
+        date_of_birth: json["date_of_birth"],
+        parent_id: json["parent_id"],
+        dependants: json["dependants"],
+        insurance_company: json["insurance_company"],
+        qr_code: json["qr_code"]
       );
 
   Map<String, dynamic> toJson() {
     return {
-      "name": this.name,
-      "imageUrl": this.imageUrl,
-      "email": this.email,
-      "phone": this.phone,
-      "address": this.address,
-      "account_name": this.account_name,
-      "district": this.district,
-      "parish": this.parish,
-      "region": this.region,
-      "subCounty": this.subCounty,
-      "qb_cust": this.qb_cust,
+      "patient_name": this.patient_name,
+      "patient_location": this.patient_location,
+      "insured": this.insured,
+      "patient_history": this.patient_history,
+      "patient_id": this.patient_id,
+      "age": this.age,
       "user_id": this.user_id,
+      "date_of_birth": this.date_of_birth,
+      "parent_id": this.parent_id,
+      "dependants": this.dependants,
+      "insurance_company": this.insurance_company,
+      "qr_code": this.qr_code
     };
   }
 }
