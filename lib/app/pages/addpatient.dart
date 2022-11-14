@@ -7,30 +7,30 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:spouts_inventory_odoo/app/data/pojo/district.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/parish.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/partners.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/region.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/subcounty.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/village.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_api.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_response.dart';
-import 'package:spouts_inventory_odoo/app/pages/accounts.dart';
-import 'package:spouts_inventory_odoo/app/pages/partners.dart';
-import 'package:spouts_inventory_odoo/app/utility/constant.dart';
-import 'package:spouts_inventory_odoo/app/utility/strings.dart';
-import 'package:spouts_inventory_odoo/base.dart';
+// import 'package:package:patients/app/data/pojo/district.dart';
+// import 'package:package:patients/app/data/pojo/parish.dart';
+import 'package:patients/app/data/pojo/patients.dart';
+// import 'package:package:patients/app/data/pojo/region.dart';
+// import 'package:package:patients/app/data/pojo/subcounty.dart';
+// import 'package:package:patients/app/data/pojo/village.dart';
+import 'package:patients/app/data/services/odoo_api.dart';
+import 'package:patients/app/data/services/odoo_response.dart';
+import 'package:patients/app/pages/accounts.dart';
+import 'package:patients/app/pages/patients.dart';
+import 'package:patients/app/utility/constant.dart';
+import 'package:patients/app/utility/strings.dart';
+import 'package:patients/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'home.dart';
 import 'login.dart';
 
-class AddPartner extends StatefulWidget {
+class AddPatient extends StatefulWidget {
   @override
-  _AddPartnerState createState() => _AddPartnerState();
+  _AddPatientState createState() => _AddPatientState();
 }
 
-class _AddPartnerState extends Base<AddPartner> {
+class _AddPatientState extends Base<AddPatient> {
   TextEditingController _urlCtrler = new TextEditingController();
   TextEditingController _accountNameController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
@@ -46,14 +46,14 @@ class _AddPartnerState extends Base<AddPartner> {
   TextEditingController _groupsController = new TextEditingController();
   TextEditingController _collectionOfficerController =
       new TextEditingController();
-  bool post_d2c = false,
-      leader_attended = false,
-      lc_stayed = false,
-      presentation_filter = false,
-      additional_d2c = false,
-      money_sent = false,
-      when_group_meets = false,
-      is_this_a_savings_group = false;
+  // bool post_d2c = false,
+  //     leader_attended = false,
+  //     lc_stayed = false,
+  //     presentation_filter = false,
+  //     additional_d2c = false,
+  //     money_sent = false,
+  //     when_group_meets = false,
+  //     is_this_a_savings_group = false;
   String odooURL = "";
   int _regionId = 0,
       _districtId = 0,
@@ -61,18 +61,18 @@ class _AddPartnerState extends Base<AddPartner> {
       _parishId = 0,
       _villageId = 0,
       _userId;
-  List<Region> _regions = [];
-  List<Partner> _partners = [];
-  List<District> _districts = [];
-  List<SubCounty> _subCountiess = [];
-  List<Parish> _parishes = [];
-  List<Village> _villages = [];
-  String _regionSelection = "Select Region",
-      _districtSelection = "Select District",
-      _parishSelection = "Select Parish",
-      _subCountySelection = "Select Sub-County",
-      _villageSelection = "Select Village",
-      _accountTypeSelection = "Spouts Account Type";
+  // List<Region> _regions = [];
+  List<Patient> patients = [];
+  // List<District> _districts = [];
+  // List<SubCounty> _subCountiess = [];
+  // List<Parish> _parishes = [];
+  // List<Village> _villages = [];
+  // String _regionSelection = "Select Region",
+  String _districtSelection = "Select District",
+      // _parishSelection = "Select Parish",
+      // _subCountySelection = "Select Sub-County",
+      // _villageSelection = "Select Village",
+      // _accountTypeSelection = "Spouts Account Type";
   bool _registerPending = false, _accountNameEnabled = true;
   BuildContext dialogContext;
   String _displayEmployeeId = "";
@@ -82,7 +82,7 @@ class _AddPartnerState extends Base<AddPartner> {
   void initState() {
     super.initState();
     getOdooInstance().then((odoo) {
-      _getRegions();
+      // _getRegions();
       _getEmployeeData();
     });
     setState(() {
@@ -93,40 +93,40 @@ class _AddPartnerState extends Base<AddPartner> {
     print("the user id is " + _userId.toString());
   }
 
-  _getAccountName() {
-    final formattedStr = formatDate(DateTime.now(), [dd, '.', mm, '.', yy]);
-    print(formattedStr);
-    if (_accountTypeSelection == "d2c") {
-      setState(() {
-        _accountNameEnabled = false;
-        _accountNameController.clear();
-        _accountNameController.text = "D2C";
-      });
-      if (_villageSelection != "Select Village") {
-        setState(() {
-          _accountNameController.text =
-              "D2C $_displayEmployeeId $_villageSelection $formattedStr";
-        });
-      }
-    } else if (_accountTypeSelection == "Corporates") {
-      setState(() {
-        _accountNameEnabled = false;
-        _accountNameController.clear();
-        _accountNameController.text = "CORP";
-      });
-      if (_villageSelection != "Select Village") {
-        setState(() {
-          _accountNameController.text =
-              "CORP $_displayEmployeeId $_villageSelection $formattedStr";
-        });
-      }
-    } else {
-      setState(() {
-        _accountNameEnabled = true;
-        _accountNameController.clear();
-      });
-    }
-  }
+  // _getAccountName() {
+  //   final formattedStr = formatDate(DateTime.now(), [dd, '.', mm, '.', yy]);
+  //   print(formattedStr);
+  //   if (_accountTypeSelection == "d2c") {
+  //     setState(() {
+  //       _accountNameEnabled = false;
+  //       _accountNameController.clear();
+  //       _accountNameController.text = "D2C";
+  //     });
+  //     if (_villageSelection != "Select Village") {
+  //       setState(() {
+  //         _accountNameController.text =
+  //             "D2C $_displayEmployeeId $_villageSelection $formattedStr";
+  //       });
+  //     }
+  //   } else if (_accountTypeSelection == "Corporates") {
+  //     setState(() {
+  //       _accountNameEnabled = false;
+  //       _accountNameController.clear();
+  //       _accountNameController.text = "CORP";
+  //     });
+  //     if (_villageSelection != "Select Village") {
+  //       setState(() {
+  //         _accountNameController.text =
+  //             "CORP $_displayEmployeeId $_villageSelection $formattedStr";
+  //       });
+  //     }
+  //   } else {
+  //     setState(() {
+  //       _accountNameEnabled = true;
+  //       _accountNameController.clear();
+  //     });
+  //   }
+  // }
 
   _getEmployeeData() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
@@ -138,65 +138,65 @@ class _AddPartnerState extends Base<AddPartner> {
     }
   }
 
-  _getRegions() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    if (preference.getString("offlinecustomersadded") != null) {
-      // preference.setString("offlinecustomersadded", "");
-      // preference.setString("offlinecustomers", "");
-      print("THE ADDED OFFLINE CUSTOMERS ARE: " +
-          preference.getString("offlinecustomersadded"));
-    }
-    if (preference.getString("offlineregions") != null) {
-      String regionsString = preference.getString("offlineregions");
-      print(regionsString);
-      var regionlist = json.decode(regionsString);
-      setState(() {
-        for (var i in regionlist) {
-          _regions.add(
-            new Region(
-              id: i["id"],
-              name: i["name"].toString(),
-            ),
-          );
-        }
-      });
-    } else {
-      isConnected().then((isInternet) {
-        if (isInternet) {
-          showLoading();
-          //GET REGIONS
-          odoo.searchRead(Strings.region, [], ['id', 'name']).then(
-            (OdooResponse res) {
-              if (!res.hasError()) {
-                setState(() {
-                  hideLoading();
-                  String session = getSession();
-                  session = session.split(",")[0].split(";")[0];
-                  for (var i in res.getRecords()) {
-                    _regions.add(
-                      new Region(
-                        id: i["id"],
-                        name: i["name"].toString(),
-                      ),
-                    );
-                  }
-                  var regionlist = jsonEncode(res.getRecords());
-                  preference.setString("offlineregions", regionlist);
-                  preference.setString(
-                      "offlineregionslastupdated", DateTime.now().toString());
-                  print("Updated offline region repository at " +
-                      DateTime.now().toString());
-                });
-              } else {
-                print(res.getError());
-                showMessage("Warning", res.getErrorMessage());
-              }
-            },
-          );
-        }
-      });
-    }
-  }
+  // _getRegions() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   if (preference.getString("offlinecustomersadded") != null) {
+  //     // preference.setString("offlinecustomersadded", "");
+  //     // preference.setString("offlinecustomers", "");
+  //     print("THE ADDED OFFLINE CUSTOMERS ARE: " +
+  //         preference.getString("offlinecustomersadded"));
+  //   }
+  //   if (preference.getString("offlineregions") != null) {
+  //     String regionsString = preference.getString("offlineregions");
+  //     print(regionsString);
+  //     var regionlist = json.decode(regionsString);
+  //     setState(() {
+  //       for (var i in regionlist) {
+  //         _regions.add(
+  //           new Region(
+  //             id: i["id"],
+  //             name: i["name"].toString(),
+  //           ),
+  //         );
+  //       }
+  //     });
+  //   } else {
+  //     isConnected().then((isInternet) {
+  //       if (isInternet) {
+  //         showLoading();
+  //         //GET REGIONS
+  //         odoo.searchRead(Strings.region, [], ['id', 'name']).then(
+  //           (OdooResponse res) {
+  //             if (!res.hasError()) {
+  //               setState(() {
+  //                 hideLoading();
+  //                 String session = getSession();
+  //                 session = session.split(",")[0].split(";")[0];
+  //                 for (var i in res.getRecords()) {
+  //                   _regions.add(
+  //                     new Region(
+  //                       id: i["id"],
+  //                       name: i["name"].toString(),
+  //                     ),
+  //                   );
+  //                 }
+  //                 var regionlist = jsonEncode(res.getRecords());
+  //                 preference.setString("offlineregions", regionlist);
+  //                 preference.setString(
+  //                     "offlineregionslastupdated", DateTime.now().toString());
+  //                 print("Updated offline region repository at " +
+  //                     DateTime.now().toString());
+  //               });
+  //             } else {
+  //               print(res.getError());
+  //               showMessage("Warning", res.getErrorMessage());
+  //             }
+  //           },
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
 
   _getDistricts() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
@@ -266,212 +266,212 @@ class _AddPartnerState extends Base<AddPartner> {
     }
   }
 
-  _getParishes() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    setState(() {
-      _parishes.clear();
-    });
-    if (preference.getString("offlineparishes") != null) {
-      String parishesString = preference.getString("offlineparishes");
-      print(parishesString);
-      var parishlist = json.decode(parishesString);
-      setState(() {
-        for (var i in parishlist) {
-          if (i["subcounty"] is! bool &&
-              _subCountySelection.length > 2 &&
-              i["subcounty"][1] == _subCountySelection) {
-            // && i["subCounty"][1] == _subCountySelection) {
-            _parishes.add(
-              new Parish(
-                id: i["id"],
-                name: i["name"].toString(),
-              ),
-            );
-          }
-        }
-      });
-    } else {
-      isConnected().then((isInternet) {
-        if (isInternet) {
-          showLoading();
-          //GET PARISHES
-          print("PARENT SUB COUNTY IS " + _subCountySelection);
-          odoo.searchRead(Strings.parish, [
-            ['subCounty', 'ilike', _subCountySelection]
-          ], [
-            'id',
-            'name'
-          ]).then(
-            (OdooResponse res) {
-              if (!res.hasError()) {
-                setState(() {
-                  hideLoading();
-                  String session = getSession();
-                  int count = 0;
-                  session = session.split(",")[0].split(";")[0];
-                  for (var i in res.getRecords()) {
-                    _parishes.add(
-                      new Parish(
-                        id: i["id"],
-                        name: i["name"].toString(),
-                      ),
-                    );
-                  }
-                  var parishlist = jsonEncode(res.getRecords());
-                  preference.setString("offlineparishes", parishlist);
-                  preference.setString(
-                      "offlineparisheslastupdated", DateTime.now().toString());
-                  print("Updated offline parish repository at " +
-                      DateTime.now().toString());
-                });
-              } else {
-                print(res.getError());
-                showMessage("Warning", res.getErrorMessage());
-              }
-            },
-          );
-        }
-      });
-    }
-  }
+  // _getParishes() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _parishes.clear();
+  //   });
+  //   if (preference.getString("offlineparishes") != null) {
+  //     String parishesString = preference.getString("offlineparishes");
+  //     print(parishesString);
+  //     var parishlist = json.decode(parishesString);
+  //     setState(() {
+  //       for (var i in parishlist) {
+  //         if (i["subcounty"] is! bool &&
+  //             _subCountySelection.length > 2 &&
+  //             i["subcounty"][1] == _subCountySelection) {
+  //           // && i["subCounty"][1] == _subCountySelection) {
+  //           _parishes.add(
+  //             new Parish(
+  //               id: i["id"],
+  //               name: i["name"].toString(),
+  //             ),
+  //           );
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     isConnected().then((isInternet) {
+  //       if (isInternet) {
+  //         showLoading();
+  //         //GET PARISHES
+  //         print("PARENT SUB COUNTY IS " + _subCountySelection);
+  //         odoo.searchRead(Strings.parish, [
+  //           ['subCounty', 'ilike', _subCountySelection]
+  //         ], [
+  //           'id',
+  //           'name'
+  //         ]).then(
+  //           (OdooResponse res) {
+  //             if (!res.hasError()) {
+  //               setState(() {
+  //                 hideLoading();
+  //                 String session = getSession();
+  //                 int count = 0;
+  //                 session = session.split(",")[0].split(";")[0];
+  //                 for (var i in res.getRecords()) {
+  //                   _parishes.add(
+  //                     new Parish(
+  //                       id: i["id"],
+  //                       name: i["name"].toString(),
+  //                     ),
+  //                   );
+  //                 }
+  //                 var parishlist = jsonEncode(res.getRecords());
+  //                 preference.setString("offlineparishes", parishlist);
+  //                 preference.setString(
+  //                     "offlineparisheslastupdated", DateTime.now().toString());
+  //                 print("Updated offline parish repository at " +
+  //                     DateTime.now().toString());
+  //               });
+  //             } else {
+  //               print(res.getError());
+  //               showMessage("Warning", res.getErrorMessage());
+  //             }
+  //           },
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
 
-  _getSubCounties() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    setState(() {
-      _subCountiess.clear();
-    });
-    if (preference.getString("offlinesubcounties") != null) {
-      String subcountiesString = preference.getString("offlinesubcounties");
-      print("++++++++++++++++THIS IS THE OFFLINE SUBCOUNTY REPO");
-      print(subcountiesString);
-      var subcountylist = json.decode(subcountiesString);
-      setState(() {
-        for (var i in subcountylist) {
-          if (i["district"] is! bool &&
-              _districtSelection.length > 2 &&
-              i["district"][1] == _districtSelection) {
-            _subCountiess.add(
-              new SubCounty(
-                id: i["id"],
-                name: i["name"].toString(),
-              ),
-            );
-          }
-        }
-      });
-    } else {
-      isConnected().then((isInternet) {
-        if (isInternet) {
-          showLoading();
-          //GET SUBCOUNTIES
-          print("PARENT DISTRICT IS " + _districtSelection);
-          odoo.searchRead(Strings.sub_county, [
-            ['district', 'ilike', _districtSelection]
-          ], [
-            'id',
-            'name'
-          ]).then(
-            (OdooResponse res) {
-              if (!res.hasError()) {
-                setState(() {
-                  hideLoading();
-                  String session = getSession();
-                  int count = 0;
-                  session = session.split(",")[0].split(";")[0];
-                  for (var i in res.getRecords()) {
-                    _subCountiess.add(
-                      new SubCounty(
-                        id: i["id"],
-                        name: i["name"].toString(),
-                      ),
-                    );
-                  }
-                  var subcountylist = jsonEncode(res.getRecords());
-                  preference.setString("offlinesubcounties", subcountylist);
-                  preference.setString("offlinesubcountieslastupdated",
-                      DateTime.now().toString());
-                  print("Updated offline subcounty repository at " +
-                      DateTime.now().toString());
-                });
-              } else {
-                print(res.getError());
-                showMessage("Warning", res.getErrorMessage());
-              }
-            },
-          );
-        }
-      });
-    }
-  }
+  // _getSubCounties() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _subCountiess.clear();
+  //   });
+  //   if (preference.getString("offlinesubcounties") != null) {
+  //     String subcountiesString = preference.getString("offlinesubcounties");
+  //     print("++++++++++++++++THIS IS THE OFFLINE SUBCOUNTY REPO");
+  //     print(subcountiesString);
+  //     var subcountylist = json.decode(subcountiesString);
+  //     setState(() {
+  //       for (var i in subcountylist) {
+  //         if (i["district"] is! bool &&
+  //             _districtSelection.length > 2 &&
+  //             i["district"][1] == _districtSelection) {
+  //           _subCountiess.add(
+  //             new SubCounty(
+  //               id: i["id"],
+  //               name: i["name"].toString(),
+  //             ),
+  //           );
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     isConnected().then((isInternet) {
+  //       if (isInternet) {
+  //         showLoading();
+  //         //GET SUBCOUNTIES
+  //         print("PARENT DISTRICT IS " + _districtSelection);
+  //         odoo.searchRead(Strings.sub_county, [
+  //           ['district', 'ilike', _districtSelection]
+  //         ], [
+  //           'id',
+  //           'name'
+  //         ]).then(
+  //           (OdooResponse res) {
+  //             if (!res.hasError()) {
+  //               setState(() {
+  //                 hideLoading();
+  //                 String session = getSession();
+  //                 int count = 0;
+  //                 session = session.split(",")[0].split(";")[0];
+  //                 for (var i in res.getRecords()) {
+  //                   _subCountiess.add(
+  //                     new SubCounty(
+  //                       id: i["id"],
+  //                       name: i["name"].toString(),
+  //                     ),
+  //                   );
+  //                 }
+  //                 var subcountylist = jsonEncode(res.getRecords());
+  //                 preference.setString("offlinesubcounties", subcountylist);
+  //                 preference.setString("offlinesubcountieslastupdated",
+  //                     DateTime.now().toString());
+  //                 print("Updated offline subcounty repository at " +
+  //                     DateTime.now().toString());
+  //               });
+  //             } else {
+  //               print(res.getError());
+  //               showMessage("Warning", res.getErrorMessage());
+  //             }
+  //           },
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
 
-  _getVillages() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    setState(() {
-      _villages.clear();
-    });
-    if (preference.getString("offlinevillages") != null) {
-      String villagesString = preference.getString("offlinevillages");
-      print(villagesString);
-      var villagelist = json.decode(villagesString);
-      setState(() {
-        for (var i in villagelist) {
-          if (i["parish"] is! bool &&
-              _parishSelection.length > 2 &&
-              i["parish"][1].toString().contains(_parishSelection)) {
-            print('PARISH VALUE IS ' + i["parish"][1]);
-            _villages.add(
-              new Village(
-                id: i["id"],
-                name: i["name"].toString(),
-              ),
-            );
-          }
-        }
-      });
-    } else {
-      isConnected().then((isInternet) {
-        if (isInternet) {
-          showLoading();
-          // GET VILLAGES
-          print("PARENT PARISH IS " + _parishSelection);
-          odoo.searchRead(Strings.village, [
-            ['parish', 'ilike', _parishSelection]
-          ], [
-            'id',
-            'name'
-          ]).then(
-            (OdooResponse res) {
-              if (!res.hasError()) {
-                setState(() {
-                  hideLoading();
-                  String session = getSession();
-                  int count = 0;
-                  session = session.split(",")[0].split(";")[0];
-                  for (var i in res.getRecords()) {
-                    _villages.add(
-                      new Village(
-                        id: i["id"],
-                        name: i["name"].toString(),
-                      ),
-                    );
-                  }
-                  var villagelist = jsonEncode(res.getRecords());
-                  preference.setString("offlinevillages", villagelist);
-                  preference.setString(
-                      "offlinevillageslastupdated", DateTime.now().toString());
-                  print("Updated offline village repository at " +
-                      DateTime.now().toString());
-                });
-              } else {
-                print(res.getError());
-                showMessage("Warning", res.getErrorMessage());
-              }
-            },
-          );
-        }
-      });
-    }
-  }
+  // _getVillages() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _villages.clear();
+  //   });
+  //   if (preference.getString("offlinevillages") != null) {
+  //     String villagesString = preference.getString("offlinevillages");
+  //     print(villagesString);
+  //     var villagelist = json.decode(villagesString);
+  //     setState(() {
+  //       for (var i in villagelist) {
+  //         if (i["parish"] is! bool &&
+  //             _parishSelection.length > 2 &&
+  //             i["parish"][1].toString().contains(_parishSelection)) {
+  //           print('PARISH VALUE IS ' + i["parish"][1]);
+  //           _villages.add(
+  //             new Village(
+  //               id: i["id"],
+  //               name: i["name"].toString(),
+  //             ),
+  //           );
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     isConnected().then((isInternet) {
+  //       if (isInternet) {
+  //         showLoading();
+  //         // GET VILLAGES
+  //         print("PARENT PARISH IS " + _parishSelection);
+  //         odoo.searchRead(Strings.village, [
+  //           ['parish', 'ilike', _parishSelection]
+  //         ], [
+  //           'id',
+  //           'name'
+  //         ]).then(
+  //           (OdooResponse res) {
+  //             if (!res.hasError()) {
+  //               setState(() {
+  //                 hideLoading();
+  //                 String session = getSession();
+  //                 int count = 0;
+  //                 session = session.split(",")[0].split(";")[0];
+  //                 for (var i in res.getRecords()) {
+  //                   _villages.add(
+  //                     new Village(
+  //                       id: i["id"],
+  //                       name: i["name"].toString(),
+  //                     ),
+  //                   );
+  //                 }
+  //                 var villagelist = jsonEncode(res.getRecords());
+  //                 preference.setString("offlinevillages", villagelist);
+  //                 preference.setString(
+  //                     "offlinevillageslastupdated", DateTime.now().toString());
+  //                 print("Updated offline village repository at " +
+  //                     DateTime.now().toString());
+  //               });
+  //             } else {
+  //               print(res.getError());
+  //               showMessage("Warning", res.getErrorMessage());
+  //             }
+  //           },
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -480,7 +480,7 @@ class _AddPartnerState extends Base<AddPartner> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("New Account"),
+        title: Text("New Patient"),
       ),
       body: ListView(
         children: <Widget>[
@@ -618,13 +618,13 @@ class _AddPartnerState extends Base<AddPartner> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text(
-                                _regionSelection,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                              // Text(
+                              //   _regionSelection,
+                              //   style: TextStyle(
+                              //       color: Colors.grey,
+                              //       fontSize: 16,
+                              //       fontWeight: FontWeight.w400),
+                              // ),
                             ],
                           ),
                           items: _regions.map((item) {
@@ -1096,7 +1096,7 @@ class _AddPartnerState extends Base<AddPartner> {
                       //   borderRadius: BorderRadius.circular(30),
                       // ),
                       onPressed: () {
-                        _savePartner(
+                        _savePatient(
                             _accountNameController.text,
                             _regionId,
                             _districtId,
@@ -1109,12 +1109,12 @@ class _AddPartnerState extends Base<AddPartner> {
                             _accountTypeSelection);
 
                         setState(() {
-                          _regionSelection = "Select Region";
+                          // _regionSelection = "Select Region";
                           _districtSelection = "Select District";
-                          _parishSelection = "Select Parish";
-                          _subCountySelection = "Select Sub-County";
-                          _villageSelection = "Select Village";
-                          _accountTypeSelection = "Spouts Account Type";
+                          // _parishSelection = "Select Parish";
+                          // _subCountySelection = "Select Sub-County";
+                          // _villageSelection = "Select Village";
+                          // _accountTypeSelection = "Spouts Account Type";
                           _emailController.text = "";
                           _phoneController.text = "";
                           _qbController.text = "";
@@ -1124,7 +1124,7 @@ class _AddPartnerState extends Base<AddPartner> {
                       // padding: EdgeInsets.all(12),
                       // color: Color(0xff00a09d),
                       child: Text(
-                        'Register Account',
+                        'Create Patient',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -1475,14 +1475,14 @@ class _AddPartnerState extends Base<AddPartner> {
                     _groupsController.clear();
                     _startTimeController.clear();
                     _endTimeController.clear();
-                    post_d2c = false;
-                    leader_attended = false;
-                    lc_stayed = false;
-                    presentation_filter = false;
-                    additional_d2c = false;
-                    money_sent = false;
-                    when_group_meets = false;
-                    is_this_a_savings_group = false;
+                    // post_d2c = false;
+                    // leader_attended = false;
+                    // lc_stayed = false;
+                    // presentation_filter = false;
+                    // additional_d2c = false;
+                    // money_sent = false;
+                    // when_group_meets = false;
+                    // is_this_a_savings_group = false;
                   });
                   Navigator.pop(context);
                 },
@@ -1566,7 +1566,7 @@ class _AddPartnerState extends Base<AddPartner> {
     }
   }
 
-  _savePartner(accountName, region, district, parish, subCounty, village, email,
+  _savePatient(accountName, district, patient_age, patient_location, email,
       phone, qbcustomerid, spouts_account_type) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
 

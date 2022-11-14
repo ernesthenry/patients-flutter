@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/partners.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_response.dart';
-import 'package:spouts_inventory_odoo/app/pages/addinvoice.dart';
-import 'package:spouts_inventory_odoo/app/pages/home.dart';
-import 'package:spouts_inventory_odoo/app/utility/strings.dart';
-import 'package:spouts_inventory_odoo/base.dart';
+import 'package:package:patients/app/data/pojo/partners.dart';
+import 'package:package:patients/app/data/services/odoo_response.dart';
+import 'package:package:patients/app/pages/addinvoice.dart';
+import 'package:package:patients/app/pages/home.dart';
+import 'package:package:patients/app/utility/strings.dart';
+import 'package:package:patients/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PartnerDetails extends StatefulWidget {

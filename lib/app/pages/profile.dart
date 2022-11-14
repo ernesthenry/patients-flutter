@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_response.dart';
-import 'package:spouts_inventory_odoo/app/utility/constant.dart';
-import 'package:spouts_inventory_odoo/app/utility/strings.dart';
-import 'package:spouts_inventory_odoo/base.dart';
+import 'package:package:patients/app/data/services/odoo_response.dart';
+import 'package:package:patients/app/utility/constant.dart';
+import 'package:package:patients/app/utility/strings.dart';
+import 'package:package:patients/base.dart';
 
 import 'login.dart';
 

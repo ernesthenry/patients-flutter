@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/district.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/invoices.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/parish.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/partners.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/region.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/subcounty.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/village.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_response.dart';
-import 'package:spouts_inventory_odoo/app/pages/addpartner.dart';
-import 'package:spouts_inventory_odoo/app/pages/invoices.dart';
-import 'package:spouts_inventory_odoo/app/pages/partner_details.dart';
-import 'package:spouts_inventory_odoo/app/utility/constant.dart';
-import 'package:spouts_inventory_odoo/app/utility/strings.dart';
-import 'package:spouts_inventory_odoo/base.dart';
+import 'package:package:patients/app/data/pojo/district.dart';
+import 'package:package:patients/app/data/pojo/invoices.dart';
+import 'package:package:patients/app/data/pojo/parish.dart';
+import 'package:package:patients/app/data/pojo/partners.dart';
+import 'package:package:patients/app/data/pojo/region.dart';
+import 'package:package:patients/app/data/pojo/subcounty.dart';
+import 'package:package:patients/app/data/pojo/village.dart';
+import 'package:package:patients/app/data/services/odoo_response.dart';
+import 'package:package:patients/app/pages/addpartner.dart';
+import 'package:package:patients/app/pages/invoices.dart';
+import 'package:package:patients/app/pages/partner_details.dart';
+import 'package:package:patients/app/utility/constant.dart';
+import 'package:package:patients/app/utility/strings.dart';
+import 'package:package:patients/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';

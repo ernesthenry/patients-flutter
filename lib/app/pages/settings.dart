@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:spouts_inventory_odoo/app/data/pojo/currencies.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/journals.dart';
-import 'package:spouts_inventory_odoo/app/data/pojo/stocklocations.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_api.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_response.dart';
-import 'package:spouts_inventory_odoo/app/utility/constant.dart';
-import 'package:spouts_inventory_odoo/app/utility/strings.dart';
-import 'package:spouts_inventory_odoo/base.dart';
+import 'package:package:patients/app/data/pojo/currencies.dart';
+import 'package:package:patients/app/data/pojo/journals.dart';
+import 'package:package:patients/app/data/pojo/stocklocations.dart';
+import 'package:package:patients/app/data/services/odoo_api.dart';
+import 'package:package:patients/app/data/services/odoo_response.dart';
+import 'package:package:patients/app/utility/constant.dart';
+import 'package:package:patients/app/utility/strings.dart';
+import 'package:package:patients/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:spouts_inventory_odoo/app/data/services/odoo_api.dart';
-import 'package:spouts_inventory_odoo/app/pages/invoices.dart';
+import 'package:patients/app/data/services/odoo_api.dart';
+import 'package:patients/app/pages/invoices.dart';
 import 'app/pages/home.dart';
 // import 'app/pages/partners.dart';
 import 'app/pages/login.dart';

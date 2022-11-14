@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:patients/app/data/pojo/user.dart';
 import 'package:patients/app/data/services/odoo_api.dart';
-import 'package:patients/app/pages/partners.dart';
+import 'package:patients/app/pages/patients.dart';
 import 'package:patients/app/pages/settings.dart';
 import "package:patients/base.dart";
 
@@ -543,3 +543,4 @@ class LoginWidget extends StatelessWidget {
     );
   }
 }
+

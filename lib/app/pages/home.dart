@@ -3,48 +3,48 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patients/app/data/pojo/delivery.dart';
-import 'package:patients/app/data/pojo/district.dart';
-import 'package:patients/app/data/pojo/employees.dart';
-import 'package:patients/app/data/pojo/employeestock.dart';
-import 'package:patients/app/data/pojo/invoicelines.dart';
-import 'package:patients/app/data/pojo/invoices.dart';
-import 'package:patients/app/data/pojo/parish.dart';
-import 'package:patients/app/data/pojo/partners.dart';
-import 'package:patients/app/data/pojo/pricelistitems.dart';
-import 'package:patients/app/data/pojo/pricelists.dart';
-import 'package:patients/app/data/pojo/region.dart';
-import 'package:patients/app/data/pojo/requisitionlines.dart';
-import 'package:patients/app/data/pojo/requisitions.dart';
-import 'package:patients/app/data/pojo/stocklocations.dart';
-import 'package:patients/app/data/pojo/stockmovelines.dart';
-import 'package:patients/app/data/pojo/stockmoves.dart';
-import 'package:patients/app/data/pojo/stockquant.dart';
-import 'package:patients/app/data/pojo/subcounty.dart';
-import 'package:patients/app/data/pojo/village.dart';
+// import 'package:patients/app/data/pojo/delivery.dart';
+// import 'package:patients/app/data/pojo/district.dart';
+// import 'package:patients/app/data/pojo/employees.dart';
+// import 'package:patients/app/data/pojo/employeestock.dart';
+// import 'package:patients/app/data/pojo/invoicelines.dart';
+// import 'package:patients/app/data/pojo/invoices.dart';
+// import 'package:patients/app/data/pojo/parish.dart';
+import 'package:patients/app/data/pojo/patients.dart';
+// import 'package:patients/app/data/pojo/pricelistitems.dart';
+// import 'package:patients/app/data/pojo/pricelists.dart';
+// import 'package:patients/app/data/pojo/region.dart';
+// import 'package:patients/app/data/pojo/requisitionlines.dart';
+// import 'package:patients/app/data/pojo/requisitions.dart';
+// import 'package:patients/app/data/pojo/stocklocations.dart';
+// import 'package:patients/app/data/pojo/stockmovelines.dart';
+// import 'package:patients/app/data/pojo/stockmoves.dart';
+// import 'package:patients/app/data/pojo/stockquant.dart';
+// import 'package:patients/app/data/pojo/subcounty.dart';
+// import 'package:patients/app/data/pojo/village.dart';
 import 'package:patients/app/data/services/odoo_response.dart';
-import 'package:patients/app/pages/accounts.dart';
-import 'package:patients/app/pages/addinvoice.dart';
-import 'package:patients/app/pages/addpartner.dart';
-import 'package:patients/app/pages/draftinvoices.dart';
-import 'package:patients/app/pages/invoices.dart';
-import 'package:patients/app/pages/partner_details.dart';
-import 'package:patients/app/pages/partners.dart';
-import 'package:patients/app/pages/shiptocustomer.dart';
-import 'package:patients/app/pages/shiptosales_old.dart';
-import 'package:patients/app/pages/stocktaking.dart';
+// import 'package:patients/app/pages/accounts.dart';
+// import 'package:patients/app/pages/addinvoice.dart';
+import 'package:patients/app/pages/addpatient.dart';
+// import 'package:patients/app/pages/draftinvoices.dart';
+// import 'package:patients/app/pages/invoices.dart';
+import 'package:patients/app/pages/patient_details.dart';
+import 'package:patients/app/pages/patients.dart';
+// import 'package:patients/app/pages/shiptocustomer.dart';
+// import 'package:patients/app/pages/shiptosales_old.dart';
+// import 'package:patients/app/pages/stocktaking.dart';
 import 'package:patients/app/utility/constant.dart';
 import 'package:patients/app/utility/strings.dart';
 import 'package:patients/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'login.dart';
-import 'profile.dart';
-import 'settings.dart';
+// import 'profile.dart';
+// import 'settings.dart';
 import 'package:intl/intl.dart';
 
-import 'shiptosales.dart';
-import 'viewemployeestock.dart';
+// import 'shiptosales.dart';
+// import 'viewemployeestock.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -54,40 +54,40 @@ class Home extends StatefulWidget {
 class _HomeState extends Base<Home> {
   //Odoo _odoo;
   String userfullname = "", email = "";
-  var _imageUrl;
+  // var _imageUrl;
   int _userId = 0;
   String _firstName = "Home";
   List<EmployeeStock> _employeeStock = [];
-  List<EmployeeStock> _allEmployeeStock = [];
-  List<StockPicking> _stockPickings = [];
-  List<Invoice> _invoices = [];
-  List<Partner> _partners = [];
-  List<Partner> _contacts = [];
-  List<StockMoves> _stockMoves = [];
-  List<StockMoveLines> _stockMoveLines = [];
-  List<StockQuant> _employeeStockQuant = [];
-  List<Employees> _salesOfficers = [];
-  List<PriceList> _priceLists = [];
-  List<PriceListItem> _priceListItems = [];
-  List<InvoiceLine> _invoiceLines = [];
-  List<Region> _regions = [];
-  List<District> _districts = [];
-  List<SubCounty> _subCountiess = [];
-  List<Parish> _parishes = [];
-  List<Village> _villages = [];
-  List<Requisition> _requisitions = [];
-  List<RequisitionLine> _requisitionLines = [];
-  List<StockLocation> _employeeStockLocations = [];
-  List<Employees> _employees = [];
+  // List<EmployeeStock> _allEmployeeStock = [];
+  // List<StockPicking> _stockPickings = [];
+  // List<Invoice> _invoices = [];
+  List<Patient> _patients = [];
+  // List<Partner> _contacts = [];
+  // List<StockMoves> _stockMoves = [];
+  // List<StockMoveLines> _stockMoveLines = [];
+  // List<StockQuant> _employeeStockQuant = [];
+  // List<Employees> _salesOfficers = [];
+  // List<PriceList> _priceLists = [];
+  // List<PriceListItem> _priceListItems = [];
+  // List<InvoiceLine> _invoiceLines = [];
+  // List<Region> _regions = [];
+  // List<District> _districts = [];
+  // List<SubCounty> _subCountiess = [];
+  // List<Parish> _parishes = [];
+  // List<Village> _villages = [];
+  // List<Requisition> _requisitions = [];
+  // List<RequisitionLine> _requisitionLines = [];
+  // List<StockLocation> _employeeStockLocations = [];
+  // List<Employees> _employees = [];
   String fullname = "";
-  LoaderOverlay loaderOverlay;
+  // LoaderOverlay loaderOverlay;
   final value = new NumberFormat("#,##0", "en_US");
   String _patientId = "";
   String _displaypatientId = "";
   String _currentMonth = "";
-  int _customerLocationId;
-  String _customerLocationSelection = '';
-  bool _isTeamLeader = false;
+  // int _customerLocationId;
+  // String _customerLocationSelection = '';
+  // bool _isTeamLeader = false;
   List _employeeLocationId = [];
   bool _isDialogShowing = false;
 
@@ -154,26 +154,26 @@ class _HomeState extends Base<Home> {
     });
   }
 
-  //GET EMPLOYEE NAME AND ID
+  // //GET PATIENT NAME AND ID
   _getPatientData(userid) async {
-    var employeeId;
+    var patientId;
     SharedPreferences preference = await SharedPreferences.getInstance();
     //GET DASHBOARD TABLE BEFORE GETTING EMPLOYEE DATA
     if (preference.getString("offlineemployeestock") != null) {
       print(preference.getString("offlineemployeestock"));
-      var stocklist = json.decode(preference.getString("offlineemployeestock"));
+      var patientlist = json.decode(preference.getString("offlineemployeestock"));
       print("adding locally stored stock before update from odoo");
       setState(() {
-        for (var i in stocklist) {
-          _employeeStock.add(
-            new EmployeeStock(
+        for (var i in patientlist) {
+          _patients.add(
+            new Patient(
               id: i["id"],
-              report_id: i["report_id"],
-              categ_id: i["categ_id"] is! bool ? i["categ_id"] : [],
-              product_id: i["product_id"] is! bool ? i["product_id"] : [],
+              patient_name: i["patient_name"],
+              patient_id: i["categ_id"] is! bool ? i["categ_id"] : [],
+              product_id: i["patient_id"] is! bool ? i["patient_id"] : [],
               quantity_in: i["quantity_in"] is! bool ? i["quantity_in"] : 0.0,
-              quantity_out:
-                  i["quantity_out"] is! bool ? i["quantity_out"] : 0.0,
+              patient_location:
+                  i["patient_location"] is! bool ? i["patient_location"] : 0.0,
               quantity_adjust:
                   i["quantity_adjust"] is! bool ? i["quantity_adjust"] : 0.0,
               quantity_begin:
@@ -201,12 +201,12 @@ class _HomeState extends Base<Home> {
         ], [
           'id',
           'user_id',
-          'name',
-          'job_title',
-          'company_user_code',
-          'location_src_id',
-          'location_id',
-          'team_leader',
+          'patient-name',
+          'date_of_birth',
+          'age',
+          'patient_location',
+          'insured',
+          'patient_history',
         ]).then(
           (OdooResponse res) {
             if (!res.hasError()) {
@@ -219,21 +219,22 @@ class _HomeState extends Base<Home> {
                 _patientId = result["company_user_code"] is! bool
                     ? result["company_user_code"]
                     : "000";
-                _isTeamLeader = result["team_leader"];
-                _employeeLocationId =
-                    result["location_id"] is! bool ? result["location_id"] : [];
+                // _isTeamLeader = result["team_leader"];
+                // _employeeLocationId =
+                //     result["location_id"] is! bool ? result["location_id"] : [];
                 _displaypatientId = _patientId?.substring(
                     (_patientId.length - 3).clamp(0, _patientId.length));
 
-                var employeedata = jsonEncode(result);
-                preference.setString("offlineemployeedata", employeedata);
+                var patientdata = jsonEncode(result);
+                preference.setString("offlineemployeedata", patientdata);
                 preference.setString("offlineemployeedatalastupdated",
                     DateTime.now().toString());
                 print("Updated offline offlineemployee data at " +
                     DateTime.now().toString());
               });
               if (_patientId != null) {
-                _getEmployeeStock();
+                _getPatients();
+                // _getEmployeeStock()
                 // _getEmployeeBarCodeStock();
                 // _getEmployeeStockLocations();
                 // _getStockPickings();
@@ -248,7 +249,7 @@ class _HomeState extends Base<Home> {
           },
         );
       } else {
-        print("Failed to update employee data. Device Offline.");
+        print("Failed to update patients data. Device Offline.");
       }
     });
   }
@@ -501,8 +502,6 @@ class _HomeState extends Base<Home> {
   //   });
   // }
 
-  // GET PATIENTS 
-
 
   //GET EMPLOYEE STOCK LOCATIONS
   // _getEmployeeStockLocations() async {
@@ -744,11 +743,11 @@ class _HomeState extends Base<Home> {
           ['parent_id', "=", false],
           ['company_type', "!=", 'person']
         ], [
-          'email',
           'name',
-          'phone',
+          'patient_history',
+          'date_of_birth',
           'parent_id',
-          'company_type'
+          'patient_location'
         ]).then(
           (OdooResponse res) {
             if (!res.hasError()) {
@@ -759,11 +758,11 @@ class _HomeState extends Base<Home> {
                 for (var i in res.getRecords()) {
                   if (i["name"].toString().length > 1 &&
                       i["parent_id"] is bool) {
-                    _partners.add(
-                      new Partner(
+                    _patients.add(
+                      new Patient(
                         id: i["id"],
                         email: i["email"] is! bool ? i["email"] : "N/A",
-                        name: i["name"].toString(),
+                        name: i["patient_name"].toString(),
                         phone: i["phone"] is! bool ? i["phone"] : "N/A",
                         parent_id:
                             i["parent_id"] is! bool ? i["parent_id"] : [],
@@ -777,8 +776,8 @@ class _HomeState extends Base<Home> {
                   }
                 }
               });
-              var customerlist = jsonEncode(res.getRecords());
-              preference.setString("offlinecustomers", customerlist);
+              var patientlist = jsonEncode(res.getRecords());
+              preference.setString("offlinecustomers", patientlist);
               preference.setString(
                   "offlinecustomerslastupdated", DateTime.now().toString());
               print("Updated offline customer repository at " +

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:spouts_inventory_odoo/app/utility/constant.dart';
+import 'package:package:patients/app/utility/constant.dart';
 
 import 'package:uuid/uuid.dart';
 import 'odoo_response.dart';
