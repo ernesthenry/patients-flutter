@@ -45,7 +45,7 @@ class Result {
     this.username,
     this.email,
     this.patientDisplayName,
-    this.companyId,
+    // this.companyId,
     this.patientId,
     // this.userCompanies,
     this.webBaseUrl,
@@ -69,7 +69,7 @@ class Result {
         ? json['patient_display_name']
         : "N/A";
     // companyId = json['company_id'];
-    patient = json['patient_id'];
+    patientId = json['patient_id'];
     // userCompanies =
     //     json['user_companies'] is! bool ? json['user_companies'] : "N/A";
     webBaseUrl = json['web.base.url'] is! bool ? json['web.base.url'] : "N/A";

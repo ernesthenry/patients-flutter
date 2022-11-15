@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'app/data/pojo/user.dart';
 import 'app/data/services/odoo_api.dart';
 import 'app/pages/login.dart';

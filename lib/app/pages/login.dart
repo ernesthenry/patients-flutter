@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:patients/app/data/pojo/user.dart';
 import 'package:patients/app/data/services/odoo_api.dart';
-import 'package:patients/app/pages/patients.dart';
-import 'package:patients/app/pages/settings.dart';
+// import 'package:patients/app/pages/patients.dart';
+// import 'package:patients/app/pages/settings.dart';
 import "package:patients/base.dart";
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,7 +57,7 @@ class _LoginState extends Base<Login> {
             _loginPending = true;
           });
           showLoading();
-          odoo.authenticate(_email, _pass, _selectedDb).then(
+          odoo.authenticate(  _email, _pass, _selectedDb).then(
             (http.Response auth) {
               if (auth.body != null) {
                 User user = User.fromJson(jsonDecode(auth.body));
@@ -478,22 +478,22 @@ class _LoginState extends Base<Login> {
           ),
         ],
       ),
-      floatingActionButton: isLoggedIn()
-          ? FloatingActionButton(
-              child: Icon(Icons.settings),
-              onPressed: () {
-                pushReplacement(Settings());
-              },
-            )
-          : SizedBox(height: 0.0),
+      // floatingActionButton: isLoggedIn()
+      //     ? FloatingActionButton(
+      //         child: Icon(Icons.settings),
+      //         onPressed: () {
+      //           pushReplacement(Settings());
+      //         },
+      //       )
+          // : SizedBox(height: 0.0),
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _controller.dispose();
+  // }
 }
 
 class LoginWidget extends StatelessWidget {

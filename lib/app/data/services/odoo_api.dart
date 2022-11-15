@@ -53,7 +53,7 @@ class Odoo {
 
   // Authenticate user
   Future<http.Response> authenticate(
-      String username, String password, String database) async {
+      username, password, database) async {
     var url = createPath("/web/session/authenticate");
     var params = {
       "db": database,
