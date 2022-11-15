@@ -1,28 +1,28 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:package:patients/app/data/pojo/district.dart';
-import 'package:package:patients/app/data/pojo/invoices.dart';
-import 'package:package:patients/app/data/pojo/parish.dart';
-import 'package:package:patients/app/data/pojo/partners.dart';
-import 'package:package:patients/app/data/pojo/region.dart';
-import 'package:package:patients/app/data/pojo/subcounty.dart';
-import 'package:package:patients/app/data/pojo/village.dart';
-import 'package:package:patients/app/data/services/odoo_response.dart';
-import 'package:package:patients/app/pages/addpartner.dart';
-import 'package:package:patients/app/pages/invoices.dart';
-import 'package:package:patients/app/pages/partner_details.dart';
-import 'package:package:patients/app/utility/constant.dart';
-import 'package:package:patients/app/utility/strings.dart';
-import 'package:package:patients/base.dart';
+// import 'package:patients/app/data/pojo/district.dart';
+// import 'package:package:patients/app/data/pojo/invoices.dart';
+// import 'package:package:patients/app/data/pojo/parish.dart';
+import 'package:patients/app/data/pojo/patients.dart';
+// import 'package:package:patients/app/data/pojo/region.dart';
+// import 'package:package:patients/app/data/pojo/subcounty.dart';
+// import 'patients/app/data/pojo/village.dart';
+import 'package:patients/app/data/services/odoo_response.dart';
+import 'package:patients/app/pages/addpatient.dart';
+// import 'package:patients/app/pages/invoices.dart';
+import 'package:patients/app/pages/patient_details.dart';
+import 'package:patients/app/utility/constant.dart';
+import 'package:patients/app/utility/strings.dart';
+import 'package:patients/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
 import 'profile.dart';
 import 'settings.dart';
 
-List<Partner> searchdata = [];
-List<Partner> _partners = [];
+List<Patient> searchdata = [];
+List<Patient> _patients = [];
 
 class Accounts extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _AccountsState extends Base<Accounts> {
   //Odoo _odoo;
 
   String userfullname = "", email = "";
-  var _imageUrl;
+  // var _imageUrl;
   int _userId;
   String _result;
   BuildContext dialogContext;
@@ -51,11 +51,11 @@ class _AccountsState extends Base<Accounts> {
       setState(() {
         for (var i in cutomerlist) {
           if (i["name"].toString().length > 1) {
-            _partners.add(
-              new Partner(
+            _patients.add(
+              new Patient(
                 id: i["id"],
                 email: i["email"] is! bool ? i["email"] : "N/A",
-                name: i["name"].toString(),
+                patient_name: i["patient_name"].toString(),
                 phone: i["phone"] is! bool ? i["phone"] : "N/A",
               ),
             );
@@ -84,11 +84,11 @@ class _AccountsState extends Base<Accounts> {
                   session = session.split(",")[0].split(";")[0];
                   for (var i in res.getRecords()) {
                     if (i["name"].toString().length > 1) {
-                      _partners.add(
-                        new Partner(
+                      _patients.add(
+                        new Patient(
                             id: i["id"],
                             email: i["email"] is! bool ? i["email"] : "N/A",
-                            name: i["name"].toString(),
+                            patient_name: i["patient_name"].toString(),
                             phone: i["phone"] is! bool ? i["phone"] : "N/A",
                             parent_id:
                                 i["parent_id"] is! bool ? i["parent_id"] : []),
@@ -141,13 +141,13 @@ class _AccountsState extends Base<Accounts> {
           (OdooResponse res) {
             if (!res.hasError()) {
               setState(() {
-                _partners = [];
+                _patients = [];
                 hideLoading();
                 String session = getSession();
                 session = session.split(",")[0].split(";")[0];
                 for (var i in res.getRecords()) {
                   if (i["name"].toString().length > 1) {
-                    _partners.add(
+                    _patients.add(
                       new Partner(
                           id: i["id"],
                           email: i["email"] is! bool ? i["email"] : "N/A",
@@ -222,7 +222,7 @@ class _AccountsState extends Base<Accounts> {
                 Padding(
                   padding: EdgeInsets.all(1.0),
                   child: Text(
-                    Strings.no_customers,
+                    Strings.no_patients,
                     style: TextStyle(
                       color: Colors.grey.shade500,
                       fontSize: 20,
@@ -247,7 +247,7 @@ class _AccountsState extends Base<Accounts> {
               color: Colors.white,
             ),
             onPressed: () {
-              push(AddPartner());
+              push(AddPatient());
             },
           ),
           IconButton(
@@ -269,7 +269,7 @@ class _AccountsState extends Base<Accounts> {
         child: const Icon(Icons.replay),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: _partners.length > 0
+      body: _patients.length > 0
           ? Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -280,11 +280,11 @@ class _AccountsState extends Base<Accounts> {
               ),
               child: ListView.builder(
                 reverse: true,
-                itemCount: _partners.length,
+                itemCount: _patients.length,
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (context, i) => InkWell(
                   onTap: () {
-                    push(PartnerDetails(data: _partners[i]));
+                    push(PatientDetails(data: _patients[i]));
                   },
                   child: Card(
                     child: Column(
@@ -309,7 +309,7 @@ class _AccountsState extends Base<Accounts> {
                                     width:
                                         MediaQuery.of(context).size.width * 0.7,
                                     child: Text(
-                                      _partners[i].name,
+                                      _patients[i].name,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
@@ -334,7 +334,7 @@ class _AccountsState extends Base<Accounts> {
                                       width: 5,
                                     ),
                                     Text(
-                                      _partners[i].email,
+                                      _patients[i].email,
                                       style: TextStyle(
                                           color: Colors.grey, fontSize: 15.0),
                                     ),
@@ -353,7 +353,7 @@ class _AccountsState extends Base<Accounts> {
                                       width: 5,
                                     ),
                                     Text(
-                                      _partners[i].phone,
+                                      _patients[i].phone,
                                       style: TextStyle(
                                           color: Colors.grey, fontSize: 15.0),
                                     ),
@@ -390,13 +390,13 @@ class CustomDelegate extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     var listToShow;
     if (query.isNotEmpty)
-      listToShow = _partners
+      listToShow = _patients
           .where((e) => e.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
     // .where((e) => e.contains(query) && e.startsWith(query))
     // .toList();
     else
-      listToShow = _partners;
+      listToShow = _patients;
 
     return ListView.builder(
       itemCount: listToShow.length,
@@ -407,7 +407,7 @@ class CustomDelegate extends SearchDelegate<String> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      PartnerDetails(data: listToShow[i])));
+                      PatientDetails(data: listToShow[i])));
         },
         child: Card(
           child: Column(

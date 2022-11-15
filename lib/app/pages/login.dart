@@ -12,6 +12,7 @@ import 'dart:convert';
 // import 'package:video_player/video_player.dart';
 
 import 'home.dart';
+import 'welcome.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -65,7 +66,8 @@ class _LoginState extends Base<Login> {
                   hideLoadingSuccess("Logged in successfully");
                   saveUser(json.encode(user));
                   saveOdooUrl(odooURL);
-                  pushReplacement(Home());
+                  // pushReplacement(Home());
+                  pushReplacement(Welcome());
                   setState(() {
                     _loginPending = false;
                   });
@@ -282,11 +284,13 @@ class _LoginState extends Base<Login> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Color.fromARGB(255, 72, 175, 204), width: 1.2),
+          borderSide: const BorderSide(
+              color: Color.fromARGB(255, 72, 175, 204), width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Color.fromARGB(255, 72, 175, 204), width: 1.2),
+          borderSide: const BorderSide(
+              color: Color.fromARGB(255, 72, 175, 204), width: 1.2),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -423,7 +427,7 @@ class _LoginState extends Base<Login> {
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(
-          "Spouts Inventory - Login",
+          "Patients  - Login",
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,
@@ -543,4 +547,3 @@ class LoginWidget extends StatelessWidget {
     );
   }
 }
-

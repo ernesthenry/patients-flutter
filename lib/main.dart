@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:patients/app/data/services/odoo_api.dart';
-import 'package:patients/app/pages/invoices.dart';
+// import 'package:patients/app/pages/invoices.dart';
 import 'app/pages/home.dart';
+import 'app/pages/welcome.dart';
 // import 'app/pages/partners.dart';
 import 'app/pages/login.dart';
 import 'app/utility/strings.dart';
@@ -49,7 +50,9 @@ class _AppState extends Base<App> {
         builder: (BuildContext context, AsyncSnapshot<Odoo> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              return isLoggedIn() ? Home() : Login();
+              // return isLoggedIn() ? Home() : Login();
+              return isLoggedIn() ? Welcome() : Login();
+
             default:
               return new Container(
                 decoration: new BoxDecoration(color: Colors.white),
