@@ -74,8 +74,8 @@
 //   TextEditingController _emailController = new TextEditingController();
 //   TextEditingController _phoneNumberController = new TextEditingController();
 //   var _selectedIndex = 0;
-//   List<Patient> _contacts = [];
-//   List<Patient> _allContacts = [];
+//   List<Patient> _patients = [];
+//   List<Patient> _allPatients = [];
 //   bool _registerPending = false;
 //   List<Widget> list = [
 //     Tab(
@@ -83,7 +83,7 @@
 //     ),
 //     Tab(text: 'D2C Details'),
 //     Tab(text: 'Commission'),
-//     Tab(text: 'Contacts'),
+//     Tab(text: 'Patients'),
 //   ];
 
 //   //UPDATE CONTACTS LIST FOR THIS PARTNER AFTER ADDING NEW ONE.
@@ -92,7 +92,7 @@
 //       if (isInternet) {
 //         showLoading();
 //         odoo.searchRead(Strings.res_partner, [
-//           ['parent_id', "ilike", _partner.name],
+//           ['parent_id', "ilike", _patient.patient_name],
 //           ['company_type', "=", 'person']
 //         ], [
 //           'email',
@@ -102,14 +102,14 @@
 //           (OdooResponse res) {
 //             if (!res.hasError()) {
 //               setState(() {
-//                 _contacts = [];
+//                 _patients = [];
 //                 hideLoading();
 //                 String session = getSession();
 //                 session = session.split(",")[0].split(";")[0];
 //                 for (var i in res.getRecords()) {
 //                   if (i["name"].toString().length > 1) {
-//                     _contacts.add(
-//                       new Partner(
+//                     _patients.add(
+//                       new Patient(
 //                         id: i["id"],
 //                         email: i["email"] is! bool ? i["email"] : "N/A",
 //                         name: i["name"].toString(),
@@ -152,8 +152,8 @@
 //                 session = session.split(",")[0].split(";")[0];
 //                 for (var i in res.getRecords()) {
 //                   if (i["name"].toString().length > 1) {
-//                     _allContacts.add(
-//                       new Partner(
+//                     _allPatients.add(
+//                       new Patient(
 //                           id: i["id"],
 //                           email: i["email"] is! bool ? i["email"] : "N/A",
 //                           name: i["name"].toString(),
@@ -180,7 +180,7 @@
 //   }
 
 //   //LOAD CONTACTS FOR THIS PARTNER
-//   _getContacts() async {
+//   _getPatients() async {
 //     SharedPreferences preference = await SharedPreferences.getInstance();
 //     setState(() {});
 //     if (preference.getString("offlinecontacts") != null) {
@@ -189,10 +189,10 @@
 //       setState(() {
 //         for (var i in cutomerlist) {
 //           if (i["name"].toString().length > 1 &&
-//               i["parent_id"][0] == _partner.id) {
+//               i["parent_id"][0] == _patient.id) {
 //             print("PARENT ID IS " + i["parent_id"].toString());
-//             _contacts.add(
-//               new Partner(
+//             _patients.add(
+//               new Patient(
 //                 id: i["id"],
 //                 email: i["email"] is! bool ? i["email"] : "N/A",
 //                 name: i["name"].toString(),
@@ -207,7 +207,7 @@
 //         if (isInternet) {
 //           showLoading();
 //           odoo.searchRead(Strings.res_partner, [
-//             ['parent_id', "ilike", _partner.name],
+//             ['parent_id', "ilike", _patient.patient_name],
 //             ['company_type', "=", 'person']
 //           ], [
 //             'email',
@@ -222,8 +222,8 @@
 //                   session = session.split(",")[0].split(";")[0];
 //                   for (var i in res.getRecords()) {
 //                     if (i["name"].toString().length > 1) {
-//                       _contacts.add(
-//                         new Partner(
+//                       _patients.add(
+//                         new Patient(
 //                           id: i["id"],
 //                           email: i["email"] is! bool ? i["email"] : "N/A",
 //                           name: i["name"].toString(),
@@ -248,8 +248,8 @@
 //   void initState() {
 //     super.initState();
 
-//     _partner = widget.data;
-//     _getContacts();
+//     _patient = widget.data;
+//     _getPatients();
 //     _controller = TabController(length: list.length, vsync: this);
 //     _controller.addListener(() {
 //       setState(() {
@@ -267,7 +267,7 @@
 //     isConnected().then((isInternet) {
 //       if (isInternet) {
 //         odoo.searchRead(Strings.res_partner, [
-//           ["id", "=", _partner.id]
+//           ["id", "=", _patient.id]
 //         ], []).then(
 //           (OdooResponse res) {
 //             if (!res.hasError()) {
@@ -353,7 +353,7 @@
 //                     "/web/image?model=res.partner&field=image&" +
 //                     session +
 //                     "&id=" +
-//                     _partner.id.toString();
+//                     _patient.id.toString();
 //               });
 //             }
 //           },
@@ -361,12 +361,12 @@
 //       } else {
 //         if (preference.getString("offlinecustomers") != null) {
 //           print(preference.getString("offlinecustomers"));
-//           var cutomerlist =
+//           var patientlist =
 //               json.decode(preference.getString("offlinecustomers"));
 //           setState(() {
-//             name = _partner.name;
-//             email = _partner.email;
-//             phone = _partner.phone;
+//             patient_name = _patient.patient_name;
+//             date_of_birth = _patient.date_of_birth;
+//             age = _patient.age;
 //             account_name = _partner.name;
 //             image_URL = "";
 //           });
@@ -485,14 +485,14 @@
 //               Tab(
 //                 text: "Profile",
 //               ),
+//               // Tab(
+//               //   text: "D2C Details",
+//               // ),
+//               // Tab(
+//               //   text: "Commission",
+//               // ),
 //               Tab(
-//                 text: "D2C Details",
-//               ),
-//               Tab(
-//                 text: "Commission",
-//               ),
-//               Tab(
-//                 text: "Contacts",
+//                 text: "Patients",
 //               ),
 //             ],
 //             controller: _controller,

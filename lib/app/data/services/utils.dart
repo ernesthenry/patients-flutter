@@ -31,7 +31,7 @@ class Utils {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },

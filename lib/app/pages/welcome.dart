@@ -231,7 +231,7 @@ class FirstScreen extends StatelessWidget {
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const NewScreen())),
         child: const Text(
-          'Move to next screen',
+          'Create Patient',
           style: TextStyle(color: Colors.white),
         ),
       )),
@@ -254,7 +254,7 @@ class _NewScreenState extends State<NewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GeeksforGeeks '),
+        title: const Text('Patients'),
         backgroundColor: Colors.green,
       ),
       body: Container(
@@ -263,7 +263,7 @@ class _NewScreenState extends State<NewScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
               child: Text(
-                'User Interface Changed!!',
+                'Display Patients List!!',
               ),
             )),
       )),

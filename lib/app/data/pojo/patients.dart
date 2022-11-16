@@ -8,6 +8,7 @@ String loginModelToJson(Patient data) => json.encode(data.toJson());
 class Patient {
   int id;
   String patient_name;
+  String imageUrl;
   String patient_location;
   Bool insured;
   int patient_id;
@@ -23,6 +24,7 @@ class Patient {
   Patient(
       {this.id,
       this.patient_name,
+      this.imageUrl,
       this.patient_location,
       this.insured,
       this.patient_id,
@@ -31,7 +33,6 @@ class Patient {
       this.parent_id,
       this.patient_history,
       this.date_of_birth,
-      this.parent_id,
       this.dependants,
       this.insurance_company,
       this.qr_code});
@@ -45,6 +46,7 @@ class Patient {
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
         id: json["id"],
         patient_name: json["patient_name"],
+        imageUrl: json["imageUrl"],
         patient_location: json["patient_location"],
         insured: json["insured"],
         patient_history: json["patient_history"],
@@ -61,6 +63,7 @@ class Patient {
   Map<String, dynamic> toJson() {
     return {
       "patient_name": this.patient_name,
+      "imageUrl": this.imageUrl,
       "patient_location": this.patient_location,
       "insured": this.insured,
       "patient_history": this.patient_history,
