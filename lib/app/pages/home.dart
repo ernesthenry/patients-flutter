@@ -773,7 +773,8 @@ class _HomeState extends Base<Home> {
                             "/web/image?model=res.partner&field=image&" +
                             session +
                             "&id=" +
-                            i["id"].toString(),                      ),
+                            i["id"].toString(),
+                            ),
                     );
                   }
                 }
