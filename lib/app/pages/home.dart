@@ -54,7 +54,7 @@ class Home extends StatefulWidget {
 class _HomeState extends Base<Home> {
   //Odoo _odoo;
   String userfullname = "", email = "";
-  // var _imageUrl;
+  var _imageUrl;
   int _userId = 0;
   String _firstName = "Home";
   // List<EmployeeStock> _employeeStock = [];
@@ -909,55 +909,55 @@ class _HomeState extends Base<Home> {
   // }
 
   //GET CONTACTS
-  _getContacts() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    isConnected().then((isInternet) {
-      if (isInternet) {
-        showLoading();
-        odoo.searchRead(Strings.res_partner, [
-          ['parent_id', "!=", false],
-          ['company_type', "=", 'person']
-        ], [
-          'email',
-          'name',
-          'phone',
-          'parent_id',
-          'company_type'
-        ]).then(
-          (OdooResponse res) {
-            if (!res.hasError()) {
-              setState(() {
-                hideLoading();
-                String session = getSession();
-                session = session.split(",")[0].split(";")[0];
-                for (var i in res.getRecords()) {
-                  if (i["name"].toString().length > 1) {
-                    _contacts.add(
-                      new Partner(
-                          id: i["id"],
-                          email: i["email"] is! bool ? i["email"] : "N/A",
-                          name: i["name"].toString(),
-                          phone: i["phone"] is! bool ? i["phone"] : "N/A",
-                          parent_id: i["parent_id"]),
-                    );
-                  }
-                }
-              });
-              var customerlist = jsonEncode(res.getRecords());
-              preference.setString("offlinecontacts", customerlist);
-              preference.setString(
-                  "offlinecontactslastupdated", DateTime.now().toString());
-              print("Updated offline contacts repository at " +
-                  DateTime.now().toString());
-            } else {
-              print(res.getError());
-              showMessage("Warning", res.getErrorMessage());
-            }
-          },
-        );
-      }
-    });
-  }
+  // _getContacts() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   isConnected().then((isInternet) {
+  //     if (isInternet) {
+  //       showLoading();
+  //       odoo.searchRead(Strings.res_partner, [
+  //         ['parent_id', "!=", false],
+  //         ['company_type', "=", 'person']
+  //       ], [
+  //         'email',
+  //         'name',
+  //         'phone',
+  //         'parent_id',
+  //         'company_type'
+  //       ]).then(
+  //         (OdooResponse res) {
+  //           if (!res.hasError()) {
+  //             setState(() {
+  //               hideLoading();
+  //               String session = getSession();
+  //               session = session.split(",")[0].split(";")[0];
+  //               for (var i in res.getRecords()) {
+  //                 if (i["name"].toString().length > 1) {
+  //                   _contacts.add(
+  //                     new Partner(
+  //                         id: i["id"],
+  //                         email: i["email"] is! bool ? i["email"] : "N/A",
+  //                         name: i["name"].toString(),
+  //                         phone: i["phone"] is! bool ? i["phone"] : "N/A",
+  //                         parent_id: i["parent_id"]),
+  //                   );
+  //                 }
+  //               }
+  //             });
+  //             var customerlist = jsonEncode(res.getRecords());
+  //             preference.setString("offlinecontacts", customerlist);
+  //             preference.setString(
+  //                 "offlinecontactslastupdated", DateTime.now().toString());
+  //             print("Updated offline contacts repository at " +
+  //                 DateTime.now().toString());
+  //           } else {
+  //             print(res.getError());
+  //             showMessage("Warning", res.getErrorMessage());
+  //           }
+  //         },
+  //       );
+  //     }
+  //   });
+  // }
 
   //GET STOCK PICKINGS
   // _getStockPickings() async {
@@ -1419,7 +1419,7 @@ class _HomeState extends Base<Home> {
   // }
 
   //SAVE PATIENT TO REMOTE ODOO
-  _savePatient(patient_name, date_of_birth, age, patient_history, insured, insurance_company, patient_id qr_code)
+  _savePatient(patient_name, date_of_birth, age, patient_history, insured, insurance_company, qr_code)
    async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     setState(() {
@@ -1436,10 +1436,10 @@ class _HomeState extends Base<Home> {
           // "account_name": "Offline Sync Test",
           "age": age,
           "patient_history": patient_history,
-          "patient_location": patient_location,
+          // "patient_location": patient_location,
           "user_id": _userId,
           "qr_code": qr_code,
-          "patient_id": patient_id
+          // "patient_id": patient_id
         }).then(
           (OdooResponse res) {
             if (!res.hasError()) {
@@ -1447,7 +1447,7 @@ class _HomeState extends Base<Home> {
                 // _registerPending = false;
               });
               print("Patient registered successfully!");
-              // showMessage("Success", "Customer registered successfully!");
+              showMessage("Success", "Customer registered successfully!");
               // pushAndRemoveUntil(Partners());
             } else {
               setState(() {
@@ -1462,36 +1462,36 @@ class _HomeState extends Base<Home> {
     });
   }
 
-  _saveContact(name, position, parentId, email, phone) async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    setState(() {
-      // _registerPending = true;
-    });
-    isConnected().then((isInternet) {
-      if (isInternet) {
-        showLoading();
-        odoo.create(Strings.res_partner, {
-          "name": name,
-          "parent_id": parentId,
-          "email": email,
-          "phone": phone,
-          "function": position,
-          "company_type": "person"
-        }).then(
-          (OdooResponse res) async {
-            if (!res.hasError()) {
-              await _getContacts();
-              showMessage("Success", "Contact registered successfully!");
-              // pushReplacement(Partners());
-            } else {
-              print(res.getError());
-              showMessage("Warning", res.getErrorMessage());
-            }
-          },
-        );
-      }
-    });
-  }
+  // _saveContact(name, position, parentId, email, phone) async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     // _registerPending = true;
+  //   });
+  //   isConnected().then((isInternet) {
+  //     if (isInternet) {
+  //       showLoading();
+  //       odoo.create(Strings.res_partner, {
+  //         "name": name,
+  //         "parent_id": parentId,
+  //         "email": email,
+  //         "phone": phone,
+  //         "function": position,
+  //         "company_type": "person"
+  //       }).then(
+  //         (OdooResponse res) async {
+  //           if (!res.hasError()) {
+  //             await _getContacts();
+  //             showMessage("Success", "Contact registered successfully!");
+  //             // pushReplacement(Partners());
+  //           } else {
+  //             print(res.getError());
+  //             showMessage("Warning", res.getErrorMessage());
+  //           }
+  //         },
+  //       );
+  //     }
+  //   });
+  // }
 
   //GET CUSTOMERS DEFAULT LOCATION
   // _getCustomerLocation() async {
@@ -1751,229 +1751,229 @@ class _HomeState extends Base<Home> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: ListView(
-              // gridDelegate:
-              //     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              children: <Widget>[
-                Container(
-                  height: _employeeStock.isEmpty ? 110 : 220,
-                  width: double.maxFinite,
-                  child: Card(
-                    child: SingleChildScrollView(
-                      child: DataTable(
-                        showBottomBorder: true,
-                        headingRowColor: MaterialStateColor.resolveWith(
-                          (states) {
-                            return Color(0xff3179ca);
-                          },
-                        ),
-                        dataRowColor: MaterialStateColor.resolveWith(
-                          (states) {
-                            return Color(0xffc4eefd);
-                          },
-                        ),
-                        columnSpacing: 10,
-                        // dataRowHeight: 1,
-                        columns: [
-                          DataColumn(
-                              label: Text('$_currentMonth',
-                                  style: TextStyle(color: Colors.white))),
-                          DataColumn(
-                              label: Text('Stock \nRcvd.',
-                                  style: TextStyle(color: Colors.white))),
-                          DataColumn(
-                              label: Text('Stock \nShpd',
-                                  style: TextStyle(color: Colors.white))),
-                          DataColumn(
-                              label: Text('Stock \nRem.',
-                                  style: TextStyle(color: Colors.white))),
-                        ],
-                        rows: _employeeStock.isEmpty
-                            ? [
-                                DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.35,
-                                      child: Text(
-                                        "Data Unavailable",
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                    )), //Extracting from Map element the value
-                                    DataCell(Text("")),
-                                    DataCell(Text("")),
-                                    DataCell(Text("")),
-                                  ],
-                                )
-                              ]
-                            : _employeeStock // Loops through dataColumnText, each iteration assigning the value to element
-                                .map(
-                                  (element) => DataRow(
-                                    cells: <DataCell>[
-                                      DataCell(Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        child: Text(
-                                          element.product_id[1].toString(),
-                                          overflow: TextOverflow.visible,
-                                        ),
-                                      )), //Extracting from Map element the value
-                                      DataCell(
-                                          Text(element.quantity_in.toString())),
-                                      DataCell(Text(
-                                          element.quantity_out.toString())),
-                                      DataCell(Text(
-                                          element.quantity_finish.toString())),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    push(ShipToSales());
-                  },
-                  child: Container(
-                    height: 80,
-                    child: Card(
-                      color: Color(0xff00a3d2),
-                      shadowColor: Colors.grey[700],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.truckLoading,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Ship stock to Sales Officer",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    push(ShipToCustomer());
-                  },
-                  child: Container(
-                    height: 80,
-                    child: Card(
-                      color: Color(0xff00a3d2),
-                      shadowColor: Colors.grey[700],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.shippingFast,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Ship stock to Customer",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    push(StockTaking());
-                  },
-                  child: Container(
-                    height: 80,
-                    child: Card(
-                      color: Color(0xff00a3d2),
-                      shadowColor: Colors.grey[700],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.edit,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Record Stock Count",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    push(ViewEmploeeStock());
-                  },
-                  child: Container(
-                    height: 80,
-                    child: Card(
-                      color: Color(0xff00a3d2),
-                      shadowColor: Colors.grey[700],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.search,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Check Staff Stock Balance",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          //   child: ListView(
+          //     // gridDelegate:
+          //     //     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          //     children: <Widget>[
+          //       Container(
+          //         height: _employeeStock.isEmpty ? 110 : 220,
+          //         width: double.maxFinite,
+          //         child: Card(
+          //           child: SingleChildScrollView(
+          //             child: DataTable(
+          //               showBottomBorder: true,
+          //               headingRowColor: MaterialStateColor.resolveWith(
+          //                 (states) {
+          //                   return Color(0xff3179ca);
+          //                 },
+          //               ),
+          //               dataRowColor: MaterialStateColor.resolveWith(
+          //                 (states) {
+          //                   return Color(0xffc4eefd);
+          //                 },
+          //               ),
+          //               columnSpacing: 10,
+          //               // dataRowHeight: 1,
+          //               columns: [
+          //                 DataColumn(
+          //                     label: Text('$_currentMonth',
+          //                         style: TextStyle(color: Colors.white))),
+          //                 DataColumn(
+          //                     label: Text('Stock \nRcvd.',
+          //                         style: TextStyle(color: Colors.white))),
+          //                 DataColumn(
+          //                     label: Text('Stock \nShpd',
+          //                         style: TextStyle(color: Colors.white))),
+          //                 DataColumn(
+          //                     label: Text('Stock \nRem.',
+          //                         style: TextStyle(color: Colors.white))),
+          //               ],
+          //               rows: _employeeStock.isEmpty
+          //                   ? [
+          //                       DataRow(
+          //                         cells: <DataCell>[
+          //                           DataCell(Container(
+          //                             width: MediaQuery.of(context).size.width *
+          //                                 0.35,
+          //                             child: Text(
+          //                               "Data Unavailable",
+          //                               overflow: TextOverflow.visible,
+          //                             ),
+          //                           )), //Extracting from Map element the value
+          //                           DataCell(Text("")),
+          //                           DataCell(Text("")),
+          //                           DataCell(Text("")),
+          //                         ],
+          //                       )
+          //                     ]
+          //                   : _employeeStock // Loops through dataColumnText, each iteration assigning the value to element
+          //                       .map(
+          //                         (element) => DataRow(
+          //                           cells: <DataCell>[
+          //                             DataCell(Container(
+          //                               width:
+          //                                   MediaQuery.of(context).size.width *
+          //                                       0.35,
+          //                               child: Text(
+          //                                 element.product_id[1].toString(),
+          //                                 overflow: TextOverflow.visible,
+          //                               ),
+          //                             )), //Extracting from Map element the value
+          //                             DataCell(
+          //                                 Text(element.quantity_in.toString())),
+          //                             DataCell(Text(
+          //                                 element.quantity_out.toString())),
+          //                             DataCell(Text(
+          //                                 element.quantity_finish.toString())),
+          //                           ],
+          //                         ),
+          //                       )
+          //                       .toList(),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(
+          //         height: 15,
+          //       ),
+          //       GestureDetector(
+          //         onTap: () {
+          //           push(ShipToSales());
+          //         },
+          //         child: Container(
+          //           height: 80,
+          //           child: Card(
+          //             color: Color(0xff00a3d2),
+          //             shadowColor: Colors.grey[700],
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 FaIcon(
+          //                   FontAwesomeIcons.truckLoading,
+          //                   color: Colors.white,
+          //                 ),
+          //                 SizedBox(
+          //                   width: 12,
+          //                 ),
+          //                 Text(
+          //                   "Ship stock to Sales Officer",
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontSize: 18,
+          //                       fontWeight: FontWeight.bold),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(
+          //         height: 8,
+          //       ),
+          //       GestureDetector(
+          //         onTap: () {
+          //           push(ShipToCustomer());
+          //         },
+          //         child: Container(
+          //           height: 80,
+          //           child: Card(
+          //             color: Color(0xff00a3d2),
+          //             shadowColor: Colors.grey[700],
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 FaIcon(
+          //                   FontAwesomeIcons.shippingFast,
+          //                   color: Colors.white,
+          //                 ),
+          //                 SizedBox(
+          //                   width: 12,
+          //                 ),
+          //                 Text(
+          //                   "Ship stock to Customer",
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontSize: 18,
+          //                       fontWeight: FontWeight.bold),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(
+          //         height: 8,
+          //       ),
+          //       GestureDetector(
+          //         onTap: () {
+          //           push(StockTaking());
+          //         },
+          //         child: Container(
+          //           height: 80,
+          //           child: Card(
+          //             color: Color(0xff00a3d2),
+          //             shadowColor: Colors.grey[700],
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 FaIcon(
+          //                   FontAwesomeIcons.edit,
+          //                   color: Colors.white,
+          //                 ),
+          //                 SizedBox(
+          //                   width: 12,
+          //                 ),
+          //                 Text(
+          //                   "Record Stock Count",
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontSize: 18,
+          //                       fontWeight: FontWeight.bold),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(
+          //         height: 8,
+          //       ),
+          //       GestureDetector(
+          //         onTap: () {
+          //           push(ViewEmploeeStock());
+          //         },
+          //         child: Container(
+          //           height: 80,
+          //           child: Card(
+          //             color: Color(0xff00a3d2),
+          //             shadowColor: Colors.grey[700],
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 FaIcon(
+          //                   FontAwesomeIcons.search,
+          //                   color: Colors.white,
+          //                 ),
+          //                 SizedBox(
+          //                   width: 12,
+          //                 ),
+          //                 Text(
+          //                   "Check Staff Stock Balance",
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontSize: 18,
+          //                       fontWeight: FontWeight.bold),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
