@@ -1432,6 +1432,7 @@ class _HomeState extends Base<Home> {
         showLoading();
         odoo.create(Strings.res_partner, {
           "name": name.toString(),
+          "email": email,
           // "date_of_birth": date_of_birth,
           // "name": "Offline Sync Test",
           // "account_name": "Offline Sync Test",
@@ -2085,40 +2086,51 @@ class _AddPatientState extends State<AddPatient> {
                             labelText: 'Email',
                           ))))),
               Padding(
-                padding: EdgeInsets.all(10),
-                child: DropdownButton(
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 218, 204, 204)),
-                  hint: Text('Please choose a location'),
-                  value: _selectedLocation,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedLocation = newValue;
-                    });
-                  },
-                  items: _locations.map((location) {
-                    return DropdownMenuItem(
-                      child: new Text(location),
-                      value: location,
-                    );
-                  }).toList(),
-                ),
-              ),
+                  padding: EdgeInsets.all(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 218, 204, 204),
+                      borderRadius: new BorderRadius.circular(10.0),
+                    ),
+                    child: DropdownButton(
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 218, 204, 204)),
+                      hint: Text('Please choose a location'),
+                      value: _selectedLocation,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedLocation = newValue;
+                        });
+                      },
+                      items: _locations.map((location) {
+                        return DropdownMenuItem(
+                          child: new Text(location),
+                          value: location,
+                        );
+                      }).toList(),
+                    ),
+                  )),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Stack(
                   alignment: const Alignment(0, 0),
                   children: <Widget>[
                     Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 218, 204, 204),
-                        borderRadius: new BorderRadius.circular(10.0),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () => _selectDate(context),
-                        child: Text('Select Date Of Birth'),
-                      ),
-                    ),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 218, 204, 204),
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                        child: TextFormField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Date Of Birth',
+                            ),
+                            readOnly:
+                                true, //set it true, so that user will not able to edit text
+                            onTap: () {
+                              _selectDate(context);
+                            })),
                   ],
                 ),
               ),
