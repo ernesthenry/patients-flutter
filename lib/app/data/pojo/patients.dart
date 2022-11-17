@@ -10,7 +10,7 @@ class Patient {
   String name;
   String email;
   String imageUrl;
-  String patient_location;
+  String location;
   Bool insured;
   int patient_id;
   int age;
@@ -27,7 +27,7 @@ class Patient {
       this.name,
       this.email,
       this.imageUrl,
-      this.patient_location,
+      this.location,
       this.insured,
       this.patient_id,
       this.age,
@@ -50,7 +50,7 @@ class Patient {
       name: json["name"],
       email: json["email"],
       imageUrl: json["imageUrl"],
-      patient_location: json["patient_location"],
+      location: json["location"],
       insured: json["insured"],
       patient_history: json["patient_history"],
       patient_id: json["patient_id"],
@@ -67,7 +67,7 @@ class Patient {
       "name": this.name,
       "email": this.email,
       "imageUrl": this.imageUrl,
-      "patient_location": this.patient_location,
+      "location": this.location,
       "insured": this.insured,
       "patient_history": this.patient_history,
       "patient_id": this.patient_id,

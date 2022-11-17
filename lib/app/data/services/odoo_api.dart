@@ -38,6 +38,8 @@ class Odoo {
     }
   }
 
+  
+
   Future<OdooResponse> getSessionInfo() async {
     var url = createPath("/web/session/get_session_info");
     return await callRequest(url, createPayload({}));

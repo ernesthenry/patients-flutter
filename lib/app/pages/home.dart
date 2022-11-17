@@ -57,6 +57,8 @@ class _HomeState extends Base<Home> {
   var _imageUrl;
   int _userId = 0;
   String _firstName = "Home";
+  // List<String> _locations = ['Kampala', 'Jinja'];
+  // String _selectedLocation;
   // List<EmployeeStock> _employeeStock = [];
   // List<EmployeeStock> _allEmployeeStock = [];
   // List<StockPicking> _stockPickings = [];
@@ -779,7 +781,7 @@ class _HomeState extends Base<Home> {
               });
               var patientlist = jsonEncode(res.getRecords());
               print("patients list from the API" + patientlist);
-            // print(res.getRecords())
+              // print(res.getRecords())
               preference.setString("offlinepatients", patientlist);
               preference.setString(
                   "offlinepatientslastupdated", DateTime.now().toString());
@@ -1419,8 +1421,7 @@ class _HomeState extends Base<Home> {
   // }
 
   //SAVE PATIENT TO REMOTE ODOO
-  _savePatient(
-      name, patient_history, insured, insurance_company, qr_code) async {
+  _savePatient(name, email, location, date_of_birth, age) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     setState(() {
       _userId = getUID();
@@ -1435,10 +1436,11 @@ class _HomeState extends Base<Home> {
           // "name": "Offline Sync Test",
           // "account_name": "Offline Sync Test",
           // "age": age,
-          "patient_history": patient_history,
-          // "patient_location": patient_location,
+          // "patient_history": patient_history,
+          "date_of_birth": date_of_birth,
+          "location": location,
           "user_id": _userId,
-          "qr_code": qr_code,
+          // "qr_code": qr_code,
           // "patient_id": patient_id
         }).then(
           (OdooResponse res) {
@@ -1751,8 +1753,7 @@ class _HomeState extends Base<Home> {
               ),
             ),
           ),
-                  for (var item in _patients) Text(item.name),
-
+          for (var item in _patients) Text(item.name),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: ListView(
@@ -1835,7 +1836,7 @@ class _HomeState extends Base<Home> {
                       ),
                     ),
                   ),
-                    ),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -1972,10 +1973,8 @@ class _HomeState extends Base<Home> {
                 //     ),
                 //   ),
                 // ),
-                
               ],
             ),
-            
           ),
         ],
       ),
@@ -1983,8 +1982,8 @@ class _HomeState extends Base<Home> {
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const AddPatient())),
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.navigation),
-        ),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
@@ -2012,72 +2011,170 @@ class ReconnectingOverlay extends StatelessWidget {
 
 class AddPatient extends StatefulWidget {
   const AddPatient({Key key}) : super(key: key);
- 
+
   @override
   State<AddPatient> createState() => _AddPatientState();
 }
- 
+
 class _AddPatientState extends State<AddPatient> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController textEditingController = TextEditingController();
- 
-  @override
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: 'Enter your Name'
-            ),
-            validator: (String value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your name';
-              }
-              return null;
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: 'Enter your age'
-            ),
-            validator: (String value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your age';
-              }
-              return null;
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: 'Enter your email'
-            ),
-            validator: (String value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your email';
-              }
-              return null;
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Validate will return true if the form is valid, or false if
-                // the form is invalid.
-                if (_formKey.currentState.validate()) {
-                  // Process data.
-                }
-              },
-              child: const Text('Submit'),  
-            ),
-          ),
-        ],
-      ),
-    );
+  List<String> _locations = ['Kampala', 'Jinja'];
+  String _selectedLocation;
+  bool insured = false;
+  DateTime currentDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+      });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    // Build a Form widget using the _formKey created above.
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Create Patient'),
+        ),
+        body: Form(
+          child: Column(
+            key: _formKey,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: new AssetImage("assets/images/background.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 218, 204, 204),
+                        borderRadius: new BorderRadius.circular(10.0),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+                          child: TextFormField(
+                              decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Patient Name',
+                          ))))),
+              Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 218, 204, 204),
+                        borderRadius: new BorderRadius.circular(10.0),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+                          child: TextFormField(
+                              decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Email',
+                          ))))),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: DropdownButton(
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 218, 204, 204)),
+                  hint: Text('Please choose a location'),
+                  value: _selectedLocation,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedLocation = newValue;
+                    });
+                  },
+                  items: _locations.map((location) {
+                    return DropdownMenuItem(
+                      child: new Text(location),
+                      value: location,
+                    );
+                  }).toList(),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Stack(
+                  alignment: const Alignment(0, 0),
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 218, 204, 204),
+                        borderRadius: new BorderRadius.circular(10.0),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () => _selectDate(context),
+                        // child: Text('Select date'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Stack(
+                  alignment: const Alignment(0, 0),
+                  children: <Widget>[
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 218, 204, 204),
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                            padding:
+                                EdgeInsets.only(left: 15, right: 15, top: 5),
+                            child: TextFormField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  labelText: 'Age',
+                                )))),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final snackBar = SnackBar(
+                          content: const Text('Processing Data...'),
+                          backgroundColor: (Colors.green),
+                          action: SnackBarAction(
+                            label: 'dismiss',
+                            onPressed: () {},
+                          ),
+                        );
+                        // Validate returns true if the form is valid, or false
+                        // otherwise.
+                        // if (_formKey.currentState.validate()) {
+                        // If the form is valid, display a Snackbar.
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                        // }
+                      },
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )),
+              )
+            ],
+          ),
+        ));
+  }
 }
