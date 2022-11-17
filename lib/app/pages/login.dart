@@ -12,7 +12,7 @@ import 'dart:convert';
 // import 'package:video_player/video_player.dart';
 
 import 'home.dart';
-import 'welcome.dart';
+// import 'welcome.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -66,7 +66,6 @@ class _LoginState extends Base<Login> {
                   hideLoadingSuccess("Logged in successfully");
                   saveUser(json.encode(user));
                   saveOdooUrl(odooURL);
-                  // pushReplacement(Home());
                   pushReplacement(Home());
                   setState(() {
                     _loginPending = false;

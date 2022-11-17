@@ -81,8 +81,8 @@
 //     Tab(
 //       text: 'Profile',
 //     ),
-//     Tab(text: 'D2C Details'),
-//     Tab(text: 'Commission'),
+//     // Tab(text: 'D2C Details'),
+//     // Tab(text: 'Commission'),
 //     Tab(text: 'Patients'),
 //   ];
 
@@ -92,12 +92,12 @@
 //       if (isInternet) {
 //         showLoading();
 //         odoo.searchRead(Strings.res_partner, [
-//           ['parent_id', "ilike", _patient.patient_name],
+//           ['parent_id', "ilike", _patient.name],
 //           ['company_type', "=", 'person']
 //         ], [
 //           'email',
-//           'name',
-//           'phone'
+//           // 'name',
+//           // 'phone'
 //         ]).then(
 //           (OdooResponse res) {
 //             if (!res.hasError()) {
@@ -1121,7 +1121,7 @@
 //                         Container(
 //                           height: MediaQuery.of(context).size.height * 0.4,
 //                           child: ListView.builder(
-//                             itemCount: _contacts.length,
+//                             itemCount: _patients.length,
 //                             physics: const AlwaysScrollableScrollPhysics(),
 //                             itemBuilder: (context, i) => InkWell(
 //                               onTap: () {
@@ -1130,7 +1130,7 @@
 //                                     MaterialPageRoute(
 //                                         builder: (BuildContext context) =>
 //                                             PatientDetails(
-//                                                 data: _contacts[i])));
+//                                                 data: _patients[i])));
 //                               },
 //                               child: Card(
 //                                 child: Column(
@@ -1159,7 +1159,7 @@
 //                                                         .width *
 //                                                     0.7,
 //                                                 child: Text(
-//                                                   _contacts[i].name,
+//                                                   _patients[i].name,
 //                                                   overflow:
 //                                                       TextOverflow.ellipsis,
 //                                                   style: TextStyle(
@@ -1189,7 +1189,7 @@
 //                                                   width: 5,
 //                                                 ),
 //                                                 Text(
-//                                                   _contacts[i].email,
+//                                                   _patients[i].email,
 //                                                   style: TextStyle(
 //                                                       color: Colors.grey,
 //                                                       fontSize: 15.0),
@@ -1210,7 +1210,7 @@
 //                                                   width: 5,
 //                                                 ),
 //                                                 Text(
-//                                                   _contacts[i].phone,
+//                                                   _patients[i].phone,
 //                                                   style: TextStyle(
 //                                                       color: Colors.grey,
 //                                                       fontSize: 15.0),
@@ -1719,19 +1719,19 @@
 //             List _offlinePartners = [];
 //             setState(() {
 //               for (var i in cutomerlist) {
-//                 _offlinePartners.add(
+//                 _offlinePatients.add(
 //                   {
 //                     "email": i["email"],
-//                     "name": i["name"],
-//                     "phone": i["phone"],
+//                     // "name": i["name"],
+//                     // "phone": i["phone"],
 //                   },
 //                 );
 //               }
-//               _offlinePartners.add(
+//               _offlinePatients.add(
 //                 {
 //                   "name": name,
-//                   "email": email,
-//                   "phone": phone,
+//                   // "email": email,
+//                   // "phone": phone,
 //                 },
 //               );
 //             });
@@ -1748,23 +1748,23 @@
 //           _partners.add(
 //             {
 //               "name": name,
-//               "email": email,
-//               "phone": phone,
+//               // "email": email,
+//               // "phone": phone,
 //             },
 //           );
 //           var offlinecustomersadded = jsonEncode(_partners);
-//           preference.setString("offlinecontactsadded", offlinecustomersadded);
-//           if (preference.getString("offlinecontacts") == null ||
-//               preference.getString("offlinecontacts") == "") {
-//             preference.setString("offlinecontacts", offlinecustomersadded);
+//           preference.setString("offlinepatientsadded", offlinecustomersadded);
+//           if (preference.getString("offlinepatients") == null ||
+//               preference.getString("offlinepatients") == "") {
+//             preference.setString("offlinepatients", offlinecustomersadded);
 //           } else {
-//             String customersString = preference.getString("offlinecontacts");
-//             print(preference.getString("offlinecontacts"));
+//             String customersString = preference.getString("offlinepatients");
+//             print(preference.getString("offlinepatients"));
 //             var cutomerlist = json.decode(customersString);
 //             List _offlinePartners = [];
 //             setState(() {
 //               for (var i in cutomerlist) {
-//                 _offlinePartners.add(
+//                 _offlinePatients.add(
 //                   {
 //                     'email': i["email"],
 //                     'name': i["name"],
@@ -1772,7 +1772,7 @@
 //                   },
 //                 );
 //               }
-//               _offlinePartners.add(
+//               _offlinePatients.add(
 //                 {
 //                   "name": name,
 //                   "email": email,

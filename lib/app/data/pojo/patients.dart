@@ -7,7 +7,8 @@ String loginModelToJson(Patient data) => json.encode(data.toJson());
 
 class Patient {
   int id;
-  String patient_name;
+  String name;
+  String email;
   String imageUrl;
   String patient_location;
   Bool insured;
@@ -23,7 +24,8 @@ class Patient {
 
   Patient(
       {this.id,
-      this.patient_name,
+      this.name,
+      this.email,
       this.imageUrl,
       this.patient_location,
       this.insured,
@@ -44,25 +46,26 @@ class Patient {
   }
 
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
-        id: json["id"],
-        patient_name: json["patient_name"],
-        imageUrl: json["imageUrl"],
-        patient_location: json["patient_location"],
-        insured: json["insured"],
-        patient_history: json["patient_history"],
-        patient_id: json["patient_id"],
-        age: json["age"],
-        user_id: json["user_id"],
-        date_of_birth: json["date_of_birth"],
-        parent_id: json["parent_id"],
-        dependants: json["dependants"],
-        insurance_company: json["insurance_company"],
-        qr_code: json["qr_code"]
-      );
+      id: json["id"],
+      name: json["name"],
+      email: json["email"],
+      imageUrl: json["imageUrl"],
+      patient_location: json["patient_location"],
+      insured: json["insured"],
+      patient_history: json["patient_history"],
+      patient_id: json["patient_id"],
+      age: json["age"],
+      user_id: json["user_id"],
+      date_of_birth: json["date_of_birth"],
+      parent_id: json["parent_id"],
+      dependants: json["dependants"],
+      insurance_company: json["insurance_company"],
+      qr_code: json["qr_code"]);
 
   Map<String, dynamic> toJson() {
     return {
-      "patient_name": this.patient_name,
+      "name": this.name,
+      "email": this.email,
       "imageUrl": this.imageUrl,
       "patient_location": this.patient_location,
       "insured": this.insured,

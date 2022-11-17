@@ -198,73 +198,73 @@ class _AddPatientState extends Base<AddPatient> {
   //   }
   // }
 
-  _getDistricts() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    setState(() {
-      _districts.clear();
-    });
-    if (preference.getString("offlinedistricts") != null) {
-      String districtsString = preference.getString("offlinedistricts");
-      print(districtsString);
-      var districtlist = json.decode(districtsString);
-      setState(() {
-        for (var i in districtlist) {
-          if (i["region"] is! bool &&
-              _regionSelection.length > 2 &&
-              i["region"][1] == _regionSelection) {
-            _districts.add(
-              new District(
-                id: i["id"],
-                name: i["name"].toString(),
-              ),
-            );
-          }
-        }
-      });
-    } else {
-      isConnected().then((isInternet) {
-        if (isInternet) {
-          showLoading();
-          //GET DISTRICTS
-          print("PARENT REGION IS " + _regionSelection);
-          odoo.searchRead(Strings.district, [
-            ['region', 'ilike', _regionSelection]
-          ], [
-            'id',
-            'name'
-          ]).then(
-            (OdooResponse res) {
-              if (!res.hasError()) {
-                setState(() {
-                  hideLoading();
-                  String session = getSession();
-                  int count = 0;
-                  session = session.split(",")[0].split(";")[0];
-                  for (var i in res.getRecords()) {
-                    _districts.add(
-                      new District(
-                        id: i["id"],
-                        name: i["name"].toString(),
-                      ),
-                    );
-                  }
-                  var districtlist = jsonEncode(res.getRecords());
-                  preference.setString("offlinedistricts", districtlist);
-                  preference.setString(
-                      "offlinedistrictslastupdated", DateTime.now().toString());
-                  print("Updated offline district repository at " +
-                      DateTime.now().toString());
-                });
-              } else {
-                print(res.getError());
-                showMessage("Warning", res.getErrorMessage());
-              }
-            },
-          );
-        }
-      });
-    }
-  }
+  // _getDistricts() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _districts.clear();
+  //   });
+  //   if (preference.getString("offlinedistricts") != null) {
+  //     String districtsString = preference.getString("offlinedistricts");
+  //     print(districtsString);
+  //     var districtlist = json.decode(districtsString);
+  //     setState(() {
+  //       for (var i in districtlist) {
+  //         if (i["region"] is! bool &&
+  //             _regionSelection.length > 2 &&
+  //             i["region"][1] == _regionSelection) {
+  //           _districts.add(
+  //             new District(
+  //               id: i["id"],
+  //               name: i["name"].toString(),
+  //             ),
+  //           );
+  //         }
+  //       }
+  //     });
+  //   } else {
+  //     isConnected().then((isInternet) {
+  //       if (isInternet) {
+  //         showLoading();
+  //         //GET DISTRICTS
+  //         print("PARENT REGION IS " + _regionSelection);
+  //         odoo.searchRead(Strings.district, [
+  //           ['region', 'ilike', _regionSelection]
+  //         ], [
+  //           'id',
+  //           'name'
+  //         ]).then(
+  //           (OdooResponse res) {
+  //             if (!res.hasError()) {
+  //               setState(() {
+  //                 hideLoading();
+  //                 String session = getSession();
+  //                 int count = 0;
+  //                 session = session.split(",")[0].split(";")[0];
+  //                 for (var i in res.getRecords()) {
+  //                   _districts.add(
+  //                     new District(
+  //                       id: i["id"],
+  //                       name: i["name"].toString(),
+  //                     ),
+  //                   );
+  //                 }
+  //                 var districtlist = jsonEncode(res.getRecords());
+  //                 preference.setString("offlinedistricts", districtlist);
+  //                 preference.setString(
+  //                     "offlinedistrictslastupdated", DateTime.now().toString());
+  //                 print("Updated offline district repository at " +
+  //                     DateTime.now().toString());
+  //               });
+  //             } else {
+  //               print(res.getError());
+  //               showMessage("Warning", res.getErrorMessage());
+  //             }
+  //           },
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
 
   // _getParishes() async {
   //   SharedPreferences preference = await SharedPreferences.getInstance();
@@ -511,13 +511,13 @@ class _AddPatientState extends Base<AddPatient> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
-                              _accountTypeSelection,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                            // Text(
+                            //   _accountTypeSelection,
+                            //   style: TextStyle(
+                            //       color: Colors.grey,
+                            //       fontSize: 16,
+                            //       fontWeight: FontWeight.w400),
+                            // ),
                           ],
                         ),
                         items: <String>[

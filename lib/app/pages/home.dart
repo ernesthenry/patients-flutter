@@ -741,15 +741,15 @@ class _HomeState extends Base<Home> {
         showLoading();
         odoo.searchRead(Strings.res_partner, [
           ['parent_id', "=", false],
-          // ['company_type', "!=", 'person'],        
-           ['user_id', "=", _userId]
+          ['company_type', "!=", 'person'],        
+          //  ['user_id', "=", 2]
 
         ], [
-          'patient_name',
-          'patient_history',
-          'date_of_birth',
-          'parent_id',
-          'patient_location'
+          'name',
+          // 'patient_history',
+          // 'date_of_birth',
+          // 'parent_id',
+          // 'patient_location'
         ]).then(
           (OdooResponse res) {
             if (!res.hasError()) {
@@ -758,15 +758,15 @@ class _HomeState extends Base<Home> {
                 String session = getSession();
                 session = session.split(",")[0].split(";")[0];
                 for (var i in res.getRecords()) {
-                  if (i["patient_name"].toString().length > 1 &&
+                  if (i["name"].toString().length > 1 &&
                       i["parent_id"] is bool) {
                     _patients.add(
                       new Patient(
                         id: i["id"],
-                        date_of_birth: i["date_of_birth"] is! bool ? i["date_of_birth"] : "N/A",
-                        patient_name: i["patient_name"].toString(),
-                        age: i["age"] is! bool ? i["age"] : "N/A",
-                        patient_location: i["patient_location"] is! bool ? i["patient_location"] : "N/A",
+                        // date_of_birth: i["date_of_birth"] is! bool ? i["date_of_birth"] : "N/A",
+                        name: i["name"].toString(),
+                        // age: i["age"] is! bool ? i["age"] : "N/A",
+                        // patient_location: i["patient_location"] is! bool ? i["patient_location"] : "N/A",
                         parent_id:
                             i["parent_id"] is! bool ? i["parent_id"] : [],
                         imageUrl: getURL() +
@@ -780,6 +780,8 @@ class _HomeState extends Base<Home> {
                 }
               });
               var patientlist = jsonEncode(res.getRecords());
+              
+              // print(res.getRecords())
               preference.setString("offlinepatients", patientlist);
               preference.setString(
                   "offlinepatientslastupdated", DateTime.now().toString());
@@ -1419,7 +1421,7 @@ class _HomeState extends Base<Home> {
   // }
 
   //SAVE PATIENT TO REMOTE ODOO
-  _savePatient(patient_name, date_of_birth, age, patient_history, insured, insurance_company, qr_code)
+  _savePatient(name,  patient_history, insured, insurance_company, qr_code)
    async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     setState(() {
@@ -1430,11 +1432,11 @@ class _HomeState extends Base<Home> {
       if (isInternet) {
         showLoading();
         odoo.create(Strings.res_partner, {
-          "name": patient_name.toString(),
-          "date_of_birth": date_of_birth,
+          "name": name.toString(),
+          // "date_of_birth": date_of_birth,
           // "name": "Offline Sync Test",
           // "account_name": "Offline Sync Test",
-          "age": age,
+          // "age": age,
           "patient_history": patient_history,
           // "patient_location": patient_location,
           "user_id": _userId,
@@ -1781,13 +1783,13 @@ class _HomeState extends Base<Home> {
                               label: Text('$_currentMonth',
                                   style: TextStyle(color: Colors.white))),
                           DataColumn(
-                              label: Text('Stock \nRcvd.',
+                              label: Text('Name',
                                   style: TextStyle(color: Colors.white))),
                           DataColumn(
-                              label: Text('Stock \nShpd',
+                              label: Text('Age',
                                   style: TextStyle(color: Colors.white))),
                           DataColumn(
-                              label: Text('Stock \nRem.',
+                              label: Text('Location ',
                                   style: TextStyle(color: Colors.white))),
                         ],
                         rows: _patients.isEmpty
@@ -1817,16 +1819,16 @@ class _HomeState extends Base<Home> {
                                             MediaQuery.of(context).size.width *
                                                 0.35,
                                         child: Text(
-                                          element.patient_name[1].toString(),
+                                          element.name[1].toString(),
                                           overflow: TextOverflow.visible,
                                         ),
                                       )), //Extracting from Map element the value
                                       DataCell(
                                           Text(element.patient_history.toString())),
                                       DataCell(Text(
-                                          element.patient_id.toString())),
+                                          element.age.toString())),
                                       DataCell(Text(
-                                          element.patient_history.toString())),
+                                          element.date_of_birth.toString())),
                                     ],
                                   ),
                                 )
@@ -1903,74 +1905,74 @@ class _HomeState extends Base<Home> {
                 //     ),
                 //   ),
                 // ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    push(StockTaking());
-                  },
-                  child: Container(
-                    height: 80,
-                    child: Card(
-                      color: Color(0xff00a3d2),
-                      shadowColor: Colors.grey[700],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.edit,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Record Stock Count",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    push(ViewEmploeeStock());
-                  },
-                  child: Container(
-                    height: 80,
-                    child: Card(
-                      color: Color(0xff00a3d2),
-                      shadowColor: Colors.grey[700],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.search,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Check Staff Stock Balance",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 8,
+                // ),
+                // GestureDetector(
+                //   onTap: () {
+                //     push(StockTaking());
+                //   },
+                //   child: Container(
+                //     height: 80,
+                //     child: Card(
+                //       color: Color(0xff00a3d2),
+                //       shadowColor: Colors.grey[700],
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           FaIcon(
+                //             FontAwesomeIcons.edit,
+                //             color: Colors.white,
+                //           ),
+                //           SizedBox(
+                //             width: 12,
+                //           ),
+                //           Text(
+                //             "Record Stock Count",
+                //             style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontSize: 18,
+                //                 fontWeight: FontWeight.bold),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 8,
+                // ),
+                // GestureDetector(
+                //   onTap: () {
+                //     push(ViewEmploeeStock());
+                //   },
+                //   child: Container(
+                //     height: 80,
+                //     child: Card(
+                //       color: Color(0xff00a3d2),
+                //       shadowColor: Colors.grey[700],
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           FaIcon(
+                //             FontAwesomeIcons.search,
+                //             color: Colors.white,
+                //           ),
+                //           SizedBox(
+                //             width: 12,
+                //           ),
+                //           Text(
+                //             "Check Staff Stock Balance",
+                //             style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontSize: 18,
+                //                 fontWeight: FontWeight.bold),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
