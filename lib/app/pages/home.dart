@@ -2116,7 +2116,7 @@ class _AddPatientState extends State<AddPatient> {
                       ),
                       child: ElevatedButton(
                         onPressed: () => _selectDate(context),
-                        // child: Text('Select date'),
+                        child: Text('Select Date Of Birth'),
                       ),
                     ),
                   ],
