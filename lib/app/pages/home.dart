@@ -502,7 +502,6 @@ class _HomeState extends Base<Home> {
   //   });
   // }
 
-
   //GET EMPLOYEE STOCK LOCATIONS
   // _getEmployeeStockLocations() async {
   //   SharedPreferences preference = await SharedPreferences.getInstance();
@@ -741,9 +740,8 @@ class _HomeState extends Base<Home> {
         showLoading();
         odoo.searchRead(Strings.res_partner, [
           ['parent_id', "=", false],
-          ['company_type', "!=", 'person'],        
+          ['company_type', "!=", 'person'],
           //  ['user_id', "=", 2]
-
         ], [
           'name',
           // 'patient_history',
@@ -774,14 +772,14 @@ class _HomeState extends Base<Home> {
                             session +
                             "&id=" +
                             i["id"].toString(),
-                            ),
+                      ),
                     );
                   }
                 }
               });
               var patientlist = jsonEncode(res.getRecords());
-              
-              // print(res.getRecords())
+              print("patients list from the API" + patientlist);
+            // print(res.getRecords())
               preference.setString("offlinepatients", patientlist);
               preference.setString(
                   "offlinepatientslastupdated", DateTime.now().toString());
@@ -1421,8 +1419,8 @@ class _HomeState extends Base<Home> {
   // }
 
   //SAVE PATIENT TO REMOTE ODOO
-  _savePatient(name,  patient_history, insured, insurance_company, qr_code)
-   async {
+  _savePatient(
+      name, patient_history, insured, insurance_company, qr_code) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     setState(() {
       _userId = getUID();
@@ -1753,6 +1751,8 @@ class _HomeState extends Base<Home> {
               ),
             ),
           ),
+                  for (var item in _patients) Text(item.name),
+
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: ListView(
@@ -1823,10 +1823,9 @@ class _HomeState extends Base<Home> {
                                           overflow: TextOverflow.visible,
                                         ),
                                       )), //Extracting from Map element the value
-                                      DataCell(
-                                          Text(element.patient_history.toString())),
                                       DataCell(Text(
-                                          element.age.toString())),
+                                          element.patient_history.toString())),
+                                      DataCell(Text(element.age.toString())),
                                       DataCell(Text(
                                           element.date_of_birth.toString())),
                                     ],
@@ -1836,7 +1835,7 @@ class _HomeState extends Base<Home> {
                       ),
                     ),
                   ),
-                ),
+                    ),
                 SizedBox(
                   height: 15,
                 ),
@@ -1973,11 +1972,19 @@ class _HomeState extends Base<Home> {
                 //     ),
                 //   ),
                 // ),
+                
               ],
             ),
+            
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const AddPatient())),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.navigation),
+        ),
     );
   }
 }
@@ -2001,4 +2008,76 @@ class ReconnectingOverlay extends StatelessWidget {
           ],
         ),
       );
+}
+
+class AddPatient extends StatefulWidget {
+  const AddPatient({Key key}) : super(key: key);
+ 
+  @override
+  State<AddPatient> createState() => _AddPatientState();
+}
+ 
+class _AddPatientState extends State<AddPatient> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController textEditingController = TextEditingController();
+ 
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Enter your Name'
+            ),
+            validator: (String value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your name';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Enter your age'
+            ),
+            validator: (String value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your age';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Enter your email'
+            ),
+            validator: (String value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                // Validate will return true if the form is valid, or false if
+                // the form is invalid.
+                if (_formKey.currentState.validate()) {
+                  // Process data.
+                }
+              },
+              child: const Text('Submit'),  
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
