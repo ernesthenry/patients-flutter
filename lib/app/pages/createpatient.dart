@@ -35,6 +35,7 @@ class _AddPatientState extends Base<AddPatient> {
   String userfullname = "", email = "";
   var _imageUrl;
   int _userId = 0;
+  int age;
   String _firstName = "Home";
 
   Future<void> _selectDate(BuildContext context) async {
@@ -98,9 +99,9 @@ class _AddPatientState extends Base<AddPatient> {
           title: Text('Create Patient'),
         ),
         body: Form(
-          child: Column(
+          child: ListView(
             key: _formKey,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -216,7 +217,8 @@ class _AddPatientState extends Base<AddPatient> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        _savePatient();
+                        _savePatient(userfullname, email, _selectedLocation,
+                            currentDate, age);
                         // final snackBar = SnackBar(
                         //   content: const Text('Processing Data...'),
                         //   backgroundColor: (Colors.green),

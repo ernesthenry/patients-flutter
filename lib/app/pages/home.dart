@@ -480,7 +480,7 @@ class _HomeState extends Base<Home> {
               ),
             ),
           ),
-          for (var item in _patients) Text(item.name),
+          // for (var item in _patients) Text(item.name),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: ListView(
