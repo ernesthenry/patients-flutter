@@ -98,19 +98,17 @@ class _AddPatientState extends Base<AddPatient> {
         appBar: AppBar(
           title: Text('Create Patient'),
         ),
-        body: Form(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             key: _formKey,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/background.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
               Padding(
                   padding: EdgeInsets.all(10),
                   child: Container(
