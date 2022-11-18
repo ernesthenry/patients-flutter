@@ -97,7 +97,6 @@ class _AddPatientState extends Base<AddPatient> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Create Patient'),
-          
         ),
         body: Form(
           child: Column(
@@ -140,31 +139,39 @@ class _AddPatientState extends Base<AddPatient> {
                             border: InputBorder.none,
                             labelText: 'Email',
                           ))))),
-              Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 218, 204, 204),
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    child: DropdownButton(
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 218, 204, 204)),
-                      hint: Text('Please choose a location'),
-                      value: _selectedLocation,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedLocation = newValue;
-                        });
-                      },
-                      items: _locations.map((location) {
-                        return DropdownMenuItem(
-                          child: new Text(location),
-                          value: location,
-                        );
-                      }).toList(),
-                    ),
-                  )),
+              Container(
+                height: 60,
+                width: 380,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(255, 218, 204, 204),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                      8.0), //here include this to get padding
+                  child: DropdownButton(
+                    isExpanded: true,
+                    underline: Container(),
+                    hint: Text('Choose  Location'),
+                    alignment: Alignment.bottomCenter,
+                    elevation: 0,
+                    borderRadius: BorderRadius.circular(5),
+                    value: _selectedLocation,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: _locations.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _selectedLocation = newValue;
+                      });
+                    },
+                  ),
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Stack(
