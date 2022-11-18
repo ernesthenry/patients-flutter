@@ -5,12 +5,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patients/app/data/pojo/patients.dart';
 import 'package:patients/app/data/services/odoo_response.dart';
-// import 'package:patients/app/pages/accounts.dart';
-import 'package:patients/app/pages/addpatient.dart';
-// import 'package:patients/app/pages/draftinvoices.dart';
-// import 'package:patients/app/pages/invoices.dart';
-import 'package:patients/app/pages/patient_details.dart';
-import 'package:patients/app/pages/patients.dart';
+// import 'package:patients/app/pages/addpatient.dart';
+// import 'package:patients/app/pages/patient_details.dart';
+// import 'package:patients/app/pages/patients.dart';
 import 'package:patients/app/utility/constant.dart';
 import 'package:patients/app/utility/strings.dart';
 import 'package:patients/base.dart';
@@ -21,13 +18,6 @@ import 'login.dart';
 import 'settings.dart';
 import 'package:intl/intl.dart';
 
-
-
-
-
-
-
-
 class AddPatient extends StatefulWidget {
   const AddPatient({Key key}) : super(key: key);
 
@@ -35,13 +25,17 @@ class AddPatient extends StatefulWidget {
   State<AddPatient> createState() => _AddPatientState();
 }
 
-class _AddPatientState extends State<AddPatient> {
+class _AddPatientState extends Base<AddPatient> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController textEditingController = TextEditingController();
   List<String> _locations = ['Kampala', 'Jinja'];
   String _selectedLocation;
   bool insured = false;
   DateTime currentDate = DateTime.now();
+  String userfullname = "", email = "";
+  var _imageUrl;
+  int _userId = 0;
+  String _firstName = "Home";
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
@@ -81,22 +75,20 @@ class _AddPatientState extends State<AddPatient> {
                 // _registerPending = false;
               });
               print("Patient registered successfully!");
-              showMessage("Success", "Customer registered successfully!");
+              // showMessage("Success", "Customer registered successfully!");
               // pushAndRemoveUntil(Partners());
             } else {
               setState(() {
                 // _registerPending = false;
               });
               print(res.getError());
-              showMessage("Warning", res.getErrorMessage());
+              // showMessage("Warning", res.getErrorMessage());
             }
           },
         );
       }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +216,7 @@ class _AddPatientState extends State<AddPatient> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        _savePatient()
+                        _savePatient();
                         // final snackBar = SnackBar(
                         //   content: const Text('Processing Data...'),
                         //   backgroundColor: (Colors.green),

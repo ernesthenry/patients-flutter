@@ -26,6 +26,8 @@ import 'package:patients/app/data/services/odoo_response.dart';
 // import 'package:patients/app/pages/accounts.dart';
 // import 'package:patients/app/pages/addinvoice.dart';
 import 'package:patients/app/pages/addpatient.dart';
+import 'package:patients/app/pages/createpatient.dart';
+
 // import 'package:patients/app/pages/draftinvoices.dart';
 // import 'package:patients/app/pages/invoices.dart';
 import 'package:patients/app/pages/patient_details.dart';
@@ -135,21 +137,7 @@ class _HomeState extends Base<Home> {
           print("the user id is " + _userId.toString());
           print("the fullname is " + _firstName.toString());
         });
-        // await _getPatientData(_userId);
-        // await _getSalesOfficers();
-        // await _getEmployees();
-        // await _getCustomerLocation();
-        // await _getRequisitions();
-        // await _getRequisitionLines();
-        // await _getAllEmployeeStock();
-        // await _getContacts();
         await _getPatients();
-        // await _getDraftInvoices();
-        // await _getInvoices();
-        // await _getInvoiceLines();
-        // await _getStockPickings();
-        // await _getStockMoves();
-        // await _getStockMoveLines();
         await new Future.delayed(new Duration(seconds: 6));
         Navigator.of(context).pop();
       }
