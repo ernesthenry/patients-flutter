@@ -97,11 +97,12 @@ class _AddPatientState extends Base<AddPatient> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Create Patient'),
+          
         ),
         body: Form(
-          child: ListView(
+          child: Column(
             key: _formKey,
-            // crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
@@ -219,21 +220,20 @@ class _AddPatientState extends Base<AddPatient> {
                       onPressed: () {
                         _savePatient(userfullname, email, _selectedLocation,
                             currentDate, age);
-                        // final snackBar = SnackBar(
-                        //   content: const Text('Processing Data...'),
-                        //   backgroundColor: (Colors.green),
-                        //   action: SnackBarAction(
-                        //     label: 'dismiss',
-                        //     onPressed: () {},
-                        //   ),
-                        // );
+                        final snackBar = SnackBar(
+                          content: const Text('Processing Data...'),
+                          backgroundColor: (Colors.green),
+                          action: SnackBarAction(
+                            label: 'dismiss',
+                            onPressed: () {},
+                          ),
+                        );
                         // Validate returns true if the form is valid, or false
                         // otherwise.
-                        // if (_formKey.currentState.validate()) {
-                        // If the form is valid, display a Snackbar.
-                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                        // }
+                        if (_formKey.currentState.validate()) {
+                          // If the form is valid, display a Snackbar.
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       },
                       child: Text(
                         'Submit',

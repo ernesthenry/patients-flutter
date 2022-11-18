@@ -331,8 +331,16 @@ class _HomeState extends Base<Home> {
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(_firstName + " - " + _displaypatientId.toString()),
-        actions: [
-          IconButton(
+        actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.person_add,
+            color: Colors.white,
+          ),
+         onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const AddPatient())
+        )),
+         IconButton(
               onPressed: () {
                 _refreshData();
               },
@@ -340,7 +348,18 @@ class _HomeState extends Base<Home> {
                 Icons.refresh,
                 color: Colors.white,
               ))
-        ],
+      ],
+      
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         _refreshData();
+        //       },
+        //       icon: Icon(
+        //         Icons.refresh,
+        //         color: Colors.white,
+        //       ))
+        // ],
       ),
       drawer: Drawer(
           elevation: 20.0,
@@ -705,12 +724,12 @@ class _HomeState extends Base<Home> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const AddPatient())),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => Navigator.of(context)
+      //       .push(MaterialPageRoute(builder: (context) => const AddPatient())),
+      //   backgroundColor: Colors.blue,
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }
