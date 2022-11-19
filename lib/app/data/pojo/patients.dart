@@ -9,6 +9,7 @@ class Patient {
   int id;
   String name;
   String email;
+  String phone;
   String imageUrl;
   String location;
   Bool insured;
@@ -26,6 +27,7 @@ class Patient {
       {this.id,
       this.name,
       this.email,
+      this.phone,
       this.imageUrl,
       this.location,
       this.insured,
@@ -49,6 +51,7 @@ class Patient {
       id: json["id"],
       name: json["name"],
       email: json["email"],
+      phone : json["phone"],
       imageUrl: json["imageUrl"],
       location: json["location"],
       insured: json["insured"],
@@ -66,6 +69,7 @@ class Patient {
     return {
       "name": this.name,
       "email": this.email,
+      "phone": this.phone,
       "imageUrl": this.imageUrl,
       "location": this.location,
       "insured": this.insured,

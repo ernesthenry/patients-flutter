@@ -99,12 +99,12 @@ class _AddPatientState extends Base<AddPatient> {
           title: Text('Create Patient'),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/background.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/background.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
           child: Column(
             key: _formKey,
             crossAxisAlignment: CrossAxisAlignment.center,

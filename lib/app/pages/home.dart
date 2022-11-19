@@ -144,7 +144,6 @@ class _HomeState extends Base<Home> {
     });
   }
 
-  
   //GET PATIENTS/CLIENTS
   _getPatients() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
@@ -207,6 +206,7 @@ class _HomeState extends Base<Home> {
       }
     });
   }
+
   //SAVE PATIENT TO REMOTE ODOO
   _savePatient(name, email, location, date_of_birth, age) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
@@ -280,7 +280,6 @@ class _HomeState extends Base<Home> {
   //   });
   // }
 
-  
   @override
   void initState() {
     super.initState();
@@ -298,438 +297,780 @@ class _HomeState extends Base<Home> {
     _getPatients();
   }
 
+//   @override
+//   Widget build(BuildContext context) {
+//     final emptyView = Container(
+//       alignment: Alignment.center,
+//       child: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             Icon(
+//               Icons.person_outline,
+//               color: Colors.grey.shade300,
+//               size: 100,
+//             ),
+//             Padding(
+//               padding: EdgeInsets.all(1.0),
+//               child: Text(
+//                 Strings.no_patients,
+//                 style: TextStyle(
+//                   color: Colors.grey.shade500,
+//                   fontSize: 20,
+//                 ),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+
+//     return Scaffold(
+//       key: scaffoldKey,
+//       appBar: AppBar(
+//         title: Text(_firstName + " - " + _displaypatientId.toString()),
+//         actions: <Widget>[
+//         IconButton(
+//           icon: Icon(
+//             Icons.person_add,
+//             color: Colors.white,
+//           ),
+//          onPressed: () => Navigator.of(context)
+//             .push(MaterialPageRoute(builder: (context) => const AddPatient())
+//         )),
+//          IconButton(
+//               onPressed: () {
+//                 _refreshData();
+//               },
+//               icon: Icon(
+//                 Icons.refresh,
+//                 color: Colors.white,
+//               ))
+//       ],
+
+//         // actions: [
+//         //   IconButton(
+//         //       onPressed: () {
+//         //         _refreshData();
+//         //       },
+//         //       icon: Icon(
+//         //         Icons.refresh,
+//         //         color: Colors.white,
+//         //       ))
+//         // ],
+//       ),
+//       drawer: Drawer(
+//           elevation: 20.0,
+//           child: ListView(
+//             padding: EdgeInsets.zero,
+//             children: <Widget>[
+//               UserAccountsDrawerHeader(
+//                 accountName: Text(userfullname != null ? userfullname : "User"),
+//                 accountEmail: Text(email != null ? email : "email"),
+//                 currentAccountPicture: Image.network(_imageUrl != null
+//                     ? _imageUrl
+//                     : "https://image.flaticon.com/icons/png/512/1144/1144760.png"),
+//                 decoration: BoxDecoration(color: Colors.blueAccent),
+//               ),
+//               ListTile(
+//                 leading: Icon(Icons.home),
+//                 title: Text("Home"),
+//                 onTap: () {
+//                   print("Home Clicked");
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => Home()),
+//                   );
+//                 },
+//               ),
+//               // ListTile(
+//               //   leading: Icon(Icons.library_books_sharp),
+//               //   title: Text("Accounts"),
+//               //   onTap: () {
+//               //     print("Accounts Clicked");
+//               //     Navigator.push(
+//               //       context,
+//               //       MaterialPageRoute(builder: (context) => Accounts()),
+//               //     );
+//               //   },
+//               // ),
+//               // ListTile(
+//               //   leading: Icon(Icons.library_books_sharp),
+//               //   title: Text("Invoices"),
+//               //   onTap: () {
+//               //     print("Invoices Clicked");
+//               //     Navigator.push(
+//               //       context,
+//               //       MaterialPageRoute(builder: (context) => Invoices()),
+//               //     );
+//               //   },
+//               // ),
+//               // ListTile(
+//               //   leading: Icon(Icons.person),
+//               //   title: Text("Profile"),
+//               //   onTap: () {
+//               //     print("Profile Clicked");
+//               //     Navigator.push(
+//               //       context,
+//               //       MaterialPageRoute(builder: (context) => ProfilePage()),
+//               //     );
+//               //   },
+//               // ),
+//               // ListTile(
+//               //   leading: Icon(Icons.settings),
+//               //   title: Text("Settings"),
+//               //   onTap: () {
+//               //     print("About Clicked");
+//               //     Navigator.push(
+//               //       context,
+//               //       MaterialPageRoute(builder: (context) => Settings()),
+//               //     );
+//               //   },
+//               // ),
+//               ListTile(
+//                 leading: Icon(Icons.exit_to_app),
+//                 title: Text("Logout"),
+//                 onTap: () {
+//                   print("Logout Clicked");
+//                   showDialog(
+//                     context: context,
+//                     barrierDismissible: false,
+//                     builder: (BuildContext ctxt) {
+//                       return AlertDialog(
+//                         title: Text(
+//                           "Log Out?",
+//                           style: TextStyle(
+//                             fontFamily: "Montserrat",
+//                             fontSize: 22,
+//                             fontWeight: FontWeight.bold,
+//                             color: Colors.black,
+//                           ),
+//                         ),
+//                         content: Text(
+//                           "Are you sure you want to log out?",
+//                           style: TextStyle(
+//                             fontFamily: "Montserrat",
+//                             fontSize: 18,
+//                             color: Colors.black,
+//                           ),
+//                         ),
+//                         actions: <Widget>[
+//                           TextButton(
+//                             onPressed: () {
+//                               Navigator.pop(context);
+//                             },
+//                             child: Text(
+//                               "Cancel",
+//                               style: TextStyle(
+//                                 fontFamily: "Montserrat",
+//                                 fontWeight: FontWeight.bold,
+//                               ),
+//                             ),
+//                           ),
+//                           TextButton(
+//                             onPressed: () {
+//                               _clearPrefs();
+//                             },
+//                             child: Text(
+//                               "Logout",
+//                               style: TextStyle(
+//                                 fontFamily: "Montserrat",
+//                                 fontWeight: FontWeight.bold,
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       );
+//                     },
+//                   );
+//                 },
+//               ),
+//             ],
+//           )),
+//       body: new Stack(
+//         children: <Widget>[
+//           new Container(
+//             decoration: new BoxDecoration(
+//               image: new DecorationImage(
+//                 image: new AssetImage("assets/images/background.png"),
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//           ),
+//           // for (var item in _patients) Text(item.name),
+//           Padding(
+//             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+//             child: ListView(
+//               // gridDelegate:
+//               //     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+//               children: <Widget>[
+//                 Container(
+//                   height: _patients.isEmpty ? 110 : 220,
+//                   width: double.maxFinite,
+//                   child: Card(
+//                     child: SingleChildScrollView(
+//                       child: DataTable(
+//                         showBottomBorder: true,
+//                         headingRowColor: MaterialStateColor.resolveWith(
+//                           (states) {
+//                             return Color(0xff3179ca);
+//                           },
+//                         ),
+//                         dataRowColor: MaterialStateColor.resolveWith(
+//                           (states) {
+//                             return Color(0xffc4eefd);
+//                           },
+//                         ),
+//                         columnSpacing: 10,
+//                         // dataRowHeight: 1,
+//                         columns: [
+//                           DataColumn(
+//                               label: Text('$_currentMonth',
+//                                   style: TextStyle(color: Colors.white))),
+//                           DataColumn(
+//                               label: Text('Name',
+//                                   style: TextStyle(color: Colors.white))),
+//                           DataColumn(
+//                               label: Text('Age',
+//                                   style: TextStyle(color: Colors.white))),
+//                           DataColumn(
+//                               label: Text('Location ',
+//                                   style: TextStyle(color: Colors.white))),
+//                         ],
+//                         rows: _patients.isEmpty
+//                             ? [
+//                                 DataRow(
+//                                   cells: <DataCell>[
+//                                     DataCell(Container(
+//                                       width: MediaQuery.of(context).size.width *
+//                                           0.35,
+//                                       child: Text(
+//                                         "Data Unavailable",
+//                                         overflow: TextOverflow.visible,
+//                                       ),
+//                                     )), //Extracting from Map element the value
+//                                     DataCell(Text("")),
+//                                     DataCell(Text("")),
+//                                     DataCell(Text("")),
+//                                   ],
+//                                 )
+//                               ]
+//                             : _patients // Loops through dataColumnText, each iteration assigning the value to element
+//                                 .map(
+//                                   (element) => DataRow(
+//                                     cells: <DataCell>[
+//                                       DataCell(Container(
+//                                         width:
+//                                             MediaQuery.of(context).size.width *
+//                                                 0.35,
+//                                         child: Text(
+//                                           element.name[1].toString(),
+//                                           overflow: TextOverflow.visible,
+//                                         ),
+//                                       )), //Extracting from Map element the value
+//                                       DataCell(Text(
+//                                           element.patient_history.toString())),
+//                                       DataCell(Text(element.age.toString())),
+//                                       DataCell(Text(
+//                                           element.date_of_birth.toString())),
+//                                     ],
+//                                   ),
+//                                 )
+//                                 .toList(),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 15,
+//                 ),
+//                 // GestureDetector(
+//                 //   onTap: () {
+//                 //     push(ShipToSales());
+//                 //   },
+//                 //   child: Container(
+//                 //     height: 80,
+//                 //     child: Card(
+//                 //       color: Color(0xff00a3d2),
+//                 //       shadowColor: Colors.grey[700],
+//                 //       child: Row(
+//                 //         mainAxisAlignment: MainAxisAlignment.center,
+//                 //         children: [
+//                 //           FaIcon(
+//                 //             FontAwesomeIcons.truckLoading,
+//                 //             color: Colors.white,
+//                 //           ),
+//                 //           SizedBox(
+//                 //             width: 12,
+//                 //           ),
+//                 //           Text(
+//                 //             "Ship stock to Sales Officer",
+//                 //             style: TextStyle(
+//                 //                 color: Colors.white,
+//                 //                 fontSize: 18,
+//                 //                 fontWeight: FontWeight.bold),
+//                 //           )
+//                 //         ],
+//                 //       ),
+//                 //     ),
+//                 //   ),
+//                 // ),
+//                 // SizedBox(
+//                 //   height: 8,
+//                 // ),
+//                 // GestureDetector(
+//                 //   onTap: () {
+//                 //     push(ShipToCustomer());
+//                 //   },
+//                 //   child: Container(
+//                 //     height: 80,
+//                 //     child: Card(
+//                 //       color: Color(0xff00a3d2),
+//                 //       shadowColor: Colors.grey[700],
+//                 //       child: Row(
+//                 //         mainAxisAlignment: MainAxisAlignment.center,
+//                 //         children: [
+//                 //           FaIcon(
+//                 //             FontAwesomeIcons.shippingFast,
+//                 //             color: Colors.white,
+//                 //           ),
+//                 //           SizedBox(
+//                 //             width: 12,
+//                 //           ),
+//                 //           Text(
+//                 //             "Ship stock to Customer",
+//                 //             style: TextStyle(
+//                 //                 color: Colors.white,
+//                 //                 fontSize: 18,
+//                 //                 fontWeight: FontWeight.bold),
+//                 //           )
+//                 //         ],
+//                 //       ),
+//                 //     ),
+//                 //   ),
+//                 // ),
+//                 // SizedBox(
+//                 //   height: 8,
+//                 // ),
+//                 // GestureDetector(
+//                 //   onTap: () {
+//                 //     push(StockTaking());
+//                 //   },
+//                 //   child: Container(
+//                 //     height: 80,
+//                 //     child: Card(
+//                 //       color: Color(0xff00a3d2),
+//                 //       shadowColor: Colors.grey[700],
+//                 //       child: Row(
+//                 //         mainAxisAlignment: MainAxisAlignment.center,
+//                 //         children: [
+//                 //           FaIcon(
+//                 //             FontAwesomeIcons.edit,
+//                 //             color: Colors.white,
+//                 //           ),
+//                 //           SizedBox(
+//                 //             width: 12,
+//                 //           ),
+//                 //           Text(
+//                 //             "Record Stock Count",
+//                 //             style: TextStyle(
+//                 //                 color: Colors.white,
+//                 //                 fontSize: 18,
+//                 //                 fontWeight: FontWeight.bold),
+//                 //           )
+//                 //         ],
+//                 //       ),
+//                 //     ),
+//                 //   ),
+//                 // ),
+//                 // SizedBox(
+//                 //   height: 8,
+//                 // ),
+//                 // GestureDetector(
+//                 //   onTap: () {
+//                 //     push(ViewEmploeeStock());
+//                 //   },
+//                 //   child: Container(
+//                 //     height: 80,
+//                 //     child: Card(
+//                 //       color: Color(0xff00a3d2),
+//                 //       shadowColor: Colors.grey[700],
+//                 //       child: Row(
+//                 //         mainAxisAlignment: MainAxisAlignment.center,
+//                 //         children: [
+//                 //           FaIcon(
+//                 //             FontAwesomeIcons.search,
+//                 //             color: Colors.white,
+//                 //           ),
+//                 //           SizedBox(
+//                 //             width: 12,
+//                 //           ),
+//                 //           Text(
+//                 //             "Check Staff Stock Balance",
+//                 //             style: TextStyle(
+//                 //                 color: Colors.white,
+//                 //                 fontSize: 18,
+//                 //                 fontWeight: FontWeight.bold),
+//                 //           )
+//                 //         ],
+//                 //       ),
+//                 //     ),
+//                 //   ),
+//                 // ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//       // floatingActionButton: FloatingActionButton(
+//       //   onPressed: () => Navigator.of(context)
+//       //       .push(MaterialPageRoute(builder: (context) => const AddPatient())),
+//       //   backgroundColor: Colors.blue,
+//       //   child: const Icon(Icons.add),
+//       // ),
+//     );
+//   }
+// }
+  @override
+  void initState() {
+    super.initState();
+    getOdooInstance().then((odoo) {
+      getPartners();
+
+      _userId = getUID();
+      print("the user id is " + _userId.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final emptyView = Container(
-      alignment: Alignment.center,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/background1.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.person_outline,
-              color: Colors.grey.shade300,
-              size: 100,
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: Text(
-                Strings.no_patients,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 20,
+        child: Container(
+          height: 150,
+          width: 150,
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.person_outline,
+                  color: Colors.grey.shade300,
+                  size: 100,
                 ),
-              ),
-            )
-          ],
+                Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Text(
+                    "No Contacts",
+                    style: TextStyle(
+                      color: Colors.grey.shade500,
+                      fontSize: 20,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
 
     return Scaffold(
       key: scaffoldKey,
+      // bottomNavigationBar: SalomonBottomBar(
+      //   currentIndex: _SelectedTab.values.indexOf(_selectedTab),
+      //   onTap: (int index) {
+      //     // page.animateToPage(index,
+      //     //     curve: null, duration: Duration(milliseconds: 100));
+      //     page.jumpToPage(index);
+      //     setState(() {
+      //       _selectedTab = _SelectedTab.values[index];
+      //     });
+      //   },
+      //   items: [
+      //     /// Home
+      //     SalomonBottomBarItem(
+      //       icon: Icon(Icons.shop),
+      //       title: Text("Dealers"),
+      //       selectedColor: Constants.primaryColor,
+      //     ),
+
+      //     /// Likes
+      //     SalomonBottomBarItem(
+      //       icon: Icon(Icons.person),
+      //       title: Text("Agents"),
+      //       selectedColor: Constants.primaryColor,
+      //     ),
+
+      //     /// Search
+      //     SalomonBottomBarItem(
+      //       icon: Icon(Icons.people),
+      //       title: Text("Farmers"),
+      //       selectedColor: Constants.primaryColor,
+      //     ),
+      //   ],
+      // ),
       appBar: AppBar(
-        title: Text(_firstName + " - " + _displaypatientId.toString()),
+        backgroundColor: Constants.primaryColor,
+        centerTitle: true,
+        title: Text("Contacts"),
         actions: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.person_add,
-            color: Colors.white,
-          ),
-         onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const AddPatient())
-        )),
-         IconButton(
-              onPressed: () {
-                _refreshData();
-              },
-              icon: Icon(
-                Icons.refresh,
-                color: Colors.white,
-              ))
-      ],
-      
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {
-        //         _refreshData();
-        //       },
-        //       icon: Icon(
-        //         Icons.refresh,
-        //         color: Colors.white,
-        //       ))
-        // ],
-      ),
-      drawer: Drawer(
-          elevation: 20.0,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              UserAccountsDrawerHeader(
-                accountName: Text(userfullname != null ? userfullname : "User"),
-                accountEmail: Text(email != null ? email : "email"),
-                currentAccountPicture: Image.network(_imageUrl != null
-                    ? _imageUrl
-                    : "https://image.flaticon.com/icons/png/512/1144/1144760.png"),
-                decoration: BoxDecoration(color: Colors.blueAccent),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text("Home"),
-                onTap: () {
-                  print("Home Clicked");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                  );
-                },
-              ),
-              // ListTile(
-              //   leading: Icon(Icons.library_books_sharp),
-              //   title: Text("Accounts"),
-              //   onTap: () {
-              //     print("Accounts Clicked");
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => Accounts()),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: Icon(Icons.library_books_sharp),
-              //   title: Text("Invoices"),
-              //   onTap: () {
-              //     print("Invoices Clicked");
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => Invoices()),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: Icon(Icons.person),
-              //   title: Text("Profile"),
-              //   onTap: () {
-              //     print("Profile Clicked");
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => ProfilePage()),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: Icon(Icons.settings),
-              //   title: Text("Settings"),
-              //   onTap: () {
-              //     print("About Clicked");
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (context) => Settings()),
-              //     );
-              //   },
-              // ),
-              ListTile(
-                leading: Icon(Icons.exit_to_app),
-                title: Text("Logout"),
-                onTap: () {
-                  print("Logout Clicked");
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext ctxt) {
-                      return AlertDialog(
-                        title: Text(
-                          "Log Out?",
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        content: Text(
-                          "Are you sure you want to log out?",
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 18,
-                            color: Colors.black,
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              _clearPrefs();
-                            },
-                            child: Text(
-                              "Logout",
-                              style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          )),
-      body: new Stack(
-        children: <Widget>[
-          new Container(
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage("assets/images/background.png"),
-                fit: BoxFit.cover,
-              ),
+          IconButton(
+            icon: Icon(
+              Icons.person_add,
+              color: Colors.white,
             ),
+            onPressed: () {
+              push(AddPatient());
+            },
           ),
-          // for (var item in _patients) Text(item.name),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: ListView(
-              // gridDelegate:
-              //     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              children: <Widget>[
-                Container(
-                  height: _patients.isEmpty ? 110 : 220,
-                  width: double.maxFinite,
-                  child: Card(
-                    child: SingleChildScrollView(
-                      child: DataTable(
-                        showBottomBorder: true,
-                        headingRowColor: MaterialStateColor.resolveWith(
-                          (states) {
-                            return Color(0xff3179ca);
-                          },
-                        ),
-                        dataRowColor: MaterialStateColor.resolveWith(
-                          (states) {
-                            return Color(0xffc4eefd);
-                          },
-                        ),
-                        columnSpacing: 10,
-                        // dataRowHeight: 1,
-                        columns: [
-                          DataColumn(
-                              label: Text('$_currentMonth',
-                                  style: TextStyle(color: Colors.white))),
-                          DataColumn(
-                              label: Text('Name',
-                                  style: TextStyle(color: Colors.white))),
-                          DataColumn(
-                              label: Text('Age',
-                                  style: TextStyle(color: Colors.white))),
-                          DataColumn(
-                              label: Text('Location ',
-                                  style: TextStyle(color: Colors.white))),
-                        ],
-                        rows: _patients.isEmpty
-                            ? [
-                                DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.35,
-                                      child: Text(
-                                        "Data Unavailable",
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                    )), //Extracting from Map element the value
-                                    DataCell(Text("")),
-                                    DataCell(Text("")),
-                                    DataCell(Text("")),
-                                  ],
-                                )
-                              ]
-                            : _patients // Loops through dataColumnText, each iteration assigning the value to element
-                                .map(
-                                  (element) => DataRow(
-                                    cells: <DataCell>[
-                                      DataCell(Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        child: Text(
-                                          element.name[1].toString(),
-                                          overflow: TextOverflow.visible,
-                                        ),
-                                      )), //Extracting from Map element the value
-                                      DataCell(Text(
-                                          element.patient_history.toString())),
-                                      DataCell(Text(element.age.toString())),
-                                      DataCell(Text(
-                                          element.date_of_birth.toString())),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                // GestureDetector(
-                //   onTap: () {
-                //     push(ShipToSales());
-                //   },
-                //   child: Container(
-                //     height: 80,
-                //     child: Card(
-                //       color: Color(0xff00a3d2),
-                //       shadowColor: Colors.grey[700],
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           FaIcon(
-                //             FontAwesomeIcons.truckLoading,
-                //             color: Colors.white,
-                //           ),
-                //           SizedBox(
-                //             width: 12,
-                //           ),
-                //           Text(
-                //             "Ship stock to Sales Officer",
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 18,
-                //                 fontWeight: FontWeight.bold),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 8,
-                // ),
-                // GestureDetector(
-                //   onTap: () {
-                //     push(ShipToCustomer());
-                //   },
-                //   child: Container(
-                //     height: 80,
-                //     child: Card(
-                //       color: Color(0xff00a3d2),
-                //       shadowColor: Colors.grey[700],
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           FaIcon(
-                //             FontAwesomeIcons.shippingFast,
-                //             color: Colors.white,
-                //           ),
-                //           SizedBox(
-                //             width: 12,
-                //           ),
-                //           Text(
-                //             "Ship stock to Customer",
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 18,
-                //                 fontWeight: FontWeight.bold),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 8,
-                // ),
-                // GestureDetector(
-                //   onTap: () {
-                //     push(StockTaking());
-                //   },
-                //   child: Container(
-                //     height: 80,
-                //     child: Card(
-                //       color: Color(0xff00a3d2),
-                //       shadowColor: Colors.grey[700],
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           FaIcon(
-                //             FontAwesomeIcons.edit,
-                //             color: Colors.white,
-                //           ),
-                //           SizedBox(
-                //             width: 12,
-                //           ),
-                //           Text(
-                //             "Record Stock Count",
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 18,
-                //                 fontWeight: FontWeight.bold),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 8,
-                // ),
-                // GestureDetector(
-                //   onTap: () {
-                //     push(ViewEmploeeStock());
-                //   },
-                //   child: Container(
-                //     height: 80,
-                //     child: Card(
-                //       color: Color(0xff00a3d2),
-                //       shadowColor: Colors.grey[700],
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           FaIcon(
-                //             FontAwesomeIcons.search,
-                //             color: Colors.white,
-                //           ),
-                //           SizedBox(
-                //             width: 12,
-                //           ),
-                //           Text(
-                //             "Check Staff Stock Balance",
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 18,
-                //                 fontWeight: FontWeight.bold),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
+          // IconButton(
+          //     onPressed: () async {
+          //       var result = await showSearch<String>(
+          //         context: context,
+          //         delegate: CustomDelegate(),
+          //       );
+          //       setState(() => _result = result);
+          //     },
+          //     icon: Icon(Icons.search)),
         ],
       ),
       // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (context) => const AddPatient())),
-      //   backgroundColor: Colors.blue,
-      //   child: const Icon(Icons.add),
+      //   onPressed: () {
+      //     _refreshPartners();
+      //   },
+      //   // label: const Text(''),
+      //   child: const Icon(Icons.replay),
+      //   backgroundColor: Constants.secondaryColor,
       // ),
+      body: (_patients.length > 0
+          ? Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/background1.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: ListView.builder(
+                reverse: false,
+                itemCount: _patients.length,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: (context, i) => InkWell(
+                  onTap: () {
+                    // push(PartnerDetails(data: _partners[i]));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: <Widget>[
+                        Divider(
+                          height: 10.0,
+                        ),
+                        ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    color: Constants.secondaryColor,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    child: Text(
+                                      _patients[i].name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          subtitle: Container(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.mail,
+                                      color: Constants.secondaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      _patients[i].email,
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 15.0),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.phone,
+                                      color: Constants.secondaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    // Text(
+                                    //   _patients[i].phone,
+                                    //   style: TextStyle(
+                                    //       color: Colors.grey, fontSize: 15.0),
+                                    // ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : emptyView),
+    );
+  }
+}
+
+class CustomDelegate extends SearchDelegate<String> {
+  @override
+  List<Widget> buildActions(BuildContext context) =>
+      [IconButton(icon: Icon(Icons.clear), onPressed: () => query = '')];
+
+  @override
+  Widget buildLeading(BuildContext context) => IconButton(
+      icon: Icon(Icons.chevron_left), onPressed: () => close(context, ''));
+
+  @override
+  Widget buildResults(BuildContext context) => Container();
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    var listToShow;
+    if (query.isNotEmpty)
+      listToShow = _patients
+          .where((e) => e.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    // .where((e) => e.contains(query) && e.startsWith(query))
+    // .toList();
+    else
+      listToShow = _patients;
+
+    return ListView.builder(
+      itemCount: listToShow.length,
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemBuilder: (context, i) => InkWell(
+        // onTap: () {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (BuildContext context) =>
+        //               PartnerDetails(data: listToShow[i])));
+        // },
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              Divider(
+                height: 10.0,
+              ),
+              ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          color: Constants.secondaryColor,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(
+                            listToShow[i].name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                subtitle: Container(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.mail,
+                            color: Constants.secondaryColor,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            listToShow[i].email,
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 15.0),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      // Row(
+                      //   children: [
+                      //     Icon(
+                      //       Icons.phone,
+                      //       color: Constants.secondaryColor,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 5,
+                      //     ),
+                      //     Text(
+                      //       listToShow[i].phone,
+                      //       style:
+                      //           TextStyle(color: Colors.grey, fontSize: 15.0),
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -754,4 +1095,3 @@ class ReconnectingOverlay extends StatelessWidget {
         ),
       );
 }
-
