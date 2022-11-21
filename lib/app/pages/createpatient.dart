@@ -96,15 +96,27 @@ class _AddPatientState extends Base<AddPatient> {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
         appBar: AppBar(
-          title: Text('Create Patient'),
-        ),
-        body: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/background.png"),
-                    fit: BoxFit.cover,
-                  ),
+            backgroundColor: Constants.primaryColor,
+            centerTitle: true,
+            title: Text("Patients"),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.person_add,
+                  color: Colors.white,
                 ),
+                onPressed: () {
+                  push(AddPatient());
+                },
+              ),
+            ]),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             key: _formKey,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,6 +252,9 @@ class _AddPatientState extends Base<AddPatient> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Constants.primaryColor,
+                      ),
                       child: Text(
                         'Submit',
                         style: TextStyle(color: Colors.white),

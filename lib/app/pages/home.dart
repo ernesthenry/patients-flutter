@@ -48,6 +48,13 @@ import 'package:intl/intl.dart';
 // import 'shiptosales.dart';
 // import 'viewemployeestock.dart';
 
+// List<Partner> searchdata = [];
+List<Patient> _patients = [];
+// List<Partner> _dealers = [];
+// List<Partner> _agents = [];
+// PageController page = PageController();
+// int bottomSelectedIndex = 0;
+// var _selectedTab = _SelectedTab.dealers;
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -59,13 +66,14 @@ class _HomeState extends Base<Home> {
   var _imageUrl;
   int _userId = 0;
   String _firstName = "Home";
-  // List<String> _locations = ['Kampala', 'Jinja'];
+  String _result;
+    // List<String> _locations = ['Kampala', 'Jinja'];
   // String _selectedLocation;
   // List<EmployeeStock> _employeeStock = [];
   // List<EmployeeStock> _allEmployeeStock = [];
   // List<StockPicking> _stockPickings = [];
   // List<Invoice> _invoices = [];
-  List<Patient> _patients = [];
+  // List<Patient> _patients = [];
   // List<Partner> _contacts = [];
   // List<StockMoves> _stockMoves = [];
   // List<StockMoveLines> _stockMoveLines = [];
@@ -732,16 +740,16 @@ class _HomeState extends Base<Home> {
 //     );
 //   }
 // }
-  @override
-  void initState() {
-    super.initState();
-    getOdooInstance().then((odoo) {
-      getPartners();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getOdooInstance().then((odoo) {
+  //     getPartners();
 
-      _userId = getUID();
-      print("the user id is " + _userId.toString());
-    });
-  }
+  //     _userId = getUID();
+  //     print("the user id is " + _userId.toString());
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -770,7 +778,7 @@ class _HomeState extends Base<Home> {
                 Padding(
                   padding: EdgeInsets.all(1.0),
                   child: Text(
-                    "No Contacts",
+                    "No Patients",
                     style: TextStyle(
                       color: Colors.grey.shade500,
                       fontSize: 20,
@@ -822,7 +830,7 @@ class _HomeState extends Base<Home> {
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         centerTitle: true,
-        title: Text("Contacts"),
+        title: Text("Patients"),
         actions: <Widget>[
           IconButton(
             icon: Icon(
