@@ -26,7 +26,9 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    // compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 31
+
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -73,3 +75,4 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
 }
+
