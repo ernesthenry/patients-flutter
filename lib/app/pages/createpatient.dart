@@ -48,7 +48,7 @@ class _AddPatientState extends Base<AddPatient> {
   DateTime currentDate = DateTime.now();
   String userfullname = "", email = "";
   String _districtSelection = "Select District";
-
+  String _date_of_birth;
   var _imageUrl;
   int _userId = 0;
   int age;
@@ -58,6 +58,7 @@ class _AddPatientState extends Base<AddPatient> {
   BuildContext dialogContext;
 
   Future<void> _selectDate(BuildContext context) async {
+    final DateFormat formatter = DateFormat('MM/dd/yyyy');
     final DateTime pickedDate = await showDatePicker(
         context: context,
         initialDate: currentDate,
@@ -66,6 +67,8 @@ class _AddPatientState extends Base<AddPatient> {
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {
         currentDate = pickedDate;
+        final String formattedDate = formatter.format(currentDate);
+        print(formattedDate);
       });
   }
 
@@ -346,11 +349,8 @@ class _AddPatientState extends Base<AddPatient> {
                                     if (item == newVal) {
                                       setState(() {
                                         _selectedLocation = item;
-                                        // _districtId = item.id;
                                         print(_selectedLocation);
-                                        // print(_districtId);
                                       });
-                                      // _getDivisions();
                                     }
                                   }).toList();
                                 },
@@ -362,63 +362,30 @@ class _AddPatientState extends Base<AddPatient> {
                     ),
                   ),
                 ),
-                // Container(
-                //   height: 60,
-                //   width: 380,
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(10),
-                //     color: Color.fromARGB(255, 218, 204, 204),
-                //   ),
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(
-                //         8.0), //here include this to get padding
-                //     child: DropdownButton(
-                //       isExpanded: true,
-                //       underline: Container(),
-                //       hint: Text('Choose  Location'),
-                //       alignment: Alignment.bottomCenter,
-                //       elevation: 0,
-                //       borderRadius: BorderRadius.circular(5),
-                //       value: _selectedLocation,
-                //       icon: const Icon(Icons.keyboard_arrow_down),
-                //       items: _locations.map((String items) {
-                //         return DropdownMenuItem(
-                //           value: items,
-                //           child: Text(items),
-                //         );
-                //       }).toList(),
-                //       onChanged: (String newValue) {
-                //         setState(() {
-                //           _selectedLocation = newValue;
-                //         });
-                //       },
-                //     ),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.all(10),
-                //   child: Stack(
-                //     alignment: const Alignment(0, 0),
-                //     children: <Widget>[
-                //       Container(
-                //           decoration: BoxDecoration(
-                //             color: Color.fromARGB(255, 218, 204, 204),
-                //             borderRadius: new BorderRadius.circular(10.0),
-                //           ),
-                //           child: TextFormField(
-                //               obscureText: true,
-                //               decoration: InputDecoration(
-                //                 border: InputBorder.none,
-                //                 labelText: 'Date Of Birth',
-                //               ),
-                //               readOnly:
-                //                   true, //set it true, so that user will not able to edit text
-                //               onTap: () {
-                //                 _selectDate(context);
-                //               })),
-                //     ],
-                //   ),
-                // ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Stack(
+                    alignment: const Alignment(0, 0),
+                    children: <Widget>[
+                      Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 218, 204, 204),
+                            borderRadius: new BorderRadius.circular(10.0),
+                          ),
+                          child: TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: 'Date Of Birth',
+                              ),
+                              readOnly:
+                                  true, //set it true, so that user will not able to edit text
+                              onTap: () {
+                                _selectDate(context);
+                              })),
+                    ],
+                  ),
+                ),
                 // Padding(
                 //   padding: EdgeInsets.all(10),
                 //   child: Stack(
@@ -441,30 +408,6 @@ class _AddPatientState extends Base<AddPatient> {
                 //     ],
                 //   ),
                 // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 15),
-                //   child: Container(
-                //     margin: EdgeInsets.only(bottom: 15),
-                //     width: _width * 0.89,
-                //     decoration: BoxDecoration(
-                //       color: Color.fromARGB(255, 218, 204, 204),
-                //       borderRadius: new BorderRadius.circular(10.0),
-                //     ),
-                //     child: TextFormField(
-                //       controller: _ageController,
-                //       keyboardType: TextInputType.number,
-                //       decoration: InputDecoration(
-                //         hintText: "Age",
-                //         border: InputBorder.none,
-                //         hintStyle: TextStyle(color: Colors.grey),
-                //         prefixIcon: Icon(
-                //           Icons.person_add_rounded,
-                //           color: Constants.secondaryColor,
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Container(
@@ -478,14 +421,17 @@ class _AddPatientState extends Base<AddPatient> {
                           print("+++ age +++" + _ageController.text);
                           print("+++ description +++" +
                               _descriptionController.text);
+                          print(
+                              "+++ selected location +++" + _selectedLocation);
+                          print("+++ district +++" + _date_of_birth);
 
                           _savePatient(
                             _accountNameController.text,
                             _emailController.text,
                             _phoneController.text,
                             _descriptionController.text,
-                            // _selectedLocation,
-                            _ageController.text,
+                            _selectedLocation,
+                            // _date_of_birth,
                           );
 
                           setState(() {
@@ -496,6 +442,8 @@ class _AddPatientState extends Base<AddPatient> {
                             _descriptionController.text = "";
                             _ageController.text = "";
                             _patientHistoryController.text = "";
+                            _selectedLocation = "";
+                            // _date_of_birth = "";
                           });
 
                           final snackBar = SnackBar(
@@ -527,7 +475,7 @@ class _AddPatientState extends Base<AddPatient> {
             ))));
   }
 
-  _savePatient(accountName, email, phone, description, age) async {
+  _savePatient(accountName, email, phone, description, _selectedLocation) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     showDialog(
       context: context,
@@ -558,8 +506,8 @@ class _AddPatientState extends Base<AddPatient> {
           "email": email,
           "phone": phone,
           "patient_history": description,
-          "age": age,
-          // "location": location,
+          "patient_location": _selectedLocation,
+          // "date_of_birth": _selectDate(context),
         }).then(
           (OdooResponse res) async {
             if (!res.hasError()) {
