@@ -15,7 +15,8 @@ class Strings {
 
   // Model name
   // we will be inheriting from res.partner
-  static const String res_partner = "res.partner";
+  // static const String patients_module = "res.partner";
+  static const String patients_module = "patients.patients";
   static const String res_users = "res.users";
   // static const String hr_employee = "hr.employee";
   // static const String hr_employee_stock = "hr.employee.stock";

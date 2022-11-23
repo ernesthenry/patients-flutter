@@ -33,15 +33,22 @@ class _AddPatientState extends Base<AddPatient> {
   TextEditingController _accountNameController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController();
+
   // TextEditingController _locationController = new TextEditingController();
   // TextEditingController _dateController = new TextEditingController();
   TextEditingController _ageController = new TextEditingController();
+  TextEditingController _patientHistoryController = new TextEditingController();
+
   List<Patient> _patients = [];
   List<String> _locations = ['Kampala', 'Jinja'];
+  String _displayEmployeeId = "";
   String _selectedLocation;
   bool insured = false;
   DateTime currentDate = DateTime.now();
   String userfullname = "", email = "";
+  String _districtSelection = "Select District";
+
   var _imageUrl;
   int _userId = 0;
   int age;
@@ -86,7 +93,7 @@ class _AddPatientState extends Base<AddPatient> {
       isConnected().then((isInternet) {
         if (isInternet) {
           showLoading();
-          odoo.searchRead(Strings.res_partner, [
+          odoo.searchRead(Strings.patients_module, [
             ['parent_id', "!=", false],
             // ['company_type', "=", 'person']
           ], [
@@ -182,7 +189,7 @@ class _AddPatientState extends Base<AddPatient> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: EdgeInsets.only(top: 15),
                     width: _width * 0.89,
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 218, 204, 204),
@@ -206,7 +213,7 @@ class _AddPatientState extends Base<AddPatient> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: EdgeInsets.only(top: 15),
                     width: _width * 0.89,
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 218, 204, 204),
@@ -230,7 +237,7 @@ class _AddPatientState extends Base<AddPatient> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: EdgeInsets.only(top: 15),
                     width: _width * 0.89,
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 218, 204, 204),
@@ -248,6 +255,110 @@ class _AddPatientState extends Base<AddPatient> {
                           color: Constants.secondaryColor,
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 15),
+                    width: _width * 0.89,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 218, 204, 204),
+                      borderRadius: new BorderRadius.circular(10.0),
+                    ),
+                    child: TextFormField(
+                      controller: _descriptionController,
+                      enabled: _accountNameEnabled,
+                      decoration: InputDecoration(
+                        hintText: "Patient Description",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Constants.secondaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 15),
+                    width: _width * 0.89,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 218, 204, 204),
+                      borderRadius: new BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Center(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_city,
+                                      color: Constants.secondaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      _districtSelection,
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                                items: _locations.map((item) {
+                                  return new DropdownMenuItem(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_city,
+                                          color: Constants.secondaryColor,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        new Text(
+                                          item,
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                    value: item,
+                                  );
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  List itemsList = _locations.map((item) {
+                                    if (item == newVal) {
+                                      setState(() {
+                                        _selectedLocation = item;
+                                        // _districtId = item.id;
+                                        print(_selectedLocation);
+                                        // print(_districtId);
+                                      });
+                                      // _getDivisions();
+                                    }
+                                  }).toList();
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -330,30 +441,30 @@ class _AddPatientState extends Base<AddPatient> {
                 //     ],
                 //   ),
                 // ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 15),
-                    width: _width * 0.89,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 218, 204, 204),
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    child: TextFormField(
-                      controller: _ageController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: "Age",
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(
-                          Icons.person_add_rounded,
-                          color: Constants.secondaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 15),
+                //   child: Container(
+                //     margin: EdgeInsets.only(bottom: 15),
+                //     width: _width * 0.89,
+                //     decoration: BoxDecoration(
+                //       color: Color.fromARGB(255, 218, 204, 204),
+                //       borderRadius: new BorderRadius.circular(10.0),
+                //     ),
+                //     child: TextFormField(
+                //       controller: _ageController,
+                //       keyboardType: TextInputType.number,
+                //       decoration: InputDecoration(
+                //         hintText: "Age",
+                //         border: InputBorder.none,
+                //         hintStyle: TextStyle(color: Colors.grey),
+                //         prefixIcon: Icon(
+                //           Icons.person_add_rounded,
+                //           color: Constants.secondaryColor,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Container(
@@ -365,12 +476,16 @@ class _AddPatientState extends Base<AddPatient> {
                           print("+++ email +++" + _emailController.text);
                           print("+++ name +++" + _accountNameController.text);
                           print("+++ age +++" + _ageController.text);
+                          print("+++ description +++" +
+                              _descriptionController.text);
+
                           _savePatient(
                             _accountNameController.text,
                             _emailController.text,
                             _phoneController.text,
+                            _descriptionController.text,
                             // _selectedLocation,
-                            // _ageController.text,
+                            _ageController.text,
                           );
 
                           setState(() {
@@ -378,7 +493,9 @@ class _AddPatientState extends Base<AddPatient> {
                             _phoneController.text = "";
                             // _selectedLocation = "";
                             _accountNameController.text = "";
-                            // _ageController.text = "";
+                            _descriptionController.text = "";
+                            _ageController.text = "";
+                            _patientHistoryController.text = "";
                           });
 
                           final snackBar = SnackBar(
@@ -410,7 +527,7 @@ class _AddPatientState extends Base<AddPatient> {
             ))));
   }
 
-  _savePatient(accountName, email, phone) async {
+  _savePatient(accountName, email, phone, description, age) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     showDialog(
       context: context,
@@ -435,12 +552,13 @@ class _AddPatientState extends Base<AddPatient> {
     isConnected().then((isInternet) {
       if (isInternet) {
         showLoading();
-        odoo.create(Strings.res_partner, {
+        odoo.create(Strings.patients_module, {
           "name": accountName,
           "user_id": _userId,
           "email": email,
           "phone": phone,
-          // "age": age,
+          "patient_history": description,
+          "age": age,
           // "location": location,
         }).then(
           (OdooResponse res) async {
@@ -646,7 +764,7 @@ class _AddPatientState extends Base<AddPatient> {
   //   isConnected().then((isInternet) {
   //     if (isInternet) {
   //       showLoading();
-  //       odoo.create(Strings.res_partner, {
+  //       odoo.create(Strings.patients_module, {
   //         "name": accountName.toString(),
   //         // "account_name": accountName.toString(),
   //         // "name": "Offline Sync Test",

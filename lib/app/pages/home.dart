@@ -21,6 +21,8 @@ import 'settings.dart';
 import 'package:intl/intl.dart';
 
 List<Patient> _patients = [];
+List<Patient> searchdata = [];
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -119,8 +121,8 @@ class _HomeState extends Base<Home> {
       isConnected().then((isInternet) {
         if (isInternet) {
           showLoading();
-          odoo.searchRead(Strings.res_partner, [
-            ['parent_id', "!=", false],
+          odoo.searchRead(Strings.patients_module, [
+            // ['parent_id', "!=", false],
             // ['company_type', "=", 'person']
           ], [
             'email',
@@ -225,39 +227,6 @@ class _HomeState extends Base<Home> {
 
     return Scaffold(
       key: scaffoldKey,
-      // bottomNavigationBar: SalomonBottomBar(
-      //   currentIndex: _SelectedTab.values.indexOf(_selectedTab),
-      //   onTap: (int index) {
-      //     // page.animateToPage(index,
-      //     //     curve: null, duration: Duration(milliseconds: 100));
-      //     page.jumpToPage(index);
-      //     setState(() {
-      //       _selectedTab = _SelectedTab.values[index];
-      //     });
-      //   },
-      //   items: [
-      //     /// Home
-      //     SalomonBottomBarItem(
-      //       icon: Icon(Icons.shop),
-      //       title: Text("Dealers"),
-      //       selectedColor: Constants.primaryColor,
-      //     ),
-
-      //     /// Likes
-      //     SalomonBottomBarItem(
-      //       icon: Icon(Icons.person),
-      //       title: Text("Agents"),
-      //       selectedColor: Constants.primaryColor,
-      //     ),
-
-      //     /// Search
-      //     SalomonBottomBarItem(
-      //       icon: Icon(Icons.people),
-      //       title: Text("Farmers"),
-      //       selectedColor: Constants.primaryColor,
-      //     ),
-      //   ],
-      // ),
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         centerTitle: true,
@@ -272,25 +241,111 @@ class _HomeState extends Base<Home> {
               push(AddPatient());
             },
           ),
-          // IconButton(
-          //     onPressed: () async {
-          //       var result = await showSearch<String>(
-          //         context: context,
-          //         delegate: CustomDelegate(),
-          //       );
-          //       setState(() => _result = result);
-          //     },
-          //     icon: Icon(Icons.search)),
+           IconButton(
+              onPressed: () async {
+                var result = await showSearch<String>(
+                  context: context,
+                  delegate: CustomDelegate(),
+                );
+                setState(() => _result = result);
+              },
+              icon: Icon(Icons.search)),
+          
+            IconButton(
+              onPressed: () {
+                _refreshData();
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ))
+        
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     _refreshPartners();
-      //   },
-      //   // label: const Text(''),
-      //   child: const Icon(Icons.replay),
-      //   backgroundColor: Constants.secondaryColor,
-      // ),
+      drawer: Drawer(
+          elevation: 20.0,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text(userfullname != null ? userfullname : "User"),
+                accountEmail: Text(email != null ? email : "email"),
+                currentAccountPicture: Image.network(_imageUrl != null
+                    ? _imageUrl
+                    : "https://image.flaticon.com/icons/png/512/1144/1144760.png"),
+                decoration: BoxDecoration(color: Colors.blueAccent),
+              ),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text("Home"),
+                onTap: () {
+                  print("Home Clicked");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text("Logout"),
+                onTap: () {
+                  print("Logout Clicked");
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext ctxt) {
+                      return AlertDialog(
+                        title: Text(
+                          "Log Out?",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        content: Text(
+                          "Are you sure you want to log out?",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _clearPrefs();
+                            },
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          )),
       body: (_patients.length > 0
           ? Container(
               padding: EdgeInsets.all(8),
@@ -453,7 +508,7 @@ class CustomDelegate extends SearchDelegate<String> {
                         Container(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
-                            listToShow[i].name,
+                            listToShow[i].name ?? "",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
@@ -477,7 +532,7 @@ class CustomDelegate extends SearchDelegate<String> {
                             width: 5,
                           ),
                           Text(
-                            listToShow[i].email,
+                            listToShow[i].email ?? "",
                             style:
                                 TextStyle(color: Colors.grey, fontSize: 15.0),
                           ),
@@ -489,14 +544,14 @@ class CustomDelegate extends SearchDelegate<String> {
                       Row(
                         children: [
                           Icon(
-                            Icons.phone,
+                            Icons.phone ?? "",
                             color: Constants.secondaryColor,
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Text(
-                            listToShow[i].phone,
+                            listToShow[i].phone ?? "",
                             style:
                                 TextStyle(color: Colors.grey, fontSize: 15.0),
                           ),

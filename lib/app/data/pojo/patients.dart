@@ -12,12 +12,12 @@ class Patient {
   String phone;
   String imageUrl;
   String location;
+  String patient_history;
   Bool insured;
   int patient_id;
   int age;
   int user_id;
   List parent_id;
-  String patient_history;
   String date_of_birth;
   String dependants;
   String insurance_company;
@@ -30,12 +30,12 @@ class Patient {
       this.phone,
       this.imageUrl,
       this.location,
+      this.patient_history,
       this.insured,
       this.patient_id,
       this.age,
       this.user_id,
       this.parent_id,
-      this.patient_history,
       this.date_of_birth,
       this.dependants,
       this.insurance_company,
@@ -51,7 +51,7 @@ class Patient {
       id: json["id"],
       name: json["name"],
       email: json["email"],
-      phone : json["phone"],
+      phone: json["phone"],
       imageUrl: json["imageUrl"],
       location: json["location"],
       insured: json["insured"],
@@ -85,3 +85,6 @@ class Patient {
     };
   }
 }
+
+
+
