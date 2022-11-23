@@ -87,6 +87,7 @@ class _HomeState extends Base<Home> {
         });
         // await _getPatients();
         await _getPatients;
+        print("list of patients," + _getPatients());
         await new Future.delayed(new Duration(seconds: 6));
         Navigator.of(context).pop();
       }
@@ -122,8 +123,9 @@ class _HomeState extends Base<Home> {
         if (isInternet) {
           showLoading();
           odoo.searchRead(Strings.patients_module, [
-            // ['parent_id', "!=", false],
+            ['parent_id', "!=", false],
             // ['company_type', "=", 'person']
+            // ['insured', "=", 'false']
           ], [
             'email',
             'name',
@@ -137,6 +139,8 @@ class _HomeState extends Base<Home> {
                   hideLoading();
                   String session = getSession();
                   session = session.split(",")[0].split(";")[0];
+                  // print("patients records" + res.getRecords());
+                  // print(res.getRecords().toString());
                   for (var i in res.getRecords()) {
                     if (i["name"].toString().length > 1) {
                       _patients.add(
@@ -151,6 +155,7 @@ class _HomeState extends Base<Home> {
                   }
                 });
                 var patientlist = jsonEncode(res.getRecords());
+                print("my list of patients" + patientlist);
                 preference.setString("offlinepatients", patientlist);
                 preference.setString(
                     "offlinepatientslastupdated", DateTime.now().toString());
@@ -241,7 +246,7 @@ class _HomeState extends Base<Home> {
               push(AddPatient());
             },
           ),
-           IconButton(
+          IconButton(
               onPressed: () async {
                 var result = await showSearch<String>(
                   context: context,
@@ -250,8 +255,7 @@ class _HomeState extends Base<Home> {
                 setState(() => _result = result);
               },
               icon: Icon(Icons.search)),
-          
-            IconButton(
+          IconButton(
               onPressed: () {
                 _refreshData();
               },
@@ -259,7 +263,6 @@ class _HomeState extends Base<Home> {
                 Icons.refresh,
                 color: Colors.white,
               ))
-        
         ],
       ),
       drawer: Drawer(

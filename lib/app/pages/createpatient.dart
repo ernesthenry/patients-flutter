@@ -49,6 +49,7 @@ class _AddPatientState extends Base<AddPatient> {
   String userfullname = "", email = "";
   String _districtSelection = "Select District";
   String _date_of_birth;
+
   var _imageUrl;
   int _userId = 0;
   int age;
@@ -69,6 +70,8 @@ class _AddPatientState extends Base<AddPatient> {
         currentDate = pickedDate;
         final String formattedDate = formatter.format(currentDate);
         print(formattedDate);
+        _date_of_birth = formattedDate .toString()
+            .substring(0,10);
       });
   }
 
@@ -362,30 +365,30 @@ class _AddPatientState extends Base<AddPatient> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Stack(
-                    alignment: const Alignment(0, 0),
-                    children: <Widget>[
-                      Container(
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 218, 204, 204),
-                            borderRadius: new BorderRadius.circular(10.0),
-                          ),
-                          child: TextFormField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                labelText: 'Date Of Birth',
-                              ),
-                              readOnly:
-                                  true, //set it true, so that user will not able to edit text
-                              onTap: () {
-                                _selectDate(context);
-                              })),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.all(10),
+                //   child: Stack(
+                //     alignment: const Alignment(0, 0),
+                //     children: <Widget>[
+                //       Container(
+                //           decoration: BoxDecoration(
+                //             color: Color.fromARGB(255, 218, 204, 204),
+                //             borderRadius: new BorderRadius.circular(10.0),
+                //           ),
+                //           child: TextFormField(
+                //               obscureText: true,
+                //               decoration: InputDecoration(
+                //                 border: InputBorder.none,
+                //                 labelText: 'Date Of Birth',
+                //               ),
+                //               readOnly:
+                //                   true, //set it true, so that user will not able to edit text
+                //               onTap: () {
+                //                 _selectDate(context);
+                //               })),
+                //     ],
+                //   ),
+                // ),
                 // Padding(
                 //   padding: EdgeInsets.all(10),
                 //   child: Stack(
@@ -423,7 +426,7 @@ class _AddPatientState extends Base<AddPatient> {
                               _descriptionController.text);
                           print(
                               "+++ selected location +++" + _selectedLocation);
-                          print("+++ district +++" + _date_of_birth);
+                          // print("+++ district +++" + _date_of_birth);
 
                           _savePatient(
                             _accountNameController.text,
@@ -437,11 +440,8 @@ class _AddPatientState extends Base<AddPatient> {
                           setState(() {
                             _emailController.text = "";
                             _phoneController.text = "";
-                            // _selectedLocation = "";
                             _accountNameController.text = "";
                             _descriptionController.text = "";
-                            _ageController.text = "";
-                            _patientHistoryController.text = "";
                             _selectedLocation = "";
                             // _date_of_birth = "";
                           });
@@ -475,7 +475,7 @@ class _AddPatientState extends Base<AddPatient> {
             ))));
   }
 
-  _savePatient(accountName, email, phone, description, _selectedLocation) async {
+  _savePatient(accountName, email, phone, description, selectedLocation, ) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     showDialog(
       context: context,
@@ -507,7 +507,7 @@ class _AddPatientState extends Base<AddPatient> {
           "phone": phone,
           "patient_history": description,
           "patient_location": _selectedLocation,
-          // "date_of_birth": _selectDate(context),
+          // "date_of_birth": _date_of_birth,
         }).then(
           (OdooResponse res) async {
             if (!res.hasError()) {
