@@ -85,16 +85,125 @@ class _HomeState extends Base<Home> {
           print("the user id is " + _userId.toString());
           print("the fullname is " + _firstName.toString());
         });
-        // await _getPatients();
-        await _getPatients;
-        print("list of patients," + _getPatients());
+        await getPatients;
         await new Future.delayed(new Duration(seconds: 6));
         Navigator.of(context).pop();
       }
     });
   }
 
-  _getPatients() async {
+  // Future<void> _refreshPatients() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   isConnected().then((isInternet) {
+  //     showMessage("Please Wait", "Refreshing List .....");
+  //     // showSnackBar("Refreshing customers list");
+  //     if (isInternet) {
+  //       showLoading();
+  //       odoo.searchRead(Strings.patients_module, [
+  //         ['parent_id', "=", false],
+  //         ['company_type', "!=", 'person']
+  //       ], [
+  //         'email',
+  //         'name',
+  //         'phone',
+  //         'parent_id'
+  //       ]).then(
+  //         (OdooResponse res) {
+  //           if (!res.hasError()) {
+  //             setState(() {
+  //               _patients = [];
+  //               hideLoading();
+  //               String session = getSession();
+  //               session = session.split(",")[0].split(";")[0];
+  //               for (var i in res.getRecords()) {
+  //                 if (i["name"].toString().length > 1) {
+  //                   _patients.add(
+  //                     new Patient(
+  //                         id: i["id"],
+  //                         email: i["email"] is! bool ? i["email"] : "N/A",
+  //                         name: i["name"].toString(),
+  //                         phone: i["phone"] is! bool ? i["phone"] : "N/A",
+  //                         parent_id: i["parent_id"]),
+  //                   );
+  //                 }
+  //               }
+  //             });
+  //             var patientlist = jsonEncode(res.getRecords());
+  //             preference.setString("offlinepatients", patientlist);
+  //             preference.setString(
+  //                 "offlinepatientslastupdated", DateTime.now().toString());
+  //             print("Updated offline patients repository at " +
+  //                 DateTime.now().toString());
+  //           } else {
+  //             print(res.getError());
+  //             showMessage("Warning", res.getErrorMessage());
+  //           }
+  //         },
+  //       );
+  //     }
+  //     Navigator.of(context).pop();
+  //   });
+  // }
+
+  // _getPatients() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   isConnected().then((isInternet) {
+  //     if (isInternet) {
+  //       showLoading();
+  //       odoo.searchRead(Strings.patients_module, [
+  //         ['parent_id', "=", false],
+  //         ['company_type', "!=", 'person']
+  //       ], [
+  //         'email',
+  //         'name',
+  //         'phone',
+  //         'parent_id',
+  //         // 'company_type'
+  //       ]).then(
+  //         (OdooResponse res) {
+  //           if (!res.hasError()) {
+  //             setState(() {
+  //               hideLoading();
+  //               String session = getSession();
+  //               session = session.split(",")[0].split(";")[0];
+  //               for (var i in res.getRecords()) {
+  //                 if (i["name"].toString().length > 1 &&
+  //                     i["parent_id"] is bool) {
+  //                   _patients.add(
+  //                     new Patient(
+  //                       id: i["id"],
+  //                       email: i["email"] is! bool ? i["email"] : "N/A",
+  //                       name: i["name"].toString(),
+  //                       phone: i["phone"] is! bool ? i["phone"] : "N/A",
+  //                       parent_id:
+  //                           i["parent_id"] is! bool ? i["parent_id"] : [],
+  //                       imageUrl: getURL() +
+  //                           "/web/image?model=res.partner&field=image&" +
+  //                           session +
+  //                           "&id=" +
+  //                           i["id"].toString(),
+  //                     ),
+  //                   );
+  //                 }
+  //               }
+  //             });
+  //             var patientlist = jsonEncode(res.getRecords());
+  //             preference.setString("offlinecustomers", patientlist);
+  //             preference.setString(
+  //                 "offlinepatientslastupdated", DateTime.now().toString());
+  //             print("Updated offline patients repository at " +
+  //                 DateTime.now().toString());
+  //           } else {
+  //             print(res.getError());
+  //             showMessage("Warning", res.getErrorMessage());
+  //           }
+  //         },
+  //       );
+  //     }
+  //   });
+  // }
+
+  getPatients() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     setState(() {
       userfullname = getUserFullName();
@@ -123,14 +232,12 @@ class _HomeState extends Base<Home> {
         if (isInternet) {
           showLoading();
           odoo.searchRead(Strings.patients_module, [
-            ['parent_id', "!=", false],
-            // ['company_type', "=", 'person']
-            // ['insured', "=", 'false']
+            ['parent_id', "=", false],
+            ['company_type', "!=", 'person']
           ], [
             'email',
             'name',
             'phone',
-            // 'mobile',
             'parent_id',
           ]).then(
             (OdooResponse res) {
@@ -139,8 +246,6 @@ class _HomeState extends Base<Home> {
                   hideLoading();
                   String session = getSession();
                   session = session.split(",")[0].split(";")[0];
-                  // print("patients records" + res.getRecords());
-                  // print(res.getRecords().toString());
                   for (var i in res.getRecords()) {
                     if (i["name"].toString().length > 1) {
                       _patients.add(
@@ -155,7 +260,6 @@ class _HomeState extends Base<Home> {
                   }
                 });
                 var patientlist = jsonEncode(res.getRecords());
-                print("my list of patients" + patientlist);
                 preference.setString("offlinepatients", patientlist);
                 preference.setString(
                     "offlinepatientslastupdated", DateTime.now().toString());
@@ -186,7 +290,8 @@ class _HomeState extends Base<Home> {
       print("the user id is " + _userId.toString());
       print("the fullname is " + _firstName.toString());
     });
-    _getPatients();
+    // _getPatients();
+    getPatients();
   }
 
   @override
@@ -258,6 +363,7 @@ class _HomeState extends Base<Home> {
           IconButton(
               onPressed: () {
                 _refreshData();
+                // _refreshPatients();
               },
               icon: Icon(
                 Icons.refresh,
@@ -364,7 +470,7 @@ class _HomeState extends Base<Home> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (context, i) => InkWell(
                   onTap: () {
-                    // push(PartnerDetails(data: _partners[i]));
+                    push(PatientDetails(data: _patients[i]));
                   },
                   child: Card(
                     child: Column(

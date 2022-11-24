@@ -47,7 +47,7 @@ class _AddPatientState extends Base<AddPatient> {
   bool insured = false;
   DateTime currentDate = DateTime.now();
   String userfullname = "", email = "";
-  String _districtSelection = "Select District";
+  String _districtSelection = "Please choose a location";
   String _date_of_birth;
 
   var _imageUrl;
@@ -70,8 +70,7 @@ class _AddPatientState extends Base<AddPatient> {
         currentDate = pickedDate;
         final String formattedDate = formatter.format(currentDate);
         print(formattedDate);
-        _date_of_birth = formattedDate .toString()
-            .substring(0,10);
+        _date_of_birth = formattedDate.toString().substring(0, 10);
       });
   }
 
@@ -145,18 +144,15 @@ class _AddPatientState extends Base<AddPatient> {
   }
 
   @override
+  @override
   void initState() {
     super.initState();
     getOdooInstance().then((odoo) {
       getPatients();
-    });
-    setState(() {
-      _registerPending = false;
-      _accountNameEnabled = true;
+
       _userId = getUID();
-      getPatients();
+      print("the user id is " + _userId.toString());
     });
-    print("the user id is " + _userId.toString());
   }
 
   @override
@@ -274,6 +270,7 @@ class _AddPatientState extends Base<AddPatient> {
                       borderRadius: new BorderRadius.circular(10.0),
                     ),
                     child: TextFormField(
+                      maxLines: 3,
                       controller: _descriptionController,
                       enabled: _accountNameEnabled,
                       decoration: InputDecoration(
@@ -281,7 +278,7 @@ class _AddPatientState extends Base<AddPatient> {
                         border: InputBorder.none,
                         hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.text_format,
                           color: Constants.secondaryColor,
                         ),
                       ),
@@ -324,39 +321,42 @@ class _AddPatientState extends Base<AddPatient> {
                                     ),
                                   ],
                                 ),
-                                items: _locations.map((item) {
-                                  return new DropdownMenuItem(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_city,
-                                          color: Constants.secondaryColor,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        new Text(
-                                          item,
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    ),
-                                    value: item,
+                                // items: _locations.map((item) {
+                                //   return new DropdownMenuItem(
+                                //     child: Row(
+                                //       children: [
+                                //         Icon(
+                                //           Icons.location_city,
+                                //           color: Constants.secondaryColor,
+                                //         ),
+                                //         SizedBox(
+                                //           width: 10,
+                                //         ),
+                                //         new Text(
+                                //           item,
+                                //           style: TextStyle(
+                                //               color: Colors.grey,
+                                //               fontSize: 16,
+                                //               fontWeight: FontWeight.w400),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     value: item , 
+                                //   );
+                                // }).toList(),
+                                 items: _locations.map((location) {
+                                  return DropdownMenuItem(
+                                    child: new Text(location),
+                                    value: location,
                                   );
                                 }).toList(),
-                                onChanged: (newVal) {
-                                  List itemsList = _locations.map((item) {
-                                    if (item == newVal) {
-                                      setState(() {
-                                        _selectedLocation = item;
-                                        print(_selectedLocation);
-                                      });
-                                    }
-                                  }).toList();
+                                value: _selectedLocation,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedLocation = newValue;
+                                  });
                                 },
+                                
                               ),
                             ),
                           ),
@@ -365,6 +365,45 @@ class _AddPatientState extends Base<AddPatient> {
                     ),
                   ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 15),
+                //   child: Container(
+                //     margin: EdgeInsets.only(top: 15),
+                //     width: _width * 0.89,
+                //     decoration: BoxDecoration(
+                //       color: Color.fromARGB(255, 218, 204, 204),
+                //       borderRadius: new BorderRadius.circular(10.0),
+                //     ),
+                //     child: Row(
+                //       children: [
+                //         Expanded(
+                //           child: Container(
+                //             width: double.infinity,
+                //             padding: EdgeInsets.symmetric(horizontal: 10),
+                //             child: Center(
+                //               child: DropdownButton(
+                //                 hint: Text(
+                //                     'Please choose a location'), // Not necessary for Option 1
+                //                 value: _selectedLocation,
+                //                 onChanged: (newValue) {
+                //                   setState(() {
+                //                     _selectedLocation = newValue;
+                //                   });
+                //                 },
+                //                 items: _locations.map((location) {
+                //                   return DropdownMenuItem(
+                //                     child: new Text(location),
+                //                     value: location,
+                //                   );
+                //                 }).toList(),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 // Padding(
                 //   padding: EdgeInsets.all(10),
                 //   child: Stack(
@@ -475,7 +514,13 @@ class _AddPatientState extends Base<AddPatient> {
             ))));
   }
 
-  _savePatient(accountName, email, phone, description, selectedLocation, ) async {
+  _savePatient(
+    accountName,
+    email,
+    phone,
+    description,
+    selectedLocation,
+  ) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     showDialog(
       context: context,
