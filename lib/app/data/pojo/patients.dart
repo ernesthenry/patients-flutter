@@ -11,7 +11,7 @@ class Patient {
   String email;
   String phone;
   String imageUrl;
-  String location;
+  String patient_location;
   String patient_history;
   Bool insured;
   int patient_id;
@@ -29,7 +29,7 @@ class Patient {
       this.email,
       this.phone,
       this.imageUrl,
-      this.location,
+      this.patient_location,
       this.patient_history,
       this.insured,
       this.patient_id,
@@ -42,10 +42,34 @@ class Patient {
       this.qr_code});
 
   static List encodeToJson(List<Patient> list) {
-    List jsonList = List();
+    List jsonList = [];
     list.map((item) => jsonList.add(item.toJson())).toList();
-    return jsonList;
+
+    // using toSet - toList strategy
+    final uniqueJsonList = jsonList.toSet().toList();
+
+    // convert each item back to the original form using JSON decoding
+    final result = uniqueJsonList.map((item) => jsonDecode(item)).toList();
+
+    return result;
+    // print(result);
+
+    // var seen = Set<String>();
+    // List<String> uniquelist =
+    //     jsonList.where((patient) => seen.add(patient)).toList();
+    // print(uniquelist);
   }
+
+  // convert each item to a string by using JSON encoding
+  // final jsonList = List.map((item) => jsonEncode(item)).toList();
+
+  // // using toSet - toList strategy
+  // final uniqueJsonList = jsonList.toSet().toList();
+
+  // // convert each item back to the original form using JSON decoding
+  // final result = uniqueJsonList.map((item) => jsonDecode(item)).toList();
+
+  // print(result);
 
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
       id: json["id"],
@@ -53,7 +77,7 @@ class Patient {
       email: json["email"],
       phone: json["phone"],
       imageUrl: json["imageUrl"],
-      location: json["location"],
+      patient_location: json["patient_location"],
       insured: json["insured"],
       patient_history: json["patient_history"],
       patient_id: json["patient_id"],
@@ -71,7 +95,7 @@ class Patient {
       "email": this.email,
       "phone": this.phone,
       "imageUrl": this.imageUrl,
-      "location": this.location,
+      "patient_location": this.patient_location,
       "insured": this.insured,
       "patient_history": this.patient_history,
       "patient_id": this.patient_id,
@@ -85,6 +109,3 @@ class Patient {
     };
   }
 }
-
-
-

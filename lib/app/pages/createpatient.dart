@@ -34,6 +34,8 @@ class _AddPatientState extends Base<AddPatient> {
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _descriptionController = new TextEditingController();
+  // TextEditingController _selectedLocationController =
+  //     new TextEditingController();
 
   // TextEditingController _locationController = new TextEditingController();
   // TextEditingController _dateController = new TextEditingController();
@@ -41,9 +43,9 @@ class _AddPatientState extends Base<AddPatient> {
   TextEditingController _patientHistoryController = new TextEditingController();
 
   List<Patient> _patients = [];
-  List<String> _locations = ['Kampala', 'Jinja'];
+  // List<String> _locations = ['SelectLocation', 'Kampala', 'Jinja'];
   String _displayEmployeeId = "";
-  String _selectedLocation;
+  String _selectedLocation = "Kampala";
   bool insured = false;
   DateTime currentDate = DateTime.now();
   String userfullname = "", email = "";
@@ -57,6 +59,21 @@ class _AddPatientState extends Base<AddPatient> {
   String odooURL = "";
   bool _registerPending = false, _accountNameEnabled = true;
   BuildContext dialogContext;
+
+  String get _errorText {
+    // at any time, we can get the text from _controller.value.text
+    final text = _accountNameController.value.text;
+    // Note: you can do your own custom validation here
+    // Move this logic this outside the widget for more testable code
+    if (text.isEmpty) {
+      return 'Can\'t be empty';
+    }
+    if (text.length < 4) {
+      return 'Too short';
+    }
+    // return null if the text is valid
+    return null;
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateFormat formatter = DateFormat('MM/dd/yyyy');
@@ -99,8 +116,8 @@ class _AddPatientState extends Base<AddPatient> {
         if (isInternet) {
           showLoading();
           odoo.searchRead(Strings.patients_module, [
-            ['parent_id', "!=", false],
-            // ['company_type', "=", 'person']
+            ['parent_id', "=", false],
+            ['company_type', "!=", 'person']
           ], [
             'email',
             'name',
@@ -143,16 +160,30 @@ class _AddPatientState extends Base<AddPatient> {
     }
   }
 
-  @override
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getOdooInstance().then((odoo) {
+  //     getPatients();
+
+  //     _userId = getUID();
+  //     print("the user id is " + _userId.toString());
+  //   });
+  // }
+
   @override
   void initState() {
     super.initState();
     getOdooInstance().then((odoo) {
-      getPatients();
-
-      _userId = getUID();
-      print("the user id is " + _userId.toString());
+      // _getEmployeeData();
     });
+    setState(() {
+      _registerPending = false;
+      _accountNameEnabled = true;
+      _userId = getUID();
+      // getPatients();
+    });
+    print("the user id is " + _userId.toString());
   }
 
   @override
@@ -208,7 +239,17 @@ class _AddPatientState extends Base<AddPatient> {
                           Icons.person,
                           color: Constants.secondaryColor,
                         ),
+                        errorText: _errorText,
                       ),
+                      // validator: (_accountNameController) {
+                      //   if (_accountNameController.isEmpty ||
+                      //       !RegExp(r'^[a-z A-Z]+$').hasMatch(_accountNameController)) {
+                      //     //allow upper and lower case alphabets and space
+                      //     return "Enter Correct Name";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // }
                     ),
                   ),
                 ),
@@ -233,6 +274,26 @@ class _AddPatientState extends Base<AddPatient> {
                           color: Constants.secondaryColor,
                         ),
                       ),
+                      onFieldSubmitted: (value) {
+                        //Validator
+                      },
+                      validator: (value) {
+                        if (value.isEmpty ||
+                            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                          return 'Enter a valid email!';
+                        }
+                        return null;
+                      },
+                      // validator: (_emailController) {
+                      //   if (_emailController.isEmpty ||
+                      //       !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      //           .hasMatch(_emailController)) {
+                      //     return "Enter Correct Email Address";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
                     ),
                   ),
                 ),
@@ -246,18 +307,37 @@ class _AddPatientState extends Base<AddPatient> {
                       borderRadius: new BorderRadius.circular(10.0),
                     ),
                     child: TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: "Phone Contact",
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(
-                          Icons.phone,
-                          color: Constants.secondaryColor,
+                        controller: _phoneController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "Phone Contact",
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: Icon(
+                            Icons.phone,
+                            color: Constants.secondaryColor,
+                          ),
                         ),
-                      ),
-                    ),
+                        onFieldSubmitted: (value) {},
+                        obscureText: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Enter phone!';
+                          }
+                          return null;
+                        }
+
+                        // validator: (_phoneController) {
+                        //   if (_phoneController.isEmpty ||
+                        //       !RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+                        //           .hasMatch(_phoneController)) {
+                        //     //  r'^[0-9]{10}$' pattern plain match number with length 10
+                        //     return "Enter Correct Phone Number";
+                        //   } else {
+                        //     return null;
+                        //   }
+                        // },
+                        ),
                   ),
                 ),
                 Padding(
@@ -270,19 +350,43 @@ class _AddPatientState extends Base<AddPatient> {
                       borderRadius: new BorderRadius.circular(10.0),
                     ),
                     child: TextFormField(
-                      maxLines: 3,
-                      controller: _descriptionController,
-                      enabled: _accountNameEnabled,
-                      decoration: InputDecoration(
-                        hintText: "Patient Description",
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(
-                          Icons.text_format,
-                          color: Constants.secondaryColor,
+                        maxLines: 3,
+                        controller: _descriptionController,
+                        enabled: _accountNameEnabled,
+                        decoration: InputDecoration(
+                          hintText: "Patient Description",
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: Icon(
+                            Icons.text_format,
+                            color: Constants.secondaryColor,
+                          ),
                         ),
-                      ),
+                        onFieldSubmitted: (value) {},
+                        // obscureText: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Enter desription!';
+                          }
+                          return null;
+                        }),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  // child: Text("Select Location:"),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 15),
+                    width: _width * 0.89,
+                    decoration: BoxDecoration(
+                      // color: Color.fromARGB(255, 218, 204, 204),
+                      borderRadius: new BorderRadius.circular(10.0),
                     ),
+                    child: Text("Select Location:",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 14, 13, 13),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500)),
                   ),
                 ),
                 Padding(
@@ -301,62 +405,56 @@ class _AddPatientState extends Base<AddPatient> {
                             width: double.infinity,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
-                              child: DropdownButton(
+                              child: DropdownButton<String>(
                                 isExpanded: true,
-                                hint: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_city,
-                                      color: Constants.secondaryColor,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      _districtSelection,
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
+                                hint: Text(
+                                  "Select Location",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
                                 ),
-                                // items: _locations.map((item) {
-                                //   return new DropdownMenuItem(
-                                //     child: Row(
-                                //       children: [
-                                //         Icon(
-                                //           Icons.location_city,
-                                //           color: Constants.secondaryColor,
-                                //         ),
-                                //         SizedBox(
-                                //           width: 10,
-                                //         ),
-                                //         new Text(
-                                //           item,
-                                //           style: TextStyle(
-                                //               color: Colors.grey,
-                                //               fontSize: 16,
-                                //               fontWeight: FontWeight.w400),
-                                //         ),
-                                //       ],
+                                // hint: Row(
+                                //   children: [
+                                //     Icon(
+                                //       Icons.location_city,
+                                //       color: Constants.secondaryColor,
                                 //     ),
-                                //     value: item , 
-                                //   );
-                                // }).toList(),
-                                 items: _locations.map((location) {
-                                  return DropdownMenuItem(
-                                    child: new Text(location),
-                                    value: location,
-                                  );
-                                }).toList(),
+                                //     SizedBox(
+                                //       width: 10,
+                                //     ),
+                                //     Text(
+                                //       _districtSelection,
+                                //       style: TextStyle(
+                                //           color: Colors.grey,
+                                //           fontSize: 16,
+                                //           fontWeight: FontWeight.w400),
+                                //     ),
+                                //   ],
+                                // ),
+                                items: <String>['Kampala', 'Jinja']
+                                    .map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: "Montserrat",
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
                                 value: _selectedLocation,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _selectedLocation = newValue;
-                                  });
+                                onChanged: (String newValue) {
+                                  setState(
+                                    () {
+                                      _selectedLocation = newValue;
+                                    },
+                                  );
                                 },
-                                
                               ),
                             ),
                           ),
@@ -365,45 +463,7 @@ class _AddPatientState extends Base<AddPatient> {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 15),
-                //   child: Container(
-                //     margin: EdgeInsets.only(top: 15),
-                //     width: _width * 0.89,
-                //     decoration: BoxDecoration(
-                //       color: Color.fromARGB(255, 218, 204, 204),
-                //       borderRadius: new BorderRadius.circular(10.0),
-                //     ),
-                //     child: Row(
-                //       children: [
-                //         Expanded(
-                //           child: Container(
-                //             width: double.infinity,
-                //             padding: EdgeInsets.symmetric(horizontal: 10),
-                //             child: Center(
-                //               child: DropdownButton(
-                //                 hint: Text(
-                //                     'Please choose a location'), // Not necessary for Option 1
-                //                 value: _selectedLocation,
-                //                 onChanged: (newValue) {
-                //                   setState(() {
-                //                     _selectedLocation = newValue;
-                //                   });
-                //                 },
-                //                 items: _locations.map((location) {
-                //                   return DropdownMenuItem(
-                //                     child: new Text(location),
-                //                     value: location,
-                //                   );
-                //                 }).toList(),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+
                 // Padding(
                 //   padding: EdgeInsets.all(10),
                 //   child: Stack(
@@ -465,7 +525,6 @@ class _AddPatientState extends Base<AddPatient> {
                               _descriptionController.text);
                           print(
                               "+++ selected location +++" + _selectedLocation);
-                          // print("+++ district +++" + _date_of_birth);
 
                           _savePatient(
                             _accountNameController.text,
@@ -473,7 +532,6 @@ class _AddPatientState extends Base<AddPatient> {
                             _phoneController.text,
                             _descriptionController.text,
                             _selectedLocation,
-                            // _date_of_birth,
                           );
 
                           setState(() {
@@ -481,8 +539,7 @@ class _AddPatientState extends Base<AddPatient> {
                             _phoneController.text = "";
                             _accountNameController.text = "";
                             _descriptionController.text = "";
-                            _selectedLocation = "";
-                            // _date_of_birth = "";
+                            _selectedLocation = "Kampala";
                           });
 
                           final snackBar = SnackBar(
@@ -558,10 +615,12 @@ class _AddPatientState extends Base<AddPatient> {
             if (!res.hasError()) {
               setState(() {
                 _registerPending = false;
+                // getPatients();
               });
               Navigator.pop(dialogContext);
               Future.delayed(const Duration(seconds: 3), () {
                 pushAndRemoveUntil(Home());
+                // getPatients();
               });
               showMessage("Success", "Patient registered successfully!");
               // await getPartners();

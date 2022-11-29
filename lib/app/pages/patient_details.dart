@@ -27,6 +27,7 @@ class _PatientDetailsState extends Base<PatientDetails>
   String name = "";
   String image_URL = "";
   String email = "";
+  String location = "";
   var phone = "";
   var mobile = "";
   var street = "";
@@ -39,7 +40,8 @@ class _PatientDetailsState extends Base<PatientDetails>
   var jobposition = "";
   var country = "";
   var account_name = "",
-      spouts_account_type = "",
+      patient_location = "",
+      patient_history = "",
       region = "",
       district = "",
       county = "",
@@ -163,8 +165,8 @@ class _PatientDetailsState extends Base<PatientDetails>
                   }
                 }
               });
-              var customerlist = jsonEncode(res.getRecords());
-              preference.setString("offlinepatientsts", customerlist);
+              var patientlist = jsonEncode(res.getRecords());
+              preference.setString("offlinepatientsts", patientlist);
               preference.setString(
                   "offlinepatientslastupdated", DateTime.now().toString());
               print("Updated offline patients repository at " +
@@ -179,15 +181,15 @@ class _PatientDetailsState extends Base<PatientDetails>
     });
   }
 
-  //LOAD CONTACTS FOR THIS PARTNER
+  // LOAD PATIENTS DATA
   _getPatients() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     setState(() {});
     if (preference.getString("offlinepatients") != null) {
       print(preference.getString("offlinepatients"));
-      var cutomerlist = json.decode(preference.getString("offlinepatients"));
+      var patientlist = json.decode(preference.getString("offlinepatients"));
       setState(() {
-        for (var i in cutomerlist) {
+        for (var i in patientlist) {
           if (i["name"].toString().length > 1 &&
               i["parent_id"][0] == _patient.id) {
             print("PARENT ID IS " + i["parent_id"].toString());
@@ -278,8 +280,10 @@ class _PatientDetailsState extends Base<PatientDetails>
                 name = result["name"];
                 email = result["email"];
                 phone = result['phone'] is! bool ? result['phone'] : "N/A";
+
                 print("----------phone-------------$phone");
-                // mobile = result['mobile'] is! bool ? result['mobile'] : "N/A";
+                location =
+                    result['location'] is! bool ? result['location'] : "N/A";
                 // print("----------mobile-------------$mobile");
                 // street = result['street'] is! bool ? result['street'] : "";
                 // street2 = result['street2'] is! bool ? result['street2'] : "";
@@ -491,9 +495,9 @@ class _PatientDetailsState extends Base<PatientDetails>
               // Tab(
               //   text: "Commission",
               // ),
-              Tab(
-                text: "Patients",
-              ),
+              // Tab(
+              //   text: "Patients",
+              // ),
             ],
             controller: _controller,
             indicatorSize: TabBarIndicatorSize.tab,
@@ -521,8 +525,16 @@ class _PatientDetailsState extends Base<PatientDetails>
                             SizedBox(
                               height: 6,
                             ),
+                            // Text(
+                            //   "Account Type",
+                            //   style: TextStyle(
+                            //       fontWeight: FontWeight.bold, fontSize: 16),
+                            // ),
+                            SizedBox(
+                              height: 6,
+                            ),
                             Text(
-                              "Account Type",
+                              "Patient History",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -530,7 +542,7 @@ class _PatientDetailsState extends Base<PatientDetails>
                               height: 6,
                             ),
                             Text(
-                              "Region",
+                              "Location",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -538,7 +550,7 @@ class _PatientDetailsState extends Base<PatientDetails>
                               height: 6,
                             ),
                             Text(
-                              "District",
+                              "Date Of Birth",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -546,15 +558,7 @@ class _PatientDetailsState extends Base<PatientDetails>
                               height: 6,
                             ),
                             Text(
-                              "Subcounty",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            Text(
-                              "Village Name",
+                              "QRcode",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -598,7 +602,7 @@ class _PatientDetailsState extends Base<PatientDetails>
                               height: 6,
                             ),
                             Text(
-                              spouts_account_type,
+                              patient_history,
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
@@ -1081,7 +1085,8 @@ class _PatientDetailsState extends Base<PatientDetails>
               //                 height: 6,
               //               ),
               //               Text(
-              //                 other_commission.toString(),
+              //                 other_commissio
+              // n.toString(),
               //                 style: TextStyle(
               //                     fontWeight: FontWeight.w400,
               //                     fontSize: 16,
@@ -1194,6 +1199,12 @@ class _PatientDetailsState extends Base<PatientDetails>
                                                       color: Colors.grey,
                                                       fontSize: 15.0),
                                                 ),
+                                                Text(
+                                                  _patients[i].patient_location,
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 15.0),
+                                                )
                                               ],
                                             ),
                                             SizedBox(
@@ -1758,9 +1769,9 @@ class _PatientDetailsState extends Base<PatientDetails>
               preference.getString("offlinepatients") == "") {
             preference.setString("offlinepatients", offlinepatientadded);
           } else {
-            String customersString = preference.getString("offlinepatients");
+            String patientString = preference.getString("offlinepatients");
             print(preference.getString("offlinepatients"));
-            var patientlist = json.decode(customersString);
+            var patientlist = json.decode(patientString);
             List _offlinePatients = [];
             setState(() {
               for (var i in patientlist) {
