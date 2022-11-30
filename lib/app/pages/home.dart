@@ -56,56 +56,87 @@ class _HomeState extends Base<Home> {
     pushAndRemoveUntil(Login());
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getOdooInstance().then((odoo) {
-      getPatients();
+  // _refreshData() async {
+  //   SharedPreferences preference = await SharedPreferences.getInstance();
+  //   isConnected().then((isInternet) async {
+  //     if (isInternet) {
+  //       _isDialogShowing = true;
+  //       showDialog(
+  //         context: context, // <<----
+  //         barrierDismissible: false,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text("Please wait"),
+  //             content: new Row(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 new CircularProgressIndicator(),
+  //                 new SizedBox(
+  //                   width: 10,
+  //                 ),
+  //                 new Text("Synchronizing data ....."),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       );
+  //       // getOdooInstance().then((odoo) {
+  //       //   setState(() {
+  //       //     _userId = getUID();
+  //       //     _firstName = getUserFullName();
+  //       //   });
+  //       //   print("the user id is " + _userId.toString());
+  //       //   print("the fullname is " + _firstName.toString());
+  //       // });
+  //       // await getPatients;
+  //       // await new Future.delayed(new Duration(seconds: 6));
+  //       // Navigator.of(context).pop();
+  //       odoo.searchRead(Strings.patients_module, [
+  //         ['parent_id', "=", false],
+  //         ['company_type', "!=", 'person']
+  //       ], [
+  //         'email',
+  //         'name',
+  //         'phone',
+  //         'parent_id'
+  //       ]).then(
+  //         (OdooResponse res) {
+  //           if (!res.hasError()) {
+  //             setState(() {
+  //               _patients = [];
+  //               hideLoading();
+  //               String session = getSession();
+  //               session = session.split(",")[0].split(";")[0];
+  //               for (var i in res.getRecords()) {
+  //                 if (i["name"].toString().length > 1) {
+  //                   _patients.add(
+  //                     new Patient(
+  //                         id: i["id"],
+  //                         email: i["email"] is! bool ? i["email"] : "N/A",
+  //                         name: i["name"].toString(),
+  //                         phone: i["phone"] is! bool ? i["phone"] : "N/A",
+  //                         parent_id: i["parent_id"]),
+  //                   );
+  //                 }
+  //               }
+  //             });
+  //             var patientlist = jsonEncode(res.getRecords());
+  //             preference.setString("offlinepatients", patientlist);
+  //             preference.setString(
+  //                 "offlinepatientslastupdated", DateTime.now().toString());
+  //             print("Updated offline patients repository at " +
+  //                 DateTime.now().toString());
+  //           } else {
+  //             print(res.getError());
+  //             showMessage("Warning", res.getErrorMessage());
+  //           }
+  //         },
+  //       );
+  //     }
+  //   });
+  // }
 
-      _userId = getUID();
-      print("the user id is " + _userId.toString());
-    });
-  }
-
-  _refreshData() async {
-    isConnected().then((isInternet) async {
-      if (isInternet) {
-        _isDialogShowing = true;
-        showDialog(
-          context: context, // <<----
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Please wait"),
-              content: new Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  new CircularProgressIndicator(),
-                  new SizedBox(
-                    width: 10,
-                  ),
-                  new Text("Synchronizing data ....."),
-                ],
-              ),
-            );
-          },
-        );
-        getOdooInstance().then((odoo) {
-          setState(() {
-            _userId = getUID();
-            _firstName = getUserFullName();
-          });
-          print("the user id is " + _userId.toString());
-          print("the fullname is " + _firstName.toString());
-        });
-        await getPatients;
-        await new Future.delayed(new Duration(seconds: 6));
-        Navigator.of(context).pop();
-      }
-    });
-  }
-
-  Future<void> _refreshPatients() async {
+  Future<void> _refreshData() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     isConnected().then((isInternet) {
       showMessage("Please Wait", "Refreshing List .....");
@@ -119,7 +150,7 @@ class _HomeState extends Base<Home> {
           'email',
           'name',
           'phone',
-          // 'parent_id'
+          'parent_id'
         ]).then(
           (OdooResponse res) {
             if (!res.hasError()) {
@@ -227,6 +258,7 @@ class _HomeState extends Base<Home> {
     if (preference.getString("offlinepatients") != null) {
       var patientlist = json.decode(preference.getString("offlinepatients"));
       setState(() {
+        _patients = [];
         for (var i in patientlist) {
           if (i["name"].toString().length > 1) {
             _patients.add(
@@ -259,6 +291,7 @@ class _HomeState extends Base<Home> {
                   hideLoading();
                   String session = getSession();
                   session = session.split(",")[0].split(";")[0];
+                  _patients = [];
                   for (var i in res.getRecords()) {
                     if (i["name"].toString().length > 1) {
                       _patients.add(
@@ -289,22 +322,17 @@ class _HomeState extends Base<Home> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   setState(() {
-  //     _currentMonth = returnMonth(DateTime.now());
-  //   });
-  //   getOdooInstance().then((odoo) {
-  //     setState(() {
-  //       _userId = getUID();
-  //       _firstName = getUserFullName();
-  //     });
-  //     print("the user id is " + _userId.toString());
-  //     print("the fullname is " + _firstName.toString());
-  //   });
-  //   getPatients();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    getOdooInstance().then((odoo) {
+      // getPatients();
+      _refreshData();
+
+      _userId = getUID();
+      print("the user id is " + _userId.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -374,8 +402,8 @@ class _HomeState extends Base<Home> {
               icon: Icon(Icons.search)),
           IconButton(
               onPressed: () {
-                // _refreshData();
-                _refreshPatients();
+                _refreshData();
+                // _refreshPatients();
               },
               icon: Icon(
                 Icons.refresh,
