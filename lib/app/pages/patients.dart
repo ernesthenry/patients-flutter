@@ -9,7 +9,7 @@
 // // import 'package:patients/app/data/pojo/subcounty.dart';
 // // import 'package:patients/app/data/pojo/village.dart';
 // import 'package:patients/app/data/services/odoo_response.dart';
-// import 'package:patients/app/pages/addpatient.dart';
+// import 'package:patients/app/pages/createpatient.dart';
 // // import 'package:patients/app/pages/invoices.dart';
 // // import 'package:patients/app/pages/patient_details.dart';
 // import 'package:patients/app/utility/constant.dart';
@@ -155,7 +155,7 @@
 //       // showSnackBar("Refreshing customers list");
 //       if (isInternet) {
 //         showLoading();
-//         odoo.searchRead(Strings.res_partner, [
+//         odoo.searchRead(Strings.patients_module, [
 //           ['parent_id', "!=", false],
 //           ['company_type', "=", 'person']
 //         ], [

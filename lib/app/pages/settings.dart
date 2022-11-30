@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-// import 'package:patients/app/data/pojo/currencies.dart';
-// import 'package:patients/app/data/pojo/journals.dart';
-// import 'package:patients/app/data/pojo/stocklocations.dart';
 import 'package:patients/app/data/services/odoo_api.dart';
 import 'package:patients/app/data/services/odoo_response.dart';
 import 'package:patients/app/utility/constant.dart';

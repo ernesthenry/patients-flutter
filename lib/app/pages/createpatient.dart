@@ -43,14 +43,15 @@ class _AddPatientState extends Base<AddPatient> {
   TextEditingController _patientHistoryController = new TextEditingController();
 
   List<Patient> _patients = [];
-  // List<String> _locations = ['SelectLocation', 'Kampala', 'Jinja'];
+  List<String> _districts = ['Kampala', 'Jinja'];
   String _displayEmployeeId = "";
-  String _selectedLocation = "Kampala";
+  String _selectedLocation;
   bool insured = false;
   DateTime currentDate = DateTime.now();
   String userfullname = "", email = "";
-  String _districtSelection = "Please choose a location";
+  // String _districtSelection = "Please choose a location";
   String _date_of_birth;
+  String _districtSelection = "SelectLocation";
 
   var _imageUrl;
   int _userId = 0;
@@ -160,17 +161,6 @@ class _AddPatientState extends Base<AddPatient> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getOdooInstance().then((odoo) {
-  //     getPatients();
-
-  //     _userId = getUID();
-  //     print("the user id is " + _userId.toString());
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -181,7 +171,7 @@ class _AddPatientState extends Base<AddPatient> {
       _registerPending = false;
       _accountNameEnabled = true;
       _userId = getUID();
-      // getPatients();
+      getPatients();
     });
     print("the user id is " + _userId.toString());
   }
@@ -239,7 +229,7 @@ class _AddPatientState extends Base<AddPatient> {
                           Icons.person,
                           color: Constants.secondaryColor,
                         ),
-                        errorText: _errorText,
+                        // errorText: _errorText,
                       ),
                       // validator: (_accountNameController) {
                       //   if (_accountNameController.isEmpty ||
@@ -307,37 +297,37 @@ class _AddPatientState extends Base<AddPatient> {
                       borderRadius: new BorderRadius.circular(10.0),
                     ),
                     child: TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: "Phone Contact",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
-                          prefixIcon: Icon(
-                            Icons.phone,
-                            color: Constants.secondaryColor,
-                          ),
+                      controller: _phoneController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: "Phone Contact",
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey),
+                        prefixIcon: Icon(
+                          Icons.phone,
+                          color: Constants.secondaryColor,
                         ),
-                        onFieldSubmitted: (value) {},
-                        obscureText: true,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Enter phone!';
-                          }
-                          return null;
-                        }
+                      ),
+                      // onFieldSubmitted: (value) {},
+                      // obscureText: true,
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Enter phone!';
+                      //   }
+                      //   return null;
+                      // }
 
-                        // validator: (_phoneController) {
-                        //   if (_phoneController.isEmpty ||
-                        //       !RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
-                        //           .hasMatch(_phoneController)) {
-                        //     //  r'^[0-9]{10}$' pattern plain match number with length 10
-                        //     return "Enter Correct Phone Number";
-                        //   } else {
-                        //     return null;
-                        //   }
-                        // },
-                        ),
+                      // validator: (_phoneController) {
+                      //   if (_phoneController.isEmpty ||
+                      //       !RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+                      //           .hasMatch(_phoneController)) {
+                      //     //  r'^[0-9]{10}$' pattern plain match number with length 10
+                      //     return "Enter Correct Phone Number";
+                      //   } else {
+                      //     return null;
+                      //   }
+                      // },
+                    ),
                   ),
                 ),
                 Padding(
@@ -374,23 +364,6 @@ class _AddPatientState extends Base<AddPatient> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  // child: Text("Select Location:"),
-                  child: Container(
-                    margin: EdgeInsets.only(top: 15),
-                    width: _width * 0.89,
-                    decoration: BoxDecoration(
-                      // color: Color.fromARGB(255, 218, 204, 204),
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    child: Text("Select Location:",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 14, 13, 13),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Container(
                     margin: EdgeInsets.only(top: 15),
                     width: _width * 0.89,
@@ -405,55 +378,61 @@ class _AddPatientState extends Base<AddPatient> {
                             width: double.infinity,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
-                              child: DropdownButton<String>(
+                              child: DropdownButton(
                                 isExpanded: true,
-                                hint: Text(
-                                  "Select Location",
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                hint: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_city,
+                                      color: Constants.secondaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      _districtSelection,
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
                                 ),
-                                // hint: Row(
-                                //   children: [
-                                //     Icon(
-                                //       Icons.location_city,
-                                //       color: Constants.secondaryColor,
-                                //     ),
-                                //     SizedBox(
-                                //       width: 10,
-                                //     ),
-                                //     Text(
-                                //       _districtSelection,
-                                //       style: TextStyle(
-                                //           color: Colors.grey,
-                                //           fontSize: 16,
-                                //           fontWeight: FontWeight.w400),
-                                //     ),
-                                //   ],
-                                // ),
-                                items: <String>['Kampala', 'Jinja']
-                                    .map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "Montserrat",
+                                items: _districts.map((item) {
+                                  return new DropdownMenuItem(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_city,
+                                          color: Constants.secondaryColor,
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
-                                value: _selectedLocation,
-                                onChanged: (String newValue) {
-                                  setState(
-                                    () {
-                                      _selectedLocation = newValue;
-                                    },
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          item,
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                    value: item,
                                   );
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  List itemsList = _districts.map((item) {
+                                    if (item == newVal) {
+                                      setState(() {
+                                        _districtSelection = item;
+                                        // _districtId = item.id;
+                                        print(_districtSelection);
+                                        // print(_districtId);
+                                      });
+                                      // _getDivisions();
+                                    }
+                                  }).toList();
                                 },
                               ),
                             ),
@@ -524,14 +503,14 @@ class _AddPatientState extends Base<AddPatient> {
                           print("+++ description +++" +
                               _descriptionController.text);
                           print(
-                              "+++ selected location +++" + _selectedLocation);
+                              "+++ selected location +++" + _districtSelection);
 
                           _savePatient(
                             _accountNameController.text,
                             _emailController.text,
                             _phoneController.text,
                             _descriptionController.text,
-                            _selectedLocation,
+                            _districtSelection,
                           );
 
                           setState(() {
@@ -539,7 +518,7 @@ class _AddPatientState extends Base<AddPatient> {
                             _phoneController.text = "";
                             _accountNameController.text = "";
                             _descriptionController.text = "";
-                            _selectedLocation = "Kampala";
+                            _districtSelection = "Jinja";
                           });
 
                           final snackBar = SnackBar(
@@ -576,7 +555,7 @@ class _AddPatientState extends Base<AddPatient> {
     email,
     phone,
     description,
-    selectedLocation,
+    _districtSelection,
   ) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     showDialog(
@@ -620,7 +599,6 @@ class _AddPatientState extends Base<AddPatient> {
               Navigator.pop(dialogContext);
               Future.delayed(const Duration(seconds: 3), () {
                 pushAndRemoveUntil(Home());
-                // getPatients();
               });
               showMessage("Success", "Patient registered successfully!");
               // await getPartners();
